@@ -1,0 +1,94 @@
+
+{% load static %}
+{% load socialaccount %}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sidebar Dashboard Template With Sub Menu</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+    />
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      charset="utf-8"
+    ></script>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}?{% now "U" %}" />
+  </head>
+  <body>
+    <!--เริ่มการคลุม-->
+    <div class="wrapper">
+      <!--เริ่มส่วนของ Header-->
+      <div class="header">
+        <div class="header-menu">
+          <div class="title"></i><span style=></span></div>
+         
+        </div>
+      </div>
+      <!--จบส่วนของ Header-->
+      <!--เมนูด้านข้างเริ่มที่นี่-->
+      <div class="sidebar">
+       <div class="loginWrapper">
+         <h1>Login</h1>
+         <div class="imgHolder">
+         <img src="{% static 'images/5dd3f3ded32deeb1.gif' %}">
+         </div>
+         
+        
+
+         {% if user.is_authenticated %}
+         <div class="anotherLogin">
+          <div class="imgHolderInside">
+            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}">
+          </div>
+         
+            <div class="textName">
+               <h2> {{ user.socialaccount_set.all.0.extra_data.name }} </h2>
+            </div>
+         </div>
+         {%else%}
+         <a href="{% provider_login_url 'google' %}"> <button>
+
+            <h2>เข้าสู่ระบบด้วยรหัส Nontri</h2>
+          </button></a>
+         {%endif%}
+
+
+       </div>
+      </div>
+      <!--จบส่วนเมนูข้าง-->
+      <!--เนื้อหาด้านใน-->
+      <div class="main-container">
+        <div class="card">
+          <h1>Frelicia01</h1>
+        <img src="Frey.jpg">
+        <div class="description"> 
+          <p> HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang</p>
+        </div>  
+        </div>
+         <div class="card">
+             <h1>Frelicia02</h1>
+        <img src="Frey1.jpg">
+         <div class="description"> 
+          <p> HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang</p>
+        </div>  
+        </div>
+      
+      </div>
+      <!--จบเนื้อหาส่วนใน-->
+    </div>
+    <!--จบทั้งหมด-->
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $(".sidebar-btn").click(function () {
+          $(".wrapper").toggleClass("collapse");
+        });
+      });
+    </script>
+  </body>
+</html>

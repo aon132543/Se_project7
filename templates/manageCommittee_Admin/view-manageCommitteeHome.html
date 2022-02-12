@@ -1,0 +1,15 @@
+<!--หน้ารายชื่อทุนที่คณะกรรมการท่านนั้นทำการสอบสัมภาษณ์-->
+{% extends 'Menubar-Template.html' %}
+{% load static %}
+{% block content %}
+
+{% for user in users %}
+    <p>ชื่อ: {{user.first_name}} {{user.last_name}} email: {{user.email}}<br></p>
+{% endfor %}
+
+<p>รายชื่อทุน:</p>
+{% for scholar in scholars %}
+    <p>{{scholar.si_name}}</p>
+{% endfor %}
+
+{% endblock %}

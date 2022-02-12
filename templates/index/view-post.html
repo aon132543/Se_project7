@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+  />
+    <title>viewpost</title>
+</head>
+<body>
+
+    <div class="container">
+      {% for new in news%}
+      <h2>{{new.sn_header}}</h2>
+      {{new.sn_description}}<br>
+      หมดอายุ :  {{new.sn_expire_date}}<br>
+      <img src="{{new.sn_photo_bg.url|default_if_none:'#' }}"><br>
+      <a href="{{new.sn_path_to_pdf.url|default_if_none:'#'}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a>
+     
+      {%endfor%}
+      
+      
+      </div>
+    
+</body>
+</html>

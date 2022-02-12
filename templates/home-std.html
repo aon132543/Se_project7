@@ -1,0 +1,29 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+{% for scholar in scholars %}
+
+  <article class="message is-success">
+    <div class="message-header">
+      <p>{{scholar.si_name}}</p>
+      <i class="far fa-newspaper"></i>
+    </div>
+    <div class="message-body">
+      <a href="/viewHome/{{scholar.id}}"> <img src="{{scholar.si_photo_bg.url}}" alt="" /> </a>
+    </div>
+    {% if user.is_superuser %}
+    <a href = "/editScholar/{{scholar.id}}">
+    <button class="button is-warning">
+      <span class="icon is-small">
+        <i class="fas fa-edit"></i>
+      </span>
+      <span>แก้ไข</span>
+    </button>
+    </a>
+    {%endif%}
+  </article>
+
+    
+
+{%endfor%}
+{% endblock %}
