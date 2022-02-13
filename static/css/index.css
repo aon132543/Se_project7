@@ -144,17 +144,30 @@ button:hover {
 }
 
 .wrapper .sidebar .loginWrapper .anotherLogin .imgHolderInside {
-  width: 100px;
-  margin-top: 7px;
+  width: 90px;
+  margin-top: 5px;
   margin-left: 20px;
+}
+
+.wrapper .sidebar .loginWrapper .anotherLogin .imgHolderInside img {
+  border-radius: 50%;
 }
 
 .wrapper .sidebar .loginWrapper .anotherLogin .textName {
   color: #000;
-  margin-left: 150px;
-  margin-top: -75px;
-  font-size: 30px;
+  margin-left: 35%;
+  margin-top: -90px;
+  font-size: 18px;
 }
+
+.wrapper .sidebar .loginWrapper .anotherLogin .textLogin {
+  color: #000;
+  margin-left: 50%;
+  margin-top: 5px;
+  font-size: 18px;
+}
+
+
 
 .wrapper .main-container {
   width: 50%;
@@ -200,5 +213,5 @@ button:hover {
 }
 
 .wrapper .main-container .card .description p {
-  font-size: 30px;
+  font-size: 20px;
 }

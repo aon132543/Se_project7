@@ -41,7 +41,9 @@
         
 
          {% if user.is_authenticated %}
+         <a href="/home">
          <div class="anotherLogin">
+
           <div class="imgHolderInside">
             <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}">
           </div>
@@ -49,7 +51,15 @@
             <div class="textName">
                <h2> {{ user.socialaccount_set.all.0.extra_data.name }} </h2>
             </div>
+
+
+            <div class="textLogin">
+              <h2>เข้าสู่ระบบ </h2>
+           </div>
+
          </div>
+        </a>
+         
          {%else%}
          <a href="{% provider_login_url 'google' %}"> <button>
 
@@ -63,20 +73,23 @@
       <!--จบส่วนเมนูข้าง-->
       <!--เนื้อหาด้านใน-->
       <div class="main-container">
+        {% for new in news%}
         <div class="card">
-          <h1>Frelicia01</h1>
-        <img src="Frey.jpg">
+          <h1>{{new.sn_header}}</h1>
+          {% if new.sn_photo_bg %}
+              <img src="{{new.sn_photo_bg.url}}">
+          {% endif %}
         <div class="description"> 
-          <p> HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang</p>
-        </div>  
+          <p> {{new.sn_description}} </p>
         </div>
-         <div class="card">
-             <h1>Frelicia02</h1>
-        <img src="Frey1.jpg">
-         <div class="description"> 
-          <p> HTML element is a generic inline container for phrasing content, which does not inherently represent anything. It can be used to group elements for styling purposes (using the class or id attributes), or because they share attribute values, such as lang</p>
-        </div>  
+        <div class="level-item has-text-centered">
+        <span class="tag is-primary is-large">{{new.sn_expire_date}}</span> 
+      </div>
+      {% if new.sn_path_to_pdf %} 
+       <a href="/viewpost/{{new.id}}"> <button class="button is-link is-fullwidth">รายละเอียดเพิ่มเติม</button> </a>
         </div>
+      {%endif%}
+        {%endfor%}
       
       </div>
       <!--จบเนื้อหาส่วนใน-->

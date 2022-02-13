@@ -79,12 +79,12 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_userid = models.OneToOneField(User,on_delete=models.CASCADE)
     sp_advisor_professor =  models.CharField(max_length=64,null=True) #อาจารย์ที่ปรึกษา
     sp_status = models.IntegerField(null=True) #status
-    sp_title_en	= models.CharField(max_length=8,null=True) #Title English
+    sp_title_en	= models.CharField(max_length=10,null=True) #Title English
     sp_firstname_en	= models.CharField(max_length=64,null=True) #	Firstname English
     sp_middlename_en = models.CharField(max_length=64,null=True)	#Middlename English
     sp_lastname_en = models.CharField(max_length=64,null=True) #lastname English
     sp_std_code	= models.CharField(max_length=10,null=True) #Student ID
-    sp_title_th	= models.CharField(max_length=8,null=True) #Title Thai
+    sp_title_th	= models.CharField(max_length=10,null=True) #Title Thai
     sp_firstname_th	= models.CharField(max_length=64,null=True) #	Firstname Thai
     sp_middlename_th = models.CharField(max_length=64,null=True)	#Middlename Thai
     sp_lastname_th = models.CharField(max_length=64,null=True)	#Lastname Thai
@@ -97,7 +97,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_std_tel_no = models.CharField(max_length=10,null=True) #tel
 
     #บิดา
-    sp_father_title = models.CharField(max_length=8,null=True)    #คำนำหน้า
+    sp_father_title = models.CharField(max_length=10,null=True)    #คำนำหน้า
     sp_father_firstname	= models.CharField(max_length=64,null=True) #firstname dad
     sp_father_middlename = models.CharField(max_length=64,null=True) #middlename dad 
     sp_father_lastname = models.CharField(max_length=64,null=True) #lastname dad
@@ -112,7 +112,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_father_tel_no = models.CharField(max_length=10,null=True) #Tel dad
 
     #มารดา
-    sp_mother_title = models.CharField(max_length=8,null=True)    #คำนำหน้า
+    sp_mother_title = models.CharField(max_length=10,null=True)    #คำนำหน้า
     sp_mother_firstname	= models.CharField(max_length=64,null=True) #firstname mom
     sp_mother_middlename = models.CharField(max_length=64,null=True) #middlename mom
     sp_mother_lastname = models.CharField(max_length=64,null=True) #lastname mom
@@ -136,7 +136,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_patron_tel_no = models.CharField(max_length=64,null=True) #patron tel
     sp_patron_workplace = models.JSONField(null=True) #patron workplace
     sp_child_in_the_patron = models.IntegerField(blank=True,null=True) #child in the patron
-    sp_parttime	= models.CharField(max_length=1,null=True) #Have you ever worked part time?
+    sp_parttime	= models.CharField(max_length=10,null=True) #Have you ever worked part time?
     sp_parttime_income = models.IntegerField(blank=True,null=True) #parttime income
     sp_parttime_type = models.CharField(max_length=128,null=True)	#parttime type
 

@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>History nisit</title>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    charset="utf-8"
+  ></script>
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
@@ -44,12 +48,72 @@
   }
 
 </style>
+
+<script type="text/JavaScript">
+
+      $(document).ready(function() {
+      var max      = 10; //maximum input boxes allowed
+      var container         = $(".wraper");  
+      var add      = document.getElementById("temp"); //Plus sign id
+      var x = 1; //input field count intially
+      $(add).click(function(e){         e.preventDefault();
+          if(x < max){ //maximum number of input field allowed
+              x++; //input field increment
+              $(container).append('<div><input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" \
+                 name="received-scholar"><input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" \
+                  name="received-year-scholar"><input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"><a href="#" \
+                  class="delete">delete</a></div>'); //adding new input field
+          }
+      });
+     
+      $(container).on("click",".delete", function(e){ //user click on remove text
+          e.preventDefault(); $(this).parent('div').remove(); x--;
+      })
+  });
+
+  $(document).ready(function() {
+      var max2      = 10; //maximum input boxes allowed
+      var container2         = $(".wraper2");  
+      var add2      = document.getElementById("temp2"); //Plus sign id
+      var x2 = 1; //input field count intially
+      $(add2).click(function(e){         e.preventDefault();
+          if(x2 < max2){ //maximum number of input field allowed
+              x2++; //input field increment
+              $(container2).append('<div> <div class="select"> \
+      <select name ="title-siblingthai">\
+        <option value="" disabled selected >กรุณาเลือก</option>\
+        <option value = "นาย" >นาย</option>\
+        <option value = "นางสาว" >นางสาว</option>\
+        <option value = "นาง" >นาง</option>\
+      </select>\
+     </div> \
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">\
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">\
+    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling"> \
+    <a href="#" class="delete">delete</a></div>'); //adding new input field
+          }
+      });
+     
+      $(container2).on("click",".delete", function(e){ //user click on remove text
+          e.preventDefault(); $(this).parent('div').remove(); x2--;
+      })
+  });
+  </script>
+
 <body>
   <div align = "center">
   <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
   </div>
     <div class="container">
-    <form action ="editScholar" method="POST"  enctype="multipart/form-data" >
+    <form action ="editHistoryNisit" method="POST"  enctype="multipart/form-data" >
     
     
     {% csrf_token %}
@@ -94,14 +158,15 @@
     <h2><b><font face="Arial">ประวัติส่วนตัว</font></b></h2>
     <div class="select">
         <select name ="title-thai" >
-          <option value="title-thai" selected="selected" hidden="hidden">{{edit.sp_title_th}}</option>
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{edit.sp_title_th}}" selected="selected" hidden="hidden">{{edit.sp_title_th}}</option>
           <option value = "นาย" >นาย</option>
           <option value = "นางสาว" >นางสาว</option>
         </select>
       </div>
 
 
-      
+
       
       <input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th" value="{{edit.sp_firstname_th}}">
       <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th"  value="{{edit.sp_middlename_th}}">
@@ -110,7 +175,10 @@
       <br>
     <div class="select" >
         <select name ="title-eng">
-          <option value="title-eng" selected="selected" hidden="hidden">{{edit.sp_title_en}}</option>
+          <option value="" disabled selected >กรุณาเลือก</option>
+
+          <option value="{{edit.sp_title_en}}" selected="selected" hidden="hidden">{{edit.sp_title_en}}</option>
+          
           <option value = "Mr" >Mr</option>
           <option value = "Miss" >Miss</option>
         </select>
@@ -129,7 +197,8 @@
     <h2><b><font face="Arial">ประวัติครอบครัว - บิดา</font></b></h2>
     <div class="select">
       <select name ="title-dadthai">
-        <option value="title-dadthai" selected="selected" hidden="hidden">{{edit.sp_father_title}}</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_father_title}}" selected="selected" hidden="hidden">{{edit.sp_father_title}}</option>
         <option value = "นาย" >นาย</option>
         <option value = "นางสาว" >นางสาว</option>
         <option value = "นาง" >นาง</option>
@@ -141,8 +210,9 @@
     <h2><b><font face="Arial">สถานะ</font></b></h2>
     <div class="select">
       <select name ="statuslife-dad">
-        <option value="statuslife-dad" selected="selected" hidden="hidden">{{edit.sp_father_statuslife}}</option>
-        <option value = "มีชวิตอยู่" >มีชีวิตอยู่</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_father_statuslife}}" selected="selected" hidden="hidden">{{edit.sp_father_statuslife}}</option>
+        <option value = "มีชีวิตอยู่" >มีชีวิตอยู่</option>
         <option value = "เสียชีวิต" >เสียชีวิต</option>
       </select>
     </div> 
@@ -153,7 +223,8 @@
     <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
     <div class="select">
       <select name ="status-married-dad">
-        <option value="status-married-dad" selected="selected" hidden="hidden">{{edit.sp_father_status_married}}</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_father_status_married}}" selected="selected" hidden="hidden">{{edit.sp_father_status_married}}</option>
         <option value = "โสด" >โสด</option>
         <option value = "แต่งงาน" >แต่งงาน</option>
         <option value = "หย่าร้าง" >หย่าร้าง</option>
@@ -167,7 +238,8 @@
     <h2><b><font face="Arial">ประวัติครอบครัว-มารดา</font></b></h2>
     <div class="select">
       <select name ="title-momthai">
-        <option value="title-momthai" selected="selected" hidden="hidden">{{edit.sp_mother_title}}</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_mother_title}}" selected="selected" hidden="hidden">{{edit.sp_mother_title}}</option>
         <option value = "นาย" >นาย</option>
         <option value = "นางสาว" >นางสาว</option>
         <option value = "นาง" >นาง</option>
@@ -179,7 +251,8 @@
     <h2><b><font face="Arial">สถานะ</font></b></h2>
     <div class="select">
       <select name ="statuslife-mom">
-        <option value="statuslife-mom" selected="selected" hidden="hidden">{{edit.sp_mother_statuslife}}</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_mother_statuslife}}" selected="selected" hidden="hidden">{{edit.sp_mother_statuslife}}</option>
         <option value = "มีชวิตอยู่" >มีชีวิตอยู่</option>
         <option value = "เสียชีวิต" >เสียชีวิต</option>
       </select>
@@ -191,7 +264,8 @@
     <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
     <div class="select">
       <select name ="status-married-mom">
-        <option value="status-married-mom" selected="selected" hidden="hidden">{{edit.sp_mother_status_married}}</option>
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{edit.sp_mother_status_married}}" selected="selected" hidden="hidden">{{edit.sp_mother_status_married}}</option>
         <option value = "โสด" >โสด</option>
         <option value = "แต่งงาน" >แต่งงาน</option>
         <option value = "หย่าร้าง" >หย่าร้าง</option>
@@ -203,24 +277,32 @@
     <hr>
 
     <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
-    <div class="select">
-      <select name ="title-siblingthai">
-        <option value = "นาย" >นาย</option>
-        <option value = "นางสาว" >นางสาว</option>
-        <option value = "นาง" >นาง</option>
-      </select>
-     </div> 
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
-    <br>
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">
-    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>
-    <br>
-    <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+
+
+    <div class="wraper2">
+      <div class="select">
+        <select name ="title-siblingthai">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value = "นาย" >นาย</option>
+          <option value = "นางสาว" >นางสาว</option>
+          <option value = "นาง" >นาง</option>
+        </select>
+      </div> 
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
+      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
+      <br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">
+      <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">
+      <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>
+      <br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
+      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
+      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+      <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button>
+    </div>
+
+    
     <hr>
 
     <h2><b><font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font></b></h2>
@@ -230,7 +312,8 @@
       <p>ได้รับค่าใช้จ่ายจาก</p>
       <div class="select">
         <select name ="patron">
-          <option value="patron" selected="selected" hidden="hidden">{{edit.sp_income_source}}</option>
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{edit.sp_income_source}}" selected="selected" hidden="hidden">{{edit.sp_income_source}}</option>
           <option value = "บิดา" >บิดา</option>
           <option value = "มารดา" >มารดา</option>
           <option value = "ผู้อุปการะ" >ผู้อุปการะ</option>
@@ -246,7 +329,8 @@
       <p>ทุนกู้ยืมปัจจุบันของนิสิต</p>
       <div class="select" >
         <select name ="studenloan">
-          <option value = "studenloan" selected="selected" hidden="hidden">{{edit.sp_loan}}</option>
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value = "{{edit.sp_loan}}" selected="selected" hidden="hidden">{{edit.sp_loan}}</option>
           <option value = "กรอ" >กรอ</option>
           <option value = "กยศ" >กยศ</option>
           <option value = "ไม่ได้กู้" >ไม่ได้กู้</option>
@@ -256,19 +340,31 @@
       <br><p><b><font face="Arial">ผู้สมัครเคยทำงานพิเศษระหว่างหยุดเรียน/ขณะเรียน</font></b></p>
       <label><b><font face="Arial">เคยทำงานพิเศษไหม</font></b></label>
       <div class="select" >
-        <select name ="parttime">
-          <option value = "parttime" selected="selected" hidden="hidden">{{edit.sp_parttime}}
+        <select name ="pastime">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value = "{{edit.sp_parttime}}" selected="selected" hidden="hidden">{{edit.sp_parttime}}
           <option value = "เคย" >เคย</option>
           <option value = "ไม่เคย" >ไม่เคย</option>
         </select>
       </div>      
-      <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pasttime" value="{{edit.sp_parttime_type}}">   
+      <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime" value="{{edit.sp_parttime_type}}">   
       <input class="resizedTextbox" class="input" type="text" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income" value="{{edit.sp_parttime_income}}">
       <br><br>
+
+
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
-      <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
-      <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
-      <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+      
+       <div class="wraper">
+    
+        <div>
+          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
+          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
+          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+            <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อทุน </i> </button>
+       </div>
+     </div>
+
+
       <hr>
       <br>
       <div class="level-item has-text-centered">
