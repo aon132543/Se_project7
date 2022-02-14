@@ -367,6 +367,7 @@ def profileHistoryNisit(request):
             #ของนิสิต
             advisor_professor = request.POST['advisor_professor'] ##อาจารย์ที่ปรึกษา
             title_thai = request.POST['title-thai']
+            print(title_thai)
             firstname_th = request.POST['firstname-th']
             middlename_th = request.POST['middlename-th']
             lastname_th = request.POST['lastname-th']
