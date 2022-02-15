@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <title>History nisit</title>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    charset="utf-8"
+    ></script>
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
@@ -42,8 +46,67 @@
   hr {
     border-top: 5px solid rgb(82, 1, 1);
   }
+  </style>
 
-</style>
+  <script type="text/JavaScript">
+
+    $(document).ready(function() {
+    var max      = 10; //maximum input boxes allowed
+    var container         = $(".wraper");  
+    var add      = document.getElementById("temp"); //Plus sign id
+    var x = 1; //input field count intially
+    $(add).click(function(e){         e.preventDefault();
+        if(x < max){ //maximum number of input field allowed
+            x++; //input field increment
+            $(container).append('<div><input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" \
+              name="received-scholar"><input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" \
+                name="received-year-scholar"><input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"><a href="#" \
+                class="delete">delete</a></div>'); //adding new input field
+        }
+    });
+
+    $(container).on("click",".delete", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x--;
+    })
+    });
+
+    $(document).ready(function() {
+    var max2      = 10; //maximum input boxes allowed
+    var container2         = $(".wraper2");  
+    var add2      = document.getElementById("temp2"); //Plus sign id
+    var x2 = 1; //input field count intially
+    $(add2).click(function(e){         e.preventDefault();
+        if(x2 < max2){ //maximum number of input field allowed
+            x2++; //input field increment
+            $(container2).append('<div> <div class="select"> \
+    <select name ="title-siblingthai">\
+      <option value="" disabled selected >กรุณาเลือก</option>\
+      <option value = "นาย" >นาย</option>\
+      <option value = "นางสาว" >นางสาว</option>\
+      <option value = "นาง" >นาง</option>\
+    </select>\
+    </div> \
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">\
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">\
+    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling"> \
+    <a href="#" class="delete">delete</a></div>'); //adding new input field
+        }
+    });
+
+    $(container2).on("click",".delete", function(e){ //user click on remove text
+        e.preventDefault(); $(this).parent('div').remove(); x2--;
+    })
+    });
+</script>
+
 <body>
   <div align = "center">
   <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
@@ -206,7 +269,7 @@
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom">
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom">
     <hr>
-
+    <div class="wraper2">
     <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
     <div class="select">
       <select name ="title-siblingthai">
@@ -227,6 +290,8 @@
     <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+    <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้มอบทุน </i> </button>
+  </div>
     <hr>
 
     <h2><b><font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font></b></h2>
@@ -272,6 +337,7 @@
       <input class="resizedTextbox" class="input" type="text" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income">
       <br><br>
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
+
       <div class="wraper">
         <div>
           <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
@@ -280,6 +346,7 @@
           <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้มอบทุน </i> </button>
        </div>
      </div>
+
      <hr>
       <br>
       <div class="level-item has-text-centered">

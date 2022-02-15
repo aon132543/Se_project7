@@ -13,6 +13,8 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from datetime import date
 
+import json
+
 # Create your views here.
 
 def index(request):         #หน้าข่าวประชาสัมพันธ์หน้าแรกก่อนเข้า login 
@@ -288,8 +290,32 @@ def delmanageCommitteeHome(request,user_id):
 
 def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อทุนที่คณะกรรมการท่านนั้นทำการสอบสัมภาษณ์
     scholar = Scholar_info.objects.all()
-    users = User.objects.filter(id=home_id)
-    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'scholars': scholar ,'users':users})
+    users_obj = User.objects.filter(id=home_id)
+    if request.method == 'POST':
+        lst_idScholar = request.POST.getlist('idScholar')
+        # print(lst_idScholar)
+        for idScholar in lst_idScholar:
+            # print(idScholar)
+            getID = idScholar
+            obj_scholar = Scholar_info.objects.get(id=getID)
+            users_obj = User.objects.get(id=home_id)
+            
+            news_obj = add_scholar_Commit.objects.create(
+                id_commit = users_obj,
+                Scholar_name = obj_scholar
+            )
+            
+            news_obj.save()
+            return redirect(manageCommitteeHome)
+            
+        # return redirect('viewManageCommitteeHome/User.objects.filter(id=home_id)')
+        # print(request.POST.getlist('idScholar'))
+        
+    #     return redirect('viewManageCommitteeHome')
+    #     # id_commit = request.POST['idCommit']
+    #     id_scholar = request.POST['idScholar']
+    user_obj_id= home_id
+    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'scholars': scholar ,'users_obj':users_obj,'user_id':user_obj_id})
 
 def addCommittee(request):
     if request.method == 'POST':
@@ -338,6 +364,10 @@ def viewWightScore(request,id_info):
         return redirect('scholarScore')
     
     return render(request,'score/weight_score.html',{'info':info,'info2':info2,'json':json})
+
+#def NisitAppilcateScholar(request): #หน้าสมัครทุน
+
+  #  return render(request,'nisitAppilcateScholar/viewNisitAppilcate.html') 
 
 @login_required (login_url='index')
 def profileHistoryNisit(request):
@@ -549,7 +579,16 @@ def profileHistoryNisit(request):
             data_user = User.objects.filter(id = request.user.id).update(first_name =firstname_th,last_name=lastname_th)
     
     return redirect('home')
-    
+
+
+def dict1(sample_dict, key, list_of_values):
+    if key not in sample_dict:
+        sample_dict[key] = list()
+            
+    sample_dict[key].extend(list_of_values)
+    return sample_dict
+
+
 @login_required (login_url='index')
 def editHistoryNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
@@ -621,20 +660,20 @@ def editHistoryNisit(request):
         workplace_mom = request.POST['workplace-mom']
 
         #ของพี่น้อง
-        title_sibling = request.POST['title-siblingthai']  ##title คำนำหน้า
-        firstname_sibling = request.POST['firstname-sibling']
-        middle_sibling = request.POST['middlename-sibling'] ##ชื่อกลาง
-        lastname_sibling= request.POST['lastname-sibling']
-        Tel_sibling = request.POST['Tel-sibling']
-        birthday_sibling = request.POST['birthday-sibling']
+        title_sibling = request.POST.getlist('title-siblingthai')  ##title คำนำหน้า
+        firstname_sibling = request.POST.getlist('firstname-sibling')
+        middle_sibling = request.POST.getlist('middlename-sibling') ##ชื่อกลาง
+        lastname_sibling= request.POST.getlist('lastname-sibling')
+        Tel_sibling = request.POST.getlist('Tel-sibling')
+        birthday_sibling = request.POST.getlist('birthday-sibling')
         if birthday_sibling == "":
             birthday_sibling = date.today()
-        age_sibling = request.POST['age-sibling']
+        age_sibling = request.POST.getlist('age-sibling')
         if age_sibling=="":
             age_sibling=0
-        education_sibling = request.POST['education-sibling']
-        career_sibling = request.POST['career-sibling']
-        workplace_sibling = request.POST['workplace-sibling']
+        education_sibling = request.POST.getlist('education-sibling')
+        career_sibling = request.POST.getlist('career-sibling')
+        workplace_sibling = request.POST.getlist('workplace-sibling')
             
         #รายละเอียดราบได้ของผู้สมัครทุน
         moneyPerMonth = request.POST['moneyPerMonth']   #รายได้ต่อเดือน
@@ -657,12 +696,22 @@ def editHistoryNisit(request):
         Tel_patron = request.POST['Tel-patron'] #เบอร์มือถือของผู้ปกครอง
             
         #ทุนการศึกษาของนิสิต
-        received_scholar = request.POST['received-scholar'] #ชื่อทุนที่เคยได้รับ
-        received_year_scholar = request.POST['received-year-scholar']   #ปีที่ได้รับทุน
-        prize = request.POST['prize']   #จำนวนเงินที่ได้รับ
+    
+        received_scholar =  request.POST.getlist('received-scholar') #ชื่อทุนที่เคยได้รับ
+        received_year_scholar = request.POST.getlist('received-year-scholar')   #ปีที่ได้รับทุน
+        prize = request.POST.getlist('prize')   #จำนวนเงินที่ได้รับ
+        
+        lst=[]
+        for i in range(len(received_scholar)):
+            dic = {}
+            dic['name']=received_scholar[i]
+            dic['year']=received_year_scholar[i]
+            dic['prize'] = prize[i]
+            lst.append(dic)
+       
+        
         if prize=="":
             prize=0
-
         #รายละเอียดเพิ่มเติม
         # details = request.POST['details']   #เขียนรายละเอียดต่างๆ
 
@@ -731,9 +780,9 @@ def editHistoryNisit(request):
             sp_parttime_income = career_income,
             sp_parttime_type = Type_address_pastime,
 
-            sp_received_scholar = received_scholar,
-            sp_year_received_scholar = received_year_scholar,
-            sp_money_received_scholar = prize,
+            #sp_received_scholar = res,
+            #sp_year_received_scholar = received_year_scholar,
+            # sp_money_received_scholar = prize,
             # sp_report = details,
             sp_path_to_avatar = picture
         )
@@ -742,5 +791,13 @@ def editHistoryNisit(request):
             
     edit = Scholar_profile.objects.filter(sp_userid = request.user.id)
     edit = edit[0]
-    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit})    
+    json = edit.sp_received_scholar
+    #print(json)
+    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json})    
     
+def statusNisit(request):
+    #status = Scholar_app.objects.all()
+    #info = Scholar_info.objects.all()
+    test = Scholar_info.objects.all().select_related()
+    return render(request,'Status_Page/statusNisit.html')
+

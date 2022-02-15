@@ -8,3 +8,5 @@ admin.site.register(Scholar_info)
 admin.site.register(Scholar_weight_score)
 admin.site.register(add_commit)
 admin.site.register(Scholar_profile)
+
+admin.site.register(add_scholar_Commit)

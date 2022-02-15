@@ -1,0 +1,44 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+
+
+        <div class="cardforStatus">
+          <div class = "progessConatainer">
+            <div class="progressionInfomantHeader">
+              ทุนช้างเผือก
+            </div>
+             <div class="progressionInfomantDate">
+              วันจันทร์ที่ 6 ธันวาคม พ.ศ. 2564
+            </div>
+            <div class="progressionInfomantDate">
+              {{t.sa_status}}
+            </div>
+              <div class="progressionInfomantStatus">
+              ผ่านการคัดเลือก
+                <button class="button is-danger">ดาวน์โหลดเอกสาร</button>
+            </div>
+            
+            <div class="progessBar">
+          
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="inprogess" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="inactive" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inactive" >รับเงินทุนสนับสนุนการศึกษา</li>
+              
+            </div>
+          </div>
+        </div>
+      
+      <!--จบเนื้อหาส่วนใน-->
+
+    <script type="text/javascript">
+      $(document).ready(function () {
+        $(".sidebar-btn").click(function () {
+          $(".wrapper").toggleClass("collapse");
+        });
+      });
+    </script>
+  </body>
+</html>
+{% endblock %}

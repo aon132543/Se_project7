@@ -3,13 +3,25 @@
 {% load static %}
 {% block content %}
 
-{% for user in users %}
-    <p>ชื่อ: {{user.first_name}} {{user.last_name}} email: {{user.email}}<br></p>
+{% for user_obj in users_obj %}
+    <font size="5">
+        <p align='left' >&nbsp;&nbsp;<b>ชื่อ:</b> {{user_obj.first_name}} {{user_obj.last_name}} <b>email:</b> {{user_obj.email}}<br></p>
+    </font>
 {% endfor %}
 
-<p>รายชื่อทุน:</p>
-{% for scholar in scholars %}
-    <p>{{scholar.si_name}}</p>
-{% endfor %}
+<font size="5">
+    <p align='left'>&nbsp;&nbsp;<b>รายชื่อทุน:</b></p>
+</font>
+<font size="4">
+    <form action="/viewManageCommitteeHome/{{user_id}}" method="POST" align='left'>
+        {% csrf_token %}
+        {% for scholar in scholars %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" name="idScholar" value="{{scholar.id}}">
+            <label for="{{scholar.si_name}}">{{scholar.si_name}}</label><br>
+        {% endfor %}
 
+        <input type="submit" value="ยืนยัน" class="btn btn-primary">
+    </form> 
+</font>
 {% endblock %}

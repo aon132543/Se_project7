@@ -54,15 +54,20 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
         return str(self.si_name)
     
 
-class add_commit(models.Model):
+class add_commit(models.Model):     #Database เพิ่มรายชื่อกรรมการ
     ac_email	=  models.CharField(max_length=256)
     ac_firstname =  models.CharField(max_length=256)
     ac_lastname = models.CharField(max_length=256)
+    
     def __str__(self):
         return str(self.ac_firstname)
 
+class add_scholar_Commit(models.Model):     #Database เพิ่มทุนให้กรรมการ
+    id_commit = models.ForeignKey(User, on_delete=models.CASCADE) #id ของกรรมการ
+    Scholar_name = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ของทุน
+    def __str__(self):
+        return str(str(self.id_commit)+" เข้าถึงทุน"+str(self.Scholar_name))
 
-    
     
 class Scholar_weight_score(models.Model): #สร้างแบบฟอร์มการให้คะแนนสัมภาษณ์
     sws_si_id = models.OneToOneField(Scholar_info,on_delete=models.CASCADE)
@@ -156,3 +161,12 @@ class File_Models(models.Model):
     fm_upload_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     fm_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE,null=True)
     fm_file = PrivateFileField("File")
+
+class Scholar_app(models.Model):
+    sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 
+    sa_si_id = models.OneToOneField(Scholar_info,on_delete=models.CASCADE) #id ทุน
+    sa_sp_id =	models.ForeignKey(Scholar_profile,on_delete=models.CASCADE) #id นิสิต
+    sa_status =	models.IntegerField()	#สถานะการยื่นทุน
+    sa_score = models.IntegerField(blank=True) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
+    sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
+    sa_path_to_pdf = PrivateFileField("File") #ไฟล์ข้อมูลเพิ่มเติม
