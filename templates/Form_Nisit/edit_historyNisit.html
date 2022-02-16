@@ -280,26 +280,34 @@
 
 
     <div class="wraper2">
+      {% for json_obj in json_bro %}
       <div class="select">
         <select name ="title-siblingthai">
           <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{json_obj.title_sibling}}" selected="selected" hidden="hidden">{{edit.sp_income_source}}</option>
           <option value = "นาย" >นาย</option>
           <option value = "นางสาว" >นางสาว</option>
           <option value = "นาง" >นาง</option>
         </select>
       </div> 
-      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
-      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
-      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling" value={{json_obj.title_sibling}} >
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling" value={{json_obj.middle_sibling}}>
+      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling" value={{json_obj.lastname_sibling}} ><br>
       <br>
-      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">
-      <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">
-      <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling" value={{json_obj.Tel_sibling}} >
+      <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling" value={{json_obj.birthday_sibling}}  >
+      <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling" value={{json_obj.age_sibling}}  ><br>
       <br>
-      <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
-      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
-      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
-      <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button>
+      <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling" value={{json_obj.education_sibling}}>
+      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling" value={{json_obj.career_sibling}} >
+      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling" value={{json_obj.workplace_sibling}} >
+
+      {% if forloop.first %}
+      <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button><br>
+      {%else%}
+      <a href="#" class="delete">delete</a><br>
+      {%endif%}
+      {%endfor%}
     </div>
 
     
@@ -355,21 +363,27 @@
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
       
        <div class="wraper">
-        
+        {% for json_obj in json %}
+       
+        {% if forloop.first %}
         <div>
-          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}">
+          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}">
+          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{json_obj.prize}}">
           <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อทุน </i> </button>
         </div>
+        {%else%}
     
         <div>
-          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}">
+          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}">
+          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{json_obj.prize}}"> 
+          <a href="#" class="delete">delete</a>
         </div>
+        {%endif%}
+
+        {%endfor%}
        
-         
     
         <div>
           

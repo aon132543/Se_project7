@@ -13,7 +13,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from datetime import date
 
-import json
+import json as js
 
 # Create your views here.
 
@@ -674,6 +674,20 @@ def editHistoryNisit(request):
         education_sibling = request.POST.getlist('education-sibling')
         career_sibling = request.POST.getlist('career-sibling')
         workplace_sibling = request.POST.getlist('workplace-sibling')
+        lst_bro=[]
+        for i in range(len(firstname_sibling)):
+            dic = {}
+            dic['title_sibling']=title_sibling[i]
+            dic['firstname_sibling']=firstname_sibling[i]
+            dic['middle_sibling'] = middle_sibling[i]
+            dic['lastname_sibling'] = lastname_sibling[i]
+            dic['Tel_sibling'] = Tel_sibling[i]
+            dic['birthday_sibling'] = birthday_sibling[i]
+            dic['age_sibling'] = age_sibling[i]
+            dic['education_sibling'] = education_sibling[i]
+            dic['career_sibling'] = career_sibling[i]
+            dic['workplace_sibling'] = workplace_sibling[i]
+            lst_bro.append(dic)
             
         #รายละเอียดราบได้ของผู้สมัครทุน
         moneyPerMonth = request.POST['moneyPerMonth']   #รายได้ต่อเดือน
@@ -708,7 +722,6 @@ def editHistoryNisit(request):
             dic['year']=received_year_scholar[i]
             dic['prize'] = prize[i]
             lst.append(dic)
-       
         
         if prize=="":
             prize=0
@@ -766,7 +779,7 @@ def editHistoryNisit(request):
             sp_mother_address = {"address": "Saraburi"}, ##json --> address_mom,
             sp_mother_tel_no = Tel_mom,
             #ของพี่น้อง
-            sp_bro_n_sis = {"address": "Saraburi"}, ##json name,educate level,career,workplace
+            sp_bro_n_sis = lst_bro, ##json name,educate level,career,workplace
             #รายละเอียดราบได้ของผู้สมัครทุน
             sp_loan = studenloan,
             sp_income = moneyPerMonth,
@@ -780,7 +793,8 @@ def editHistoryNisit(request):
             sp_parttime_income = career_income,
             sp_parttime_type = Type_address_pastime,
 
-            #sp_received_scholar = res,
+            #sp_received_scholar = lst,
+            sp_json_scholar = lst,
             #sp_year_received_scholar = received_year_scholar,
             # sp_money_received_scholar = prize,
             # sp_report = details,
@@ -791,9 +805,15 @@ def editHistoryNisit(request):
             
     edit = Scholar_profile.objects.filter(sp_userid = request.user.id)
     edit = edit[0]
-    json = edit.sp_received_scholar
+    json = edit.sp_json_scholar
+    json_bro = edit.sp_bro_n_sis
     #print(json)
-    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json})    
+    
+    employees = [
+          {'ID':1,'name':'Jim','age':35},
+          {'ID':2,'name':'Jane','age':25},
+    ]
+    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'employees':employees,'json_bro':json_bro})    
     
 def statusNisit(request):
     #status = Scholar_app.objects.all()

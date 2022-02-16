@@ -130,6 +130,8 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_mother_career = models.CharField(max_length=64,null=True) #อาชีพ
     sp_mother_workplace = models.CharField(max_length=128,null=True)  #สถานที่ประกอบการ
     sp_mother_tel_no = models.CharField(max_length=10,null=True) #Tel mom
+    
+    #พี่น้อง
     sp_bro_n_sis = models.JSONField(null=True) #ชื่อพี่น้องการศึกษาอาชีพสถานที่ประกอบการ
 
     #เกี่ยวกับนิสิตและผู้ปกครอง
@@ -146,9 +148,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_parttime_type = models.CharField(max_length=128,null=True)	#parttime type
 
     #ทุนที่เคยได้รับ
-    sp_received_scholar = models.CharField(max_length=128,null=True) #ทุนการศึกษา
-    sp_year_received_scholar = models.CharField(max_length=4,null=True) #ปีการศึกษา
-    sp_money_received_scholar = models.IntegerField(blank=True,null=True) #มูลค่าของทุนที่ได้รับ
+    sp_json_scholar = models.JSONField(null=True)
 
     #เขียนรายละเอียดเพิ่มเติม
     sp_report = models.TextField(null=True) #detail
