@@ -1,0 +1,145 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Dashboard Template With Sub Menu</title>
+    <link rel="stylesheet" href="{% static 'css/historyGetScholar.css' %}?{% now "U" %}" />
+    <link
+
+    
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css"
+    />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+      charset="utf-8"
+    ></script>
+  </head>
+  <body>
+    <form action="historyGetScholar" method="POST" >
+        {% csrf_token %}
+        <div class="center2">
+            <h2 align="left" class="resizedTextbox" style="font-size:40px">ประวัติรายชื่อผู้ได้รับทุน</h2>
+    <br>
+    </br>
+    <li align="left"><b><font face="Arial" class="movehead" >รหัสนิสิต 
+        <input type="text" class="Textbox2" name="studentID"></font></b>
+    <b><font face="Arial" class="movehead" >&nbsp;&nbsp;&nbsp;&nbsp;ประเภททุน</font></b>
+    <div class="select" name ="title-thai">
+    <select name="scholarType">
+        <option value = "ทุนภายใน" >ทุนภายใน</option>
+        <option value = "ทุนภายนอก" >ทุนภายนอก</option>
+    </select>
+    </div>
+
+
+    <b><font face="Arial" class="movehead" >&nbsp;&nbsp;&nbsp;&nbsp;ชื่อทุน</font></b>
+    <div class="select" name ="title-thai">
+    <select name="scholarName">
+        <option value = "ช้างเผือก" >ช้างเผือก</option>
+        <option value = "เรียนดี" >เรียนดี</option>
+    </select>
+    </div>
+    
+
+    <b><font face="Arial" class="movehead" >&nbsp;&nbsp;&nbsp;&nbsp;ปีการศึกษา</font></b>
+    <div class="select" name ="title-thai">
+        <select name="year">
+        <option value = "2555" >2555</option>
+        <option value = "2556" >2556</option>
+        </select>
+    </div>
+    <button type="submit"><i class="fa fa-search"></i></button>
+    
+    <!-- <form class="example" action="historyGetScholar" method="POST" enctype="multipart/form-data" style="margin:auto;max-width:300px"> -->
+    <!-- </form> -->
+    </li>
+    </form>
+    <br>
+    </br>
+
+    <div class="resizedTextbox3">
+        <br>
+        </br>
+        <form>
+            <li align="left"><b><font face="Arial" class="movehead2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ปีการศึกษา 2564&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></b>
+                <b><font face="Arial" class="movehead2">ทุนช้างเผือก&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</font></b>
+                <b><font face="Arial" class="movehead2">มูลค่าทุน&nbsp;&nbsp;&nbsp;&nbsp;</font></b>
+                <b><font face="Arial" class="movehead2">5000 บาท&nbsp;&nbsp;&nbsp;&nbsp;</font></b>
+                <b><font face="arial" class="movehead2">ต่อคน</font></b>
+            </li>
+        </form>
+        <br>
+        </br>
+
+        <div class="bodytable">
+        <table>
+            <thead>
+                <th>ลำดับ</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;รหัสนิสิต</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ชื่อ-นามสกุล</th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;สถานะ</th>
+            </thead>
+            <tbody>
+            <tr>
+                <td>1</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300500</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300501</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300502</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300503</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300504</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;6230300505</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;นางสาวงดงาม ดวงใจ</td>
+                <td><b><button>ได้รับทุน</button></b></td>
+            </tr>
+        </table>
+        <br>
+        </br>
+        </div>
+        <h2 align="left" class="boxmoney"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ยอดเงินรวมทั้งสิ้น 30,000 บาท</b></h2>
+        <br>
+        </br>
+    </div>
+    
+<button class="icon page">1</button>
+<button class="icon page">>></button>
+
+<script type="text/javascript">
+$(document).ready(function () {
+$(".sidebar-btn").click(function () {
+$(".wrapper").toggleClass("collapse");
+});
+});
+</script>
+</body>
+{% endblock %}

@@ -93,7 +93,6 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_firstname_th	= models.CharField(max_length=64,null=True) #	Firstname Thai
     sp_middlename_th = models.CharField(max_length=64,null=True)	#Middlename Thai
     sp_lastname_th = models.CharField(max_length=64,null=True)	#Lastname Thai
-    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100)	#	path to avatar
     sp_date_of_birth = 	models.DateField(default=timezone.now) #date of birth
     sp_major = models.CharField(max_length=4,null=True) #major
     sp_grade = models.CharField(max_length=4,null=True) #grade
@@ -163,10 +162,19 @@ class File_Models(models.Model):
     fm_file = PrivateFileField("File")
 
 class Scholar_app(models.Model):
-    sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 
-    sa_si_id = models.OneToOneField(Scholar_info,on_delete=models.CASCADE) #id ทุน
+    sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
+    sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
     sa_sp_id =	models.ForeignKey(Scholar_profile,on_delete=models.CASCADE) #id นิสิต
-    sa_status =	models.IntegerField()	#สถานะการยื่นทุน
+    sa_status =	models.IntegerField()	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
     sa_score = models.IntegerField(blank=True) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
     sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
     sa_path_to_pdf = PrivateFileField("File") #ไฟล์ข้อมูลเพิ่มเติม
+    def __str__(self):
+        return str(self.sa_userid)
+    
+class avatar_profile (models.Model):
+    sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 
+    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100,default="static/images/noimg.png")	#	path to avatar
+
+    def __str__(self):
+        return str(self.sa_userid)

@@ -73,11 +73,12 @@
             </li>
           </div>
           <center class="profile">
-            <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="" />
+           
+            <img src="{{ request.user.avatar_profile.sp_path_to_avatar.url }}" alt="" />
             <p>{{ user.first_name }}   {{ user.last_name }}</p>
             {% if user.is_superuser %}
             <p>ผู้ดูแลระบบ</p>
-          
+            
             {%elif user.is_staff  %}
             <p>คณะกรรมการ</p>
             {%else%}
@@ -140,7 +141,7 @@
             </div>
           </li>
           <li class="item">
-            <a href="#" class="menu-btn">
+            <a href="/historyGetScholar" class="menu-btn">
               <i class="fas fa-desktop"></i><span>ประวัติการรับทุน</span>
             </a>
           </li>
@@ -150,12 +151,11 @@
             </a>
           </li>
           {%elif user.is_staff%}
-
-
-          <h2>HELLOWORLD</h2>
-
-
-
+          <li class="item">
+            <a href="/home" class="menu-btn">
+              <i class="fas fa-desktop"></i><span>สัมภาษณ์ทุน</span>
+            </a>
+          </li>
           {%else%}
           
           <li class="item">
@@ -164,7 +164,7 @@
             </a>
           </li>
           <li class="item">
-            <a href="/InformationHome" class="menu-btn">
+            <a href="/statusNisit" class="menu-btn">
               <i class="fas fa-desktop"></i><span>ประวัติการยื่นเอกสารคำร้อง</span>
             </a>
           </li>
@@ -181,6 +181,22 @@
               <i class="fas fa-power-off"></i><span>ออกจากระบบ</span>
             </a>
           </li>
+          
+          <li class="item">
+            <a href="/interview" class="menu-btn">
+              <i class="fas fa-desktop"></i><span>สัมภาษณ์ทุน</span>
+            </a>
+          </li>
+          
+          <li class="item">
+            <a href="/changeprofile" class="menu-btn">
+              <i class="fas fa-desktop"></i><span>เปลี่ยนรูปประจำตัว</span>
+            </a>
+          </li>
+
+
+
+
         </div>
       </div>
       <!--จบส่วนเมนูข้าง-->

@@ -2,34 +2,58 @@
 {% load static %}
 {% block content %}
 
-
+{% for state in states %}
         <div class="cardforStatus">
           <div class = "progessConatainer">
             <div class="progressionInfomantHeader">
-              ทุนช้างเผือก
+              {{state.sa_si_id.si_name}}
             </div>
              <div class="progressionInfomantDate">
-              วันจันทร์ที่ 6 ธันวาคม พ.ศ. 2564
-            </div>
-            <div class="progressionInfomantDate">
-              {{t.sa_status}}
+              {{state.sa_si_id.si_create_time}}
             </div>
               <div class="progressionInfomantStatus">
               ผ่านการคัดเลือก
-                <button class="button is-danger">ดาวน์โหลดเอกสาร</button>
+              {% if state.sa_status == 21 %}
+                <button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button>
+              {% endif %}
             </div>
             
             <div class="progessBar">
-          
+          {% if state.sa_status == 11 %}
               <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
               <li class="inprogess" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="inprogess" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inprogess" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 20 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="inactive" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
               <li class="inactive" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
               <li class="inactive" >รับเงินทุนสนับสนุนการศึกษา</li>
-              
+          {% elif state.sa_status == 21 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="inprogess" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inprogess" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 30 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="inactive" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inactive" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 31 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="active" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inprogess" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 41 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="active" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="active" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% endif %}
             </div>
           </div>
         </div>
-      
+{% endfor %}
       <!--จบเนื้อหาส่วนใน-->
 
     <script type="text/javascript">
@@ -39,6 +63,4 @@
         });
       });
     </script>
-  </body>
-</html>
 {% endblock %}

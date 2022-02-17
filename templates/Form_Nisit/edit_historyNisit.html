@@ -11,6 +11,8 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     charset="utf-8"
   ></script>
+  <script type="text/javascript" src="https://api.longdo.com/map/?key=e562873a01023c92387e36e8fa33ff30"></script>
+  <script type="text/javascript" src="https://api.longdo.com/address-form/js/addressform.js"></script>
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
@@ -108,7 +110,7 @@
   });
   </script>
 
-<body>
+<body onload="init()">
   <div align = "center">
   <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
   </div>
@@ -390,9 +392,9 @@
        </div>
      </div>
 
-
       <hr>
       <br>
+
       <div class="level-item has-text-centered">
         <div class="columns" > 
           <div class="column">
@@ -402,7 +404,7 @@
             <a href="/home"><input value="ข้าม" class="button is-warning"></a>
           </div>
       </div>
-
+      
     </form>
 
     
@@ -413,6 +415,6 @@
         frame.src=URL.createObjectURL(event.target.files[0]);
     }
     </script>
-    
+      
 </body>
 </html>

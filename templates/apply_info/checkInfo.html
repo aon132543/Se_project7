@@ -1,0 +1,433 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <title>History nisit</title>
+    <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+    charset="utf-8"
+  ></script>
+  <script type="text/javascript" src="https://api.longdo.com/map/?key=e562873a01023c92387e36e8fa33ff30"></script>
+  <script type="text/javascript" src="https://api.longdo.com/address-form/js/addressform.js"></script>
+</head>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
+  *{
+    font-family: 'Prompt', sans-serif;
+  }
+  body{
+    background-color: rgb(82, 1, 1);
+  }
+  .box{
+    background-color: rgb(228, 228, 224);
+  }
+  ::placeholder {
+  color: rgb(158, 79, 50);
+  font-weight: bolder;
+  }
+
+  .resizedTextbox{
+    width: 250px;
+    height: 40px;
+    background-color: rgba(216, 206, 206, 0.89);
+    border-radius:5px;
+    border-color: rgb(221, 220, 220);
+  }
+
+  .resizedTextbox2{
+    width: 400px;
+    height: 40px;
+    background-color: rgba(216, 206, 206, 0.89);
+    border-radius:5px;
+    border-color: rgb(221, 220, 220);
+  }
+  hr {
+    border-top: 5px solid rgb(82, 1, 1);
+  }
+
+</style>
+<script type="text/JavaScript">
+  var myform;
+  function init() {
+      //parameter 1 -> id ของ div ที่จะใส่ฟอร์ม
+      //parameter 2 -> option ต่างๆ
+      myform = new longdo.AddressForm('form_div',{
+        layout: longdo.AddressForm.SIMPLE_SUGGEST,  // ใช้ฟอร์มอีกรูปแบบหนึ่ง
+        // language: 'en',                   // ปรับภาษา
+        showLabels: false,                   // ซ่อนคำกำกับช่องใส่ข้อมูล
+        required: {poi: true},               // กำหนดช่องบังคับกรอก
+        debugDiv: 'debugoutput'              // กำหนด div ที่ใช้แสดงข้อมูลจากฟอร์ม
+      });
+  }
+</script>
+
+
+<script type="text/JavaScript">
+
+      $(document).ready(function() {
+      var max      = 10; //maximum input boxes allowed
+      var container         = $(".wraper");  
+      var add      = document.getElementById("temp"); //Plus sign id
+      var x = 1; //input field count intially
+      $(add).click(function(e){         e.preventDefault();
+          if(x < max){ //maximum number of input field allowed
+              x++; //input field increment
+              $(container).append('<div><input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" \
+                 name="received-scholar"><input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" \
+                  name="received-year-scholar"><input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"><a href="#" \
+                  class="delete">delete</a></div>'); //adding new input field
+          }
+      });
+     
+      $(container).on("click",".delete", function(e){ //user click on remove text
+          e.preventDefault(); $(this).parent('div').remove(); x--;
+      })
+  });
+
+  $(document).ready(function() {
+      var max2      = 10; //maximum input boxes allowed
+      var container2         = $(".wraper2");  
+      var add2      = document.getElementById("temp2"); //Plus sign id
+      var x2 = 1; //input field count intially
+      $(add2).click(function(e){         e.preventDefault();
+          if(x2 < max2){ //maximum number of input field allowed
+              x2++; //input field increment
+              $(container2).append('<div> <div class="select"> \
+      <select name ="title-siblingthai">\
+        <option value="" disabled selected >กรุณาเลือก</option>\
+        <option value = "นาย" >นาย</option>\
+        <option value = "นางสาว" >นางสาว</option>\
+        <option value = "นาง" >นาง</option>\
+      </select>\
+     </div> \
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">\
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">\
+    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>\
+    <br>\
+    <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">\
+    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling"> \
+    <a href="#" class="delete">delete</a></div>'); //adding new input field
+          }
+      });
+     
+      $(container2).on("click",".delete", function(e){ //user click on remove text
+          e.preventDefault(); $(this).parent('div').remove(); x2--;
+      })
+  });
+  </script>
+
+<body onload="init()">
+  <div align = "center">
+  <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
+  </div>
+    <div class="container">
+    
+    
+    
+    {% csrf_token %}
+    <h1 align = 'center'><b><font size="5px" color="white"> กรอกประวัติสำหรับใช้งานระบบทุนการศึกษา </font></b></h1> 
+        
+    <div class="box">       
+
+      
+        <h5 class="title is-4"><font size="4px">อัพโหลดรูปภาพประจำตัว</h5> </font>
+        <figure class="is-flex is-align-items-center is-justify-content-center image is-128x128">
+          <span class = "is-size-6">
+            <img id="frame"class="is-rounded"  src="https://bulma.io/images/placeholders/128x128.png" >
+         </span>
+          </figure>
+
+        <br>
+        <div class= "columns">
+          <div class="file">
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume" id="resume" accept="image/*"  onchange="preview()" disabled>
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+            </label>
+        </div>
+        </div>
+       
+        <br>
+        <div class= "columns">
+            <div class="file">
+              <label class="file-label">
+                <input class="fileOther-input" type="file" name="resume" id="resume"   onchange="preview()">
+              </label>
+            </div>
+        </div>
+      
+
+      <h2 align = "right"><b><font face="Arial">อาจารย์ที่ปรึกษา</font></b></h2>
+      <div class="level-right">
+      <input class="resizedTextbox" class="input is-right" type="text"  placeholder="ชื่อ-สกุล"name="advisor_professor" value="{{checkin.sp_advisor_professor}}" disabled> 
+      </div>
+
+
+    <br>
+    <h2><b><font face="Arial">ประวัติส่วนตัว</font></b></h2>
+    <div class="select">
+        <select name ="title-thai" >
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{checkin.sp_title_th}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_title_th}}</option>
+          <option value = "นาย" disabled >นาย</option>
+          <option value = "นางสาว" disabled>นางสาว</option>
+        </select>
+      </div>
+
+
+
+      
+      <input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th" value="{{checkin.sp_firstname_th}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th"  value="{{checkin.sp_middlename_th}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th"  value="{{checkin.sp_lastname_th}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name ="std"  value="{{checkin.sp_std_code}}" disabled><br>
+      <br>
+    <div class="select" >
+        <select name ="title-eng">
+          <option value="" disabled selected >กรุณาเลือก</option>
+
+          <option value="{{checkin.sp_title_en}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_title_en}}</option>          
+          <option value = "Mr" disabled>Mr</option>
+          <option value = "Miss" disabled>Miss</option>
+        </select>
+      </div>
+    <input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng" value="{{checkin.sp_firstname_en}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng" value="{{checkin.sp_middlename_en}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="lastname" name = "lastname-eng" value="{{checkin.sp_lastname_en}}" disabled>
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name = "birthday" value="{{checkin.sp_date_of_birth}}" disabled><br>
+    <br>
+    <input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name = "major" value="{{checkin.sp_major}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name = "grade" value="{{checkin.sp_grade}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name = "address" value="{{checkin.sp_std_address}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name = "phone" value="{{checkin.sp_std_tel_no}}" disabled>
+    <hr>
+
+    <h2><b><font face="Arial">ประวัติครอบครัว - บิดา</font></b></h2>
+    <div class="select">
+      <select name ="title-dadthai">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_father_title}}" selected="selected" hidden="hidden"disabled>{{checkin.sp_father_title}}</option>
+        <option value = "นาย" disabled>นาย</option>
+        <option value = "นางสาว" disabled>นางสาว</option>
+        <option value = "นาง" disabled>นาง</option>
+      </select>
+     </div>  
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad" value="{{checkin.sp_father_firstname}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad" value="{{checkin.sp_father_middlename}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad" value="{{checkin.sp_father_lastname}}" disabled><br> 
+    <h2><b><font face="Arial">สถานะ</font></b></h2>
+    <div class="select">
+      <select name ="statuslife-dad">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_father_statuslife}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_father_statuslife}}</option>
+        <option value = "มีชีวิตอยู่" disabled>มีชีวิตอยู่</option>
+        <option value = "เสียชีวิต" disabled>เสียชีวิต</option>
+      </select>
+    </div> 
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad" value="{{checkin.sp_father_date_of_birth}}" disabled>
+    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad" value="{{checkin.sp_father_age}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad" value="{{checkin.sp_father_address}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad" value="{{checkin.sp_father_tel_no}}" disabled><br>
+    <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
+    <div class="select">
+      <select name ="status-married-dad">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_father_status_married}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_father_status_married}}</option>
+        <option value = "โสด" disabled>โสด</option>
+        <option value = "แต่งงาน" disabled>แต่งงาน</option>
+        <option value = "หย่าร้าง" disabled>หย่าร้าง</option>
+      </select>
+    </div>
+    <input class="resizedTextbox" class="input" type="text" placeholder="รายได้" name="Income-dad" value="{{checkin.sp_father_income}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad" value="{{checkin.sp_father_career}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad" value="{{checkin.sp_father_workplace}}" disabled>
+    <hr>
+
+    <h2><b><font face="Arial">ประวัติครอบครัว-มารดา</font></b></h2>
+    <div class="select">
+      <select name ="title-momthai">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_mother_title}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_mother_title}}</option>
+        <option value = "นาย" disabled>นาย</option>
+        <option value = "นางสาว" disabled>นางสาว</option>
+        <option value = "นาง" disabled>นาง</option>
+      </select>
+     </div>  
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom" value="{{checkin.sp_mother_firstname}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom" value="{{checkin.sp_mother_middlename}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom" value="{{checkin.sp_mother_lastname}}" disabled><br> 
+    <h2><b><font face="Arial">สถานะ</font></b></h2>
+    <div class="select">
+      <select name ="statuslife-mom">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_mother_statuslife}}" selected="selected" hidden="hidden">{{checkin.sp_mother_statuslife}}</option>
+        <option value = "มีชวิตอยู่" disabled>มีชีวิตอยู่</option>
+        <option value = "เสียชีวิต" disabled>เสียชีวิต</option>
+      </select>
+    </div> 
+    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom" value="{{checkin.sp_mother_address}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-mom" value="{{checkin.sp_mother_tel_no}}" disabled>
+    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom" value="{{checkin.sp_mother_date_of_birth}}" disabled>
+    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom" value="{{checkin.sp_mother_age}}" disabled><br>
+    <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
+    <div class="select">
+      <select name ="status-married-mom">
+        <option value="" disabled selected >กรุณาเลือก</option>
+        <option value="{{checkin.sp_mother_status_married}}" selected="selected" hidden="hidden">{{checkin.sp_mother_status_married}}</option>
+        <option value = "โสด" disabled>โสด</option>
+        <option value = "แต่งงาน" disabled>แต่งงาน</option>
+        <option value = "หย่าร้าง" disabled>หย่าร้าง</option>
+      </select>
+    </div>
+    <input class="resizedTextbox" class="input" type="text" placeholder="รายได้" name="Income-mom" value="{{checkin.sp_mother_income}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom" value="{{checkin.sp_mother_career}}" disabled>
+    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom" value="{{checkin.sp_mother_workplace}}" disabled>
+    <hr>
+
+    <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
+
+
+    <div class="wraper2">
+      {% for json_obj in json_bro %}
+      <div class="select">
+        <select name ="title-siblingthai">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{json_obj.title_sibling}}" selected="selected" hidden="hidden">{{checkin.sp_income_source}}</option>
+          <option value = "นาย" disabled>นาย</option>
+          <option value = "นางสาว" disabled>นางสาว</option>
+          <option value = "นาง" disabled>นาง</option>
+        </select>
+      </div> 
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling" value={{json_obj.title_sibling}}  disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling" value={{json_obj.middle_sibling}} disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling" value={{json_obj.lastname_sibling}} disabled><br>
+      <br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling" value={{json_obj.Tel_sibling}} disabled>
+      <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling" value={{json_obj.birthday_sibling}}  disabled>
+      <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling" value={{json_obj.age_sibling}}  disabled><br>
+      <br>
+      <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling" value={{json_obj.education_sibling}} disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling" value={{json_obj.career_sibling}} disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling" value={{json_obj.workplace_sibling}} disabled>
+
+      {% if forloop.first %}
+      <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button><br>
+      {%else%}
+      <a href="#" class="delete">delete</a><br>
+      {%endif%}
+      {%endfor%}
+    </div>
+
+    
+    <hr>
+
+    <h2><b><font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font></b></h2>
+    
+      <input class="resizedTextbox" class="input" type="text" placeholder="รายได้ต่อเดือนของนิสิต" name="moneyPerMonth" value="{{checkin.sp_income}}" disabled>
+      
+      <p>ได้รับค่าใช้จ่ายจาก</p>
+      <div class="select">
+        <select name ="patron">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value="{{checkin.sp_income_source}}" selected="selected" hidden="hidden">{{checkin.sp_income_source}}</option>
+          <option value = "บิดา" disabled>บิดา</option>
+          <option value = "มารดา" disabled>มารดา</option>
+          <option value = "ผู้อุปการะ" disabled>ผู้อุปการะ</option>
+          <option value = "อื่นๆ" disabled>อื่นๆ</option>
+        </select>
+      </div>
+      <br>
+      <input class="resizedTextbox2" class="input" type="text" placeholder="ในกรณีที่ได้รับค่าใช้จ่ายผู้อุปการะ ผู้อุปการะนั้นเกี่ยวข้องเป็น" name="status-patron" value="{{checkin.sp_patron_relation}}" disabled> 
+      <input class="resizedTextbox" class="input" type="text" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน" name ="NumOfChild-patron" value="{{checkin.sp_child_in_the_patron}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron" value="{{checkin.sp_patron_career}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ" name="workplace-patron" value="{{checkin.sp_patron_workplace}}" disabled>
+      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron" value="{{checkin.sp_patron_tel_no}}" disabled><br>
+      <p>ทุนกู้ยืมปัจจุบันของนิสิต</p>
+      <div class="select" >
+        <select name ="studenloan">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value = "{{checkin.sp_loan}}" selected="selected" hidden="hidden" disabled>{{checkin.sp_loan}}</option>
+          <option value = "กรอ" disabled>กรอ</option>
+          <option value = "กยศ" disabled>กยศ</option>
+          <option value = "ไม่ได้กู้" disabled>ไม่ได้กู้</option>
+        </select>
+      </div>
+      <br>
+      <br><p><b><font face="Arial">ผู้สมัครเคยทำงานพิเศษระหว่างหยุดเรียน/ขณะเรียน</font></b></p>
+      <label><b><font face="Arial">เคยทำงานพิเศษไหม</font></b></label>
+      <div class="select" >
+        <select name ="pastime">
+          <option value="" disabled selected >กรุณาเลือก</option>
+          <option value = "{{checkin.sp_parttime}}" selected="selected" hidden="hidden" disabled >{{checkin.sp_parttime}}
+          <option value = "เคย" disabled>เคย</option>
+          <option value = "ไม่เคย" disabled>ไม่เคย</option>
+        </select>
+      </div>      
+      <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime" value="{{checkin.sp_parttime_type}}" disabled>   
+      <input class="resizedTextbox" class="input" type="text" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income" value="{{checkin.sp_parttime_income}}" disabled>
+      <br><br>
+
+
+      <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
+      
+       <div class="wraper">
+        {% for json_obj in json %}
+       
+        {% if forloop.first %}
+        <div>
+          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}" disabled>
+          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}" disabled>
+          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{json_obj.prize}}" disabled>
+          <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อทุน </i> </button>
+        </div>
+        {%else%}
+    
+        <div>
+          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}" disabled>
+          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}" disabled>
+          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{json_obj.prize}}" disabled> 
+          <a href="#" class="delete">delete</a>
+        </div>
+        {%endif%}
+
+        {%endfor%}
+       
+    
+        <div>
+          
+       </div>
+     </div>
+ 
+
+    <script>
+    function preview() {
+        frame.src=URL.createObjectURL(event.target.files[0]);
+    }
+    </script>
+          <div class="level-item has-text-centered">
+            <div class="columns" > 
+              <div class="column">
+                <a href="/viewHome/"><input type="submit" value="ยืนยัน" class="button is-primary"></a>
+              </div>
+              <div class = "column">
+                <a href="/home"><input value="ข้าม" class="button is-warning"></a>
+              </div>
+          </div>
+</body>
+</html>

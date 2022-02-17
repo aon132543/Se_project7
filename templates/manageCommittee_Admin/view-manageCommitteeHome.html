@@ -1,7 +1,8 @@
-<!--หน้ารายชื่อทุนที่คณะกรรมการท่านนั้นทำการสอบสัมภาษณ์-->
 {% extends 'Menubar-Template.html' %}
 {% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'css/card.css' %}?{% now "U" %}" />
+
 
 {% for user_obj in users_obj %}
     <font size="5">
@@ -15,11 +16,18 @@
 <font size="4">
     <form action="/viewManageCommitteeHome/{{user_id}}" method="POST" align='left'>
         {% csrf_token %}
-        {% for scholar in scholars %}
+
+        {% for key1,value1 in json.items %}
+            {% if value1 %}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="checkbox" name="idScholar" value="{{scholar.id}}">
-            <label for="{{scholar.si_name}}">{{scholar.si_name}}</label><br>
-        {% endfor %}
+                <input type="checkbox" name="idScholar" value="{{key1.1}}" checked>    
+                <label for="{{key1.0}}">{{key1.0}}</label><br>
+            {%else%}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="checkbox" name="idScholar" value="{{key1.1}}">    
+                <label for="{{key1.0}}">{{key1.0}}</label><br>
+            {%endif%}
+        {%endfor%}
 
         <input type="submit" value="ยืนยัน" class="btn btn-primary">
     </form> 
