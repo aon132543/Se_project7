@@ -54,15 +54,20 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
         return str(self.si_name)
     
 
-class add_commit(models.Model):
+class add_commit(models.Model):     #Database เพิ่มรายชื่อกรรมการ
     ac_email	=  models.CharField(max_length=256)
     ac_firstname =  models.CharField(max_length=256)
     ac_lastname = models.CharField(max_length=256)
+    
     def __str__(self):
         return str(self.ac_firstname)
 
+class add_scholar_Commit(models.Model):     #Database เพิ่มทุนให้กรรมการ
+    id_commit = models.ForeignKey(User, on_delete=models.CASCADE) #id ของกรรมการ
+    Scholar_name = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ของทุน
+    def __str__(self):
+        return str(str(self.id_commit)+" เข้าถึงทุน"+str(self.Scholar_name))
 
-    
     
 class Scholar_weight_score(models.Model): #สร้างแบบฟอร์มการให้คะแนนสัมภาษณ์
     sws_si_id = models.OneToOneField(Scholar_info,on_delete=models.CASCADE)
@@ -88,7 +93,6 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_firstname_th	= models.CharField(max_length=64,null=True) #	Firstname Thai
     sp_middlename_th = models.CharField(max_length=64,null=True)	#Middlename Thai
     sp_lastname_th = models.CharField(max_length=64,null=True)	#Lastname Thai
-    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100)	#	path to avatar
     sp_date_of_birth = 	models.DateField(default=timezone.now) #date of birth
     sp_major = models.CharField(max_length=4,null=True) #major
     sp_grade = models.CharField(max_length=4,null=True) #grade
@@ -125,6 +129,8 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_mother_career = models.CharField(max_length=64,null=True) #อาชีพ
     sp_mother_workplace = models.CharField(max_length=128,null=True)  #สถานที่ประกอบการ
     sp_mother_tel_no = models.CharField(max_length=10,null=True) #Tel mom
+    
+    #พี่น้อง
     sp_bro_n_sis = models.JSONField(null=True) #ชื่อพี่น้องการศึกษาอาชีพสถานที่ประกอบการ
 
     #เกี่ยวกับนิสิตและผู้ปกครอง
@@ -141,9 +147,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_parttime_type = models.CharField(max_length=128,null=True)	#parttime type
 
     #ทุนที่เคยได้รับ
-    sp_received_scholar = models.CharField(max_length=128,null=True) #ทุนการศึกษา
-    sp_year_received_scholar = models.CharField(max_length=4,null=True) #ปีการศึกษา
-    sp_money_received_scholar = models.IntegerField(blank=True,null=True) #มูลค่าของทุนที่ได้รับ
+    sp_json_scholar = models.JSONField(null=True)
 
     #เขียนรายละเอียดเพิ่มเติม
     sp_report = models.TextField(null=True) #detail
@@ -156,3 +160,21 @@ class File_Models(models.Model):
     fm_upload_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     fm_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE,null=True)
     fm_file = PrivateFileField("File")
+
+class Scholar_app(models.Model):
+    sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
+    sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
+    sa_sp_id =	models.ForeignKey(Scholar_profile,on_delete=models.CASCADE) #id นิสิต
+    sa_status =	models.IntegerField()	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
+    sa_score = models.IntegerField(blank=True) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
+    sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
+    sa_path_to_pdf = PrivateFileField("File") #ไฟล์ข้อมูลเพิ่มเติม
+    def __str__(self):
+        return str(self.sa_userid)
+    
+class avatar_profile (models.Model):
+    sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 
+    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100,default="static/images/noimg.png")	#	path to avatar
+
+    def __str__(self):
+        return str(self.sa_userid)

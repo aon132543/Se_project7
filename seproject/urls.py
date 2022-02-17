@@ -47,6 +47,11 @@ urlpatterns = [
     path('scholarWeightScore/<int:id_info>',views.viewWightScore,name="scholarWeightScore"), # แบบฟอร์มการสัมภาษณ์(admin) 2
     path('profileHistoryNisit',views.profileHistoryNisit,name="profileHistoryNisit"),# แบบฟอร์มของนิสิตสำหรับเข้าครั้งแรก
     path('editHistoryNisit',views.editHistoryNisit,name="editHistoryNisit"),  #แก้ไขข้อมูลแบบฟอร์มของนิสิต
+    path('statusNisit',views.statusNisit,name="statusNisit"),  #ประวัติคำร้องนิสิต
+    path('checkInfo/<int:user_id>',views.checkInfo,name="checkInfo"),  #ตรวจสอบข้อมูลก่อนสมัครทุน
+    path('interview',views.interview,name="interview"), #สัมภาษณ์
+    path('historyGetScholar',views.historyGetScholar,name="historyGetScholar"), #ประวัติรายชื่อผู้ได้รับทุน
+    path('changeprofile',views.changeprofile,name="changeprofile")
     ]
 
 urlpatterns += [
