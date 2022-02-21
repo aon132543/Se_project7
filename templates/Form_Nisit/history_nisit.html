@@ -11,6 +11,7 @@
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     charset="utf-8"
     ></script>
+    <link rel="stylesheet" href="{% static 'css/image.css' %}?{% now " U" %}" />
 </head>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
@@ -106,6 +107,31 @@
     })
     });
 </script>
+<script type="text/JavaScript">
+  $(document).ready(function() {
+
+  var readURL = function(input) {
+      if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              $('.profile-pic').attr('src', e.target.result);
+          }
+  
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+ 
+  $(".file-upload").on('change', function(){
+      readURL(this);
+  });
+  
+  $(".upload-button").on('click', function() {
+     $(".file-upload").click();
+  });
+});
+</script>
+
 
 <body>
   <div align = "center">
@@ -119,33 +145,20 @@
     <h1 align = 'center'><b><font size="5px" color="white"> กรอกประวัติสำหรับใช้งานระบบทุนการศึกษา </font></b></h1> 
         
     <div class="box">
-        
-  
-
-      
-        <h5 class="title is-4"><font size="4px">อัพโหลดรูปภาพประจำตัว</h5> </font>
-        <figure class="is-flex is-align-items-center is-justify-content-center image is-128x128">
-          <span class = "is-size-6">
-            <img id="frame"class="is-rounded"  src="https://bulma.io/images/placeholders/128x128.png" >
-         </span>
-          </figure>
-
-        <br>
-        <div class= "columns">
-          <div class="file">
-            <label class="file-label">
-              <input class="file-input" type="file" name="resume" id="resume" accept="image/*"  onchange="preview()" >
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label">
-                  Choose a file…
-                </span>
-              </span>
-            </label>
+ 
+      <div class="box">
+        <h6 class="title is-6 has-text-centered">รูปประจำตัว </h6>
+        <div class="avatar-wrapper">
+          
+          <img class="profile-pic" src="{{pic.sp_path_to_avatar.url}}" />
+          <div class="upload-button">
+            <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
           </div>
+          <input class="file-upload" type="file" accept="image/*" id="resume" name="resume" />
         </div>
+        <span class="tag is-warning"><h6 class="title is-6 has-text-centered"><i>กรุณาอัพโหลดภาพประจำตัว</i></h6></span>
+
+      </div>
       
       
 

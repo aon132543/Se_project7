@@ -12,6 +12,7 @@ import math
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from datetime import date
+from django.utils.datastructures import MultiValueDictKeyError
 
 import json as js
 
@@ -280,12 +281,18 @@ def editInfomation(request,edit_id):       #หน้าแก้ไขข่า
 def addEditInfomation(request):
     redirect('InformationHome')
 
-def viewHome(request,home_id):
+def viewHome(request,home_id,user_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    check = False
+    if Scholar_app.objects.filter(sa_si_id = home_id,sa_userid=user_obj).exists()==False:
+        check = True
+
     scholar = Scholar_info.objects.filter(id=home_id)
     datajson  = Scholar_info.objects.get(id=home_id)
     datajson = datajson.si_source_name
     
-    return render(request,'apply_info/view-home.html',{'scholars': scholar,'datajson':datajson})
+    return render(request,'apply_info/view-home.html',{'scholars': scholar,'datajson':datajson,'check':check})
 
 def manageCommitteeHome(request):   #หน้าแสดงรายชื่อคณะกรรมการทั้งหมด
     news = User.objects.filter(is_staff=True) #ดึงฐานdatabase
@@ -347,7 +354,7 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
         else:
             dic[str(scholar[i].si_name),int(scholar[i].id)]=False
 
-    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'scholars': scholar ,'users_obj':users_obj,'user_id':user_obj_id,'scholar_n':scholar_n,'json':dic})
+    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'users_obj':users_obj,'user_id':user_obj_id,'json':dic})
 
 def addCommittee(request):
     if request.method == 'POST':
@@ -356,7 +363,7 @@ def addCommittee(request):
         email = request.POST['email']
         print(firstname,lastname,email)
 
-        #สิ่งที่ต้องแก้ คือ email ยังไม่รู้ว่าจะเช็คยังไงว่าเขาเป็นกรรมการไหม
+        #สิ่งที่ต้องแก้ คือ email ยังไม่รู้ว่าจะเช็คยังไงว่าเขาเป็นกรรมการไหม'tuple' object has no attribute 'get'
         news_obj = add_commit.objects.create(
             ac_email = email,
             ac_firstname = firstname,
@@ -653,6 +660,7 @@ def dict1(sample_dict, key, list_of_values):
 def editHistoryNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
+    
 
     if request.method == 'POST':
         #ของนิสิต
@@ -812,7 +820,7 @@ def editHistoryNisit(request):
             sp_major = major,
             sp_grade = grade,
             sp_path_to_pdf_json	= {"key": "value"}, ##json --> pdf,
-            sp_std_address = {"address": "Saraburi"}, ##json --> address,
+            sp_std_address = address, ##json --> address,
             sp_std_tel_no = phone,
              #ของบิดา
             sp_father_title = title_dad,
@@ -826,7 +834,7 @@ def editHistoryNisit(request):
             sp_father_income = Income_dad,
             sp_father_career = career_dad,
             sp_father_workplace = workplace_dad,
-            sp_father_address = {"address": "Saraburi"}, ##json --> address_dad,
+            sp_father_address = address_dad, ##json --> address_dad,
             sp_father_tel_no = Tel_dad,
             #ของมารดา
             sp_mother_title = title_mom,
@@ -840,7 +848,7 @@ def editHistoryNisit(request):
             sp_mother_income = Income_mom,
             sp_mother_career = career_mom,
             sp_mother_workplace = workplace_mom,
-            sp_mother_address = {"address": "Saraburi"}, ##json --> address_mom,
+            sp_mother_address = address_mom, ##json --> address_mom,
             sp_mother_tel_no = Tel_mom,
             #ของพี่น้อง
             sp_bro_n_sis = lst_bro, ##json name,educate level,career,workplace
@@ -872,8 +880,10 @@ def editHistoryNisit(request):
     json_bro = edit.sp_bro_n_sis
     #print(json)
     
+    data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+    data2 = data2[0]
 
-    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro})    
+    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro,'pic':data2})    
     
 def statusNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
@@ -881,15 +891,254 @@ def statusNisit(request):
     states = Scholar_app.objects.filter(sa_userid = user_obj).select_related('sa_userid','sa_si_id','sa_sp_id')
     return render(request,'Status_Page/statusNisit.html',{'states':states})
 
-def checkInfo(request,user_id):
-    checkin = Scholar_profile.objects.filter(sp_userid = user_id)
-    checkin = checkin[0]
-    json = checkin.sp_json_scholar
-    json_bro = checkin.sp_bro_n_sis
-    print(user_id)
-    return render(request,'apply_info/checkInfo.html',{'checkin':checkin,'json':json,'json_bro':json_bro})
+def checkInfo(request,user_id,info_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    info_obj = Scholar_info.objects.filter(id=info_id)
+    info_obj = info_obj[0]
+    try:                
+        if request.method == 'POST':
+            
+                    #ของนิสิต
+                    advisor_professor = request.POST['advisor_professor'] #อาจารย์ที่ปรึกษา
+                    title_thai = request.POST['title-thai']
+                    if title_thai == "กรุณาเลือก":
+                        title_thai = ""
+                    firstname_th = request.POST['firstname-th']
+                    middlename_th = request.POST['middlename-th']
+                    if middlename_th == "":
+                        middlename_th = "-"
+                    lastname_th = request.POST['lastname-th']
+                    std = request.POST['std']  
+                    title_eng = request.POST['title-eng']
+                    if title_eng == "กรุณาเลือก":
+                        title_eng = ""
+                    firstname_eng = request.POST['firstname-eng']
+                    middlename_eng = request.POST['middlename-eng']
+                    if middlename_eng == "":
+                        middlename_eng = "-"
+                    lastname_eng = request.POST['lastname-eng']
+                    ## email = request.POST['email']
+                    birthday = request.POST['birthday']
+                    # pdf = request.POST['pdf']
+                    ## factor = request.POST['factor']
+                    major = request.POST['major']
+                    grade = request.POST['grade']
+                    address = request.POST['address']
+                    phone = request.POST['phone']
+                    
+                    #ของบิดา
+                    title_dad = request.POST['title-dadthai'] ##title_dad
+                    if title_dad=="กรุณาเลือก":
+                        title_dad=""
+                    firstname_dad = request.POST['firstname-dad']
+                    middle_dad = request.POST['middlename-dad']
+                    if middle_dad == "":
+                        middle_dad = "-"
+                    lastname_dad = request.POST['lastname-dad']
+                    statuslife_dad = request.POST['statuslife-dad']
+                    if statuslife_dad == "กรุณาเลือก":
+                        statuslife_dad = ""
+                    address_dad = request.POST['address-dad']
+                    Tel_dad = request.POST['Tel-dad']
+                    birthday_dad =  request.POST['birthday-dad']
+                    age_dad =  request.POST['age-dad']
+                    status_married_dad =  request.POST['status-married-dad']
+                    if status_married_dad == "กรุณาเลือก":
+                        status_married_dad = ""
+                    Income_dad =  request.POST['Income-dad']
+                    career_dad =  request.POST['career-dad']
+                    workplace_dad = request.POST['workplace-dad'] 
+                    
+                    # ของมารดา
+                    title_mom = request.POST['title-momthai'] ##title_mom
+                    if title_mom == "กรุณาเลือก":
+                        title_mom = ""
+                    firstname_mom = request.POST['firstname-mom']
+                    middle_mom = request.POST['middlename-mom']
+                    if middle_mom =="":
+                        middle_mom = "-"
+                    lastname_mom = request.POST['lastname-mom']
+                    statuslife_mom = request.POST['statuslife-mom']
+                    if statuslife_mom == "กรุณาเลือก":
+                        statuslife_mom = ""
+                    address_mom = request.POST['address-mom']
+                    Tel_mom = request.POST['Tel-mom']
+                    birthday_mom = request.POST['birthday-mom']
+                    age_mom = request.POST['age-mom']
+                    status_married_mom = request.POST['status-married-mom']
+                    if status_married_mom == "กรุณาเลือก":
+                        status_married_mom = ""
+                    Income_mom = request.POST['Income-mom']
+                    career_mom = request.POST['career-mom']
+                    workplace_mom = request.POST['workplace-mom']
 
+                    #ของพี่น้อง
+                    title_sibling = request.POST.getlist('title-siblingthai')  ##title คำนำหน้า
+                    if title_sibling == "กรุณาเลือก":
+                        title_sibling = ""
+                    firstname_sibling = request.POST.getlist('firstname-sibling')
+                    middle_sibling = request.POST.getlist('middlename-sibling') ##ชื่อกลาง
+                    if middle_sibling =="":
+                        middle_sibling = "-"
+                    lastname_sibling= request.POST.getlist('lastname-sibling')
+                    Tel_sibling = request.POST.getlist('Tel-sibling')
+                    birthday_sibling = request.POST.getlist('birthday-sibling')
+                    age_sibling = request.POST.getlist('age-sibling')
+                    education_sibling = request.POST.getlist('education-sibling')
+                    career_sibling = request.POST.getlist('career-sibling')
+                    workplace_sibling = request.POST.getlist('workplace-sibling')
+                    lst_bro=[]
+                    for i in range(len(firstname_sibling)):
+                        dic = {}
+                        dic['title_sibling']=title_sibling[i]
+                        dic['firstname_sibling']=firstname_sibling[i]
+                        dic['middle_sibling'] = middle_sibling[i]
+                        dic['lastname_sibling'] = lastname_sibling[i]
+                        dic['Tel_sibling'] = Tel_sibling[i]
+                        dic['birthday_sibling'] = birthday_sibling[i]
+                        dic['age_sibling'] = age_sibling[i]
+                        dic['education_sibling'] = education_sibling[i]
+                        dic['career_sibling'] = career_sibling[i]
+                        dic['workplace_sibling'] = workplace_sibling[i]
+                        lst_bro.append(dic)
+                    
+                    #รายละเอียดราบได้ของผู้สมัครทุน
+                    moneyPerMonth = request.POST['moneyPerMonth']   #รายได้ต่อเดือน
+                    workplace_patron = request.POST['workplace-patron'] #ผู้ปกครองทำงานที่ไหน
+                    patron = request.POST['patron'] #ได้รับค่าใช้จ่ายจากใคร
+                    if patron == "กรุณาเลือก":
+                        patron = ""
+                    NumOfChild_patron = request.POST['NumOfChild-patron']   #ผู้ปกครองมีบุตรในอุปการะกี่คน
+                    studenloan = request.POST['studenloan'] #กู้ทุนมาไหม
+                    if studenloan == "กรุณาเลือก":
+                        studenloan = ""
+                    pastime = request.POST['pastime']   #เคยทำงานพิเศษไหม
+                    if pastime == "กรุณาเลือก":
+                        pastime = ""
+                    status_patron = request.POST['status-patron']   #ผู้ปกครองเกี่ยวข้องเป็นอะไร
+                    # #ไม่เอาแล้ว เอาเป็นเดือนไปเลยทีเดียว wages_pasttime = request.POST['wages-pasttime'] #นิสิตได้เงินต่อเดือนหรือสัปดาห์
+                    career_income = request.POST['career-income'] #รายได้จากงานนิสิต
+                    Type_address_pastime = request.POST['Type-pastime']    #ประเภทงานที่ทำและสถานที่ที่นิสิตทำงานพาร์ททาม
+                    career = request.POST['career-patron']   #อาชีพของผู้ปกครอง
+                    Tel_patron = request.POST['Tel-patron'] #เบอร์มือถือของผู้ปกครอง
+                    
+                    #ทุนการศึกษาของนิสิต
+                    received_scholar =  request.POST.getlist('received-scholar') #ชื่อทุนที่เคยได้รับ
+                    received_year_scholar = request.POST.getlist('received-year-scholar')   #ปีที่ได้รับทุน
+                    prize = request.POST.getlist('prize')   #จำนวนเงินที่ได้รับ
+                    lst=[]
+                    for i in range(len(received_scholar)):
+                        dic = {}
+                        dic['name']=received_scholar[i]
+                        dic['year']=received_year_scholar[i]
+                        dic['prize'] = prize[i]
+                        lst.append(dic)
+                        
+                    if prize=="":
+                        prize=0
 
+                    #รายละเอียดเพิ่มเติม
+                    # details = request.POST['details']   #เขียนรายละเอียดต่างๆ
+                        
+                    
+                    data = Scholar_app.objects.create(
+                        #ของนิสิต
+                        sa_userid = user_obj,
+                        sa_si_id = info_obj, #id ทุน
+                        sa_status =	11,	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
+                        # sa_path_to_pdf = PrivateFileField("File") ไฟล์ข้อมูลเพิ่มเติม
+                        
+                        sa_advisor_professor = advisor_professor,
+                        sa_title_en =title_eng, 
+                        sa_firstname_en = firstname_eng,
+                        sa_middlename_en = middlename_eng,
+                        sa_lastname_en = lastname_eng,
+                        sa_std_code	= std,
+                        sa_title_th	= title_thai,
+                        sa_firstname_th	= firstname_th,
+                        sa_middlename_th = middlename_th,
+                        sa_lastname_th = lastname_th,
+                        ## sp_path_to_avatar = 	
+                        sa_date_of_birth = birthday,	
+                        sa_major = major,
+                        sa_grade = grade,
+                        sa_path_to_pdf_json	= {"key": "value"}, ##json --> pdf,
+                        sa_std_address = address, ##json --> address,
+                        sa_std_tel_no = phone,
+                        #ของบิดา
+                        sa_father_title = title_dad,
+                        sa_father_firstname	= firstname_dad,
+                        sa_father_middlename = middle_dad,
+                        sa_father_lastname = lastname_dad,
+                        sa_father_date_of_birth = birthday_dad,
+                        sa_father_age = age_dad,
+                        sa_father_status_married = status_married_dad,
+                        sa_father_statuslife = statuslife_dad,
+                        sa_father_income = Income_dad,
+                        sa_father_career = career_dad,
+                        sa_father_workplace = workplace_dad,
+                        sa_father_address = address_dad, ##json --> address_dad,
+                        sa_father_tel_no = Tel_dad,
+                        #ของมารดา
+                        sa_mother_title = title_mom,
+                        sa_mother_firstname	= firstname_mom,
+                        sa_mother_middlename = middle_mom,
+                        sa_mother_lastname = lastname_mom,
+                        sa_mother_date_of_birth = birthday_mom,
+                        sa_mother_age = age_mom,
+                        sa_mother_status_married = status_married_mom,
+                        sa_mother_statuslife = statuslife_mom,
+                        sa_mother_income = Income_mom,
+                        sa_mother_career = career_mom,
+                        sa_mother_workplace = workplace_mom,
+                        sa_mother_address = address_mom, ##json --> address_mom,
+                        sa_mother_tel_no = Tel_mom,
+                        #ของพี่น้อง
+                        sa_bro_n_sis = lst_bro, ##json name,educate level,career,workplace
+                        #รายละเอียดราบได้ของผู้สมัครทุน
+                        sa_loan = studenloan,
+                        sa_income = moneyPerMonth,
+                        sa_income_source = patron,
+                        sa_patron_relation = status_patron,
+                        sa_patron_career = career,
+                        sa_patron_tel_no = Tel_patron,
+                        sa_patron_workplace = workplace_patron,
+                        sa_child_in_the_patron = NumOfChild_patron,
+                        sa_parttime	= pastime,
+                        sa_parttime_income = career_income,
+                        sa_parttime_type = Type_address_pastime,
+
+                        sa_json_scholar = lst,
+                        # sp_report = details,
+                    )
+                    data.save
+                    file =  File_Models.objects.create(fm_upload_by=user_obj,
+                                          fm_Scholar=info_obj
+                        
+                    )
+                    if len(request.FILES)!=0:
+                        if request.FILES.get('myPdf',False):
+                            data3 = File_Models.objects.get(fm_upload_by=user_obj)
+                            data3.fm_file = request.FILES.get('myPdf')
+                            data3.save()
+                        
+                    return redirect('/viewHome/'+str(info_id)+"/"+str(user_id))
+                
+        checkin = Scholar_profile.objects.filter(sp_userid = user_obj)
+        checkin = checkin[0]
+        json = checkin.sp_json_scholar
+        json_bro = checkin.sp_bro_n_sis
+        data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+        data2 = data2[0]
+        
+        
+        return render(request,'apply_info/checkInfo.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
+    except : 
+        messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
+        return redirect('editHistoryNisit')
+            
+    
 def interview(request):
     user_obj = User.objects.get(id=request.user.id)
     scholars = add_scholar_Commit.objects.filter(id_commit = user_obj)
@@ -902,19 +1151,22 @@ def interview(request):
         scholars_list_obj.append(Scholar_info.objects.filter(id=i))
     return render(request,'Committee/news_committee.html',{'scholars':scholars_list_obj})
 
-def historyGetScholar(request): 
-    
+def historyGetScholar(request):  
     if request.method == 'POST':
         IDStudent = request.POST['studentID']   #เลขรหัสนิสิต
         scholarType = request.POST['scholarType']   #ทุนภายใน/นอก/ผสม
         scholarName = request.POST['scholarName']   #ชื่อทุน
         year = request.POST['year']  #ปีของทุน
         print("abcdefggggggggggggg")
-        # if IDStudent != NULL:
-        #     print(IDStudent)
-    
+        if IDStudent != None:
+            print(IDStudent)
     return render(request,'historyGetScholar_addmin/historyGetScholar.html')
 
-def changeprofile (request):
-    return render(request,'settings.html')
 
+def firstAppilcationAdmin(request):
+    news = Scholar_info.objects.all()
+    return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': news})
+    
+def secondAppilcationAdmin(request,home_id):
+    scholars = Scholar_info.objects.filter(id=home_id)
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars})

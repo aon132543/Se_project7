@@ -5,7 +5,7 @@
 {% for scholar in scholars %}
 
 <script>
-    function call(id){
+    function call(id,info_id){
   
       Swal.fire({
         "title":"ต้องการสมัครทุนนี้ใช่หรือไม่ ?  ",
@@ -16,7 +16,7 @@
       })
       .then(function (result){
         if (result.isConfirmed){
-          window.location.href="/checkInfo/"+id
+          window.location.href="/checkInfo/"+id+"/"+info_id
         }
       })
   
@@ -54,8 +54,11 @@
         <br><a href="{{scholar.si_path_to_pdf.url}}"> <button class="button is-danger is-medium is-rounded is-fullwidth "><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a><br>
         {%endif%}
 
-        <button class="button is-success is-medium is-rounded is-fullwidth" onclick="call({{request.user.id}})"> สมัครทุน </i> </button>
-        
+        {% if check %}
+        <button class="button is-success is-medium is-rounded is-fullwidth" onclick="call({{request.user.id}},{{scholar.id}})"> สมัครทุน </i> </button>
+        {% else %}
+        <button class="button is-success is-medium is-rounded is-fullwidth" onclick=""> แก้ไขข้อมูลสมัครทุน </i> </button>
+        {% endif %}
     <h2>
 </div>
 </article>

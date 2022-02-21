@@ -12,7 +12,7 @@ import os
 
 
 
-class Scholar_news (models.Model):          #Database สำหรับข่าวประชาสัมพันธืท้งหมด
+class Scholar_news (models.Model):          #Database สำหรับข่าวประชาสัมพันธ์ท้งหมด
     sn_header = models.CharField(max_length=256)
     sn_description = models.TextField() #text
     sn_expire_date = models.DateField() #วันที่
@@ -164,17 +164,87 @@ class File_Models(models.Model):
 class Scholar_app(models.Model):
     sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
     sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
-    sa_sp_id =	models.ForeignKey(Scholar_profile,on_delete=models.CASCADE) #id นิสิต
-    sa_status =	models.IntegerField()	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
-    sa_score = models.IntegerField(blank=True) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
+    sa_status =	models.IntegerField(default=11)	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
+    sa_score = models.IntegerField() #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
     sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
     sa_path_to_pdf = PrivateFileField("File") #ไฟล์ข้อมูลเพิ่มเติม
+
+    #ข้อมูลส่วนตัว
+    sa_advisor_professor =  models.CharField(max_length=64,) #อาจารย์ที่ปรึกษา
+    sa_title_en	= models.CharField(max_length=10,) #Title English
+    sa_firstname_en	= models.CharField(max_length=64,) #	Firstname English
+    sa_middlename_en = models.CharField(max_length=64,)	#Middlename English
+    sa_lastname_en = models.CharField(max_length=64,) #lastname English
+    sa_std_code	= models.CharField(max_length=10,) #Student ID
+    sa_title_th	= models.CharField(max_length=10,) #Title Thai
+    sa_firstname_th	= models.CharField(max_length=64,) #	Firstname Thai
+    sa_middlename_th = models.CharField(max_length=64,)	#Middlename Thai
+    sa_lastname_th = models.CharField(max_length=64,)	#Lastname Thai
+    sa_date_of_birth = 	models.DateField(default=timezone.now) #date of birth
+    sa_major = models.CharField(max_length=4,) #major
+    sa_grade = models.CharField(max_length=4,) #grade
+    sa_path_to_pdf_json	= models.JSONField() #path to pdf file in json 
+    sa_std_address = models.JSONField() #address
+    sa_std_tel_no = models.CharField(max_length=10,) #tel
+
+    #บิดา
+    sa_father_title = models.CharField(max_length=10,)    #คำนำหน้า
+    sa_father_firstname	= models.CharField(max_length=64,) #firstname dad
+    sa_father_middlename = models.CharField(max_length=64,) #middlename dad 
+    sa_father_lastname = models.CharField(max_length=64,) #lastname dad
+    sa_father_date_of_birth = models.DateField(default=timezone.now)    #วันเกิด
+    sa_father_age = models.IntegerField()   #อายุ
+    sa_father_status_married = models.CharField(max_length=64,)  #สถานะสมรส
+    sa_father_statuslife = models.CharField(max_length=64,)  #สถานะการมีชีวิตอยู่
+    sa_father_income = models.IntegerField() #รายได้ต่อเดือน
+    sa_father_career = models.CharField(max_length=64,)#อาชีพ
+    sa_father_workplace = models.CharField(max_length=128,)#สถานที่ประกอบการ
+    sa_father_address = models.JSONField() #address dad
+    sa_father_tel_no = models.CharField(max_length=10,) #Tel dad
+
+    #มารดา
+    sa_mother_title = models.CharField(max_length=10,)    #คำนำหน้า
+    sa_mother_firstname	= models.CharField(max_length=64,) #firstname mom
+    sa_mother_middlename = models.CharField(max_length=64,) #middlename mom
+    sa_mother_lastname = models.CharField(max_length=64,) #lastname mom
+    sa_mother_address = models.JSONField() #address mom
+    sa_mother_date_of_birth = models.DateField(default=timezone.now)#วันเกิด
+    sa_mother_age = models.IntegerField()   #อายุ
+    sa_mother_status_married = models.CharField(max_length=64,) #สถานะสมรส
+    sa_mother_statuslife = models.CharField(max_length=64,)  #สถานะการมีชีวิตอยู่
+    sa_mother_income = models.IntegerField() #รายได้ต่อเดือน
+    sa_mother_career = models.CharField(max_length=64,) #อาชีพ
+    sa_mother_workplace = models.CharField(max_length=128,)  #สถานที่ประกอบการ
+    sa_mother_tel_no = models.CharField(max_length=10,) #Tel mom
+    
+    #พี่น้อง
+    sa_bro_n_sis = models.JSONField() #ชื่อพี่น้องการศึกษาอาชีพสถานที่ประกอบการ
+
+    #เกี่ยวกับนิสิตและผู้ปกครอง
+    sa_loan = models.CharField(max_length=32,) #which are you loan?(กรอ,กยศ,ไม่เคยกู้)
+    sa_income = models.IntegerField() #moneyPerMonth 
+    sa_income_source = models.CharField(max_length=32,) #income source
+    sa_patron_relation = models.CharField(max_length=32,) #patron relation
+    sa_patron_career = models.CharField(max_length=64,) #patron career
+    sa_patron_tel_no = models.CharField(max_length=64,) #patron tel
+    sa_patron_workplace = models.JSONField() #patron workplace
+    sa_child_in_the_patron = models.IntegerField() #child in the patron
+    sa_parttime	= models.CharField(max_length=10,) #Have you ever worked part time?
+    sa_parttime_income = models.IntegerField() #parttime income
+    sa_parttime_type = models.CharField(max_length=128,)	#parttime type
+
+    #ทุนที่เคยได้รับ
+    sa_json_scholar = models.JSONField()
+
+    #เขียนรายละเอียดเพิ่มเติม
+    sa_report = models.TextField() #detail
+
     def __str__(self):
         return str(self.sa_userid)
     
 class avatar_profile (models.Model):
     sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 
-    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100,default="static/images/noimg.png")	#	path to avatar
+    sp_path_to_avatar = ResizedImageField(upload_to='uploads/avatar',size=[300, 300], crop=['middle', 'center'],quality=100,default="noimg.png")	#	path to avatar
 
     def __str__(self):
         return str(self.sa_userid)

@@ -1,0 +1,23 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+{% for scholar in scholars %}
+
+  <article class="message is-success">
+    <div class="message-header">
+      <p>{{scholar.si_name}}</p>
+      <i class="far fa-newspaper"></i>
+    </div>
+    <div class="message-body">
+      <div class="hover01 column">
+        <div>
+          <figure> <a href="/secondAppilcationAdmin/{{scholar.id}}"> <img src="{{scholar.si_photo_bg.url}}" alt="" /> </a> </figure>
+        </div>
+        <div>
+    </div>
+  </article>
+
+
+{%endfor%}
+
+{% endblock %}

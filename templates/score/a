@@ -13,7 +13,7 @@
   
     <div class="columns">
       
-      <div class="column">
+      <div class="column"> 
         <label class="label">หัวข้อ</label>
         <input type="text" name="name[]" class="input" placeholder="หัวข้อ"/>
       </div> 
@@ -22,13 +22,16 @@
         <label class="label">น้ำหนักคะแนน</label>
         <input type="text" name="weight[]" class="input" placeholder="น้ำหนักคะแนน"/>
       </div> 
+      
+      <div class="column"> 
+        <a href="javascript:void(0)" class="button is-success addMore"><i class="fas fa-plus"></i></a>
+      </div>
+      
     </div>
+    
   </div>
-  <div class="column"> 
-    <!--<a href="javascript:void(0)" class="button is-success addMore"><i class="fas fa-plus"></i></a>-->
-    <a href="javascript:void(0)" class="button is-success addMore">เพิ่มหัวข้อ</a>
-  </div>
-  <input type="submit" value="ยืนยัน" class="button is-primary">
+  
+  <input type="submit" value="ยืนยัน" class="btn btn-primary">
   
 </form>
 
@@ -46,12 +49,15 @@
     <div class="column"> 
       <label class="label">น้ำหนักคะแนน</label>
       <input type="text" name="weight[]" class="input" placeholder="น้ำหนักคะแนน"/>
-    </div>
+    </div> 
 
+  
+      
     <div class="column"> 
       <a href="javascript:void(0)" class="button is-danger remove"><i class="fas fa-times"></i></a>
+      
     </div>
-
+      
   </div>
   
 </div>
@@ -73,22 +79,20 @@
       <label class="label">น้ำหนักคะแนน</label>
       <input type="text" name="weight[]" class="input" value = "{{ value1 }}"/>
     </div> 
-
     <div class="column"> 
-      <a href="javascript:void(0)" class="button is-danger remove"><i class="fas fa-times"></i></a>
+      <a href="javascript:void(0)" class="button is-success addMore"><i class="fas fa-plus"></i></a>
     </div>
-
   </div>
   
   
   
 </div>
+
+
+
+
 {%endfor%}
-<div class="column">
-  <!--<a href="javascript:void(0)" class="button is-success addMore"><i class="fas fa-plus"></i></a>-->
-  <a href="javascript:void(0)" class="button is-success addMore">เพิ่มหัวข้อ</a>
-  <input type="submit" value="ยืนยัน" class="button is-primary">
-</div>
+<input type="submit" value="ยืนยัน" class="btn btn-primary">
 
 </form>
 
@@ -136,15 +140,9 @@
     });
     
     //remove fields group
-    $("body").on("click",".remove",function(){
-        if($('body').find('.fieldGroup').length > 1){
-            $(this).parents(".fieldGroup").remove();
-        }
-        else{
-            alert('You must have one or more header. (current header : ' + $('body').find('.fieldGroup').length + ')');
-        }
+    $("body").on("click",".remove",function(){ 
+      $(this).parents(".fieldGroup").remove();
     });
-
   });
 </script>
 

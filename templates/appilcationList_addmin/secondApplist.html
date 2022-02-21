@@ -1,0 +1,11 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+{% csrf_token %}
+
+{% for scholar in scholars %}
+<img src="{{scholar.si_photo_bg.url}}" alt="" />
+
+{%endfor%}
+
+{% endblock %}
