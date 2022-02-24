@@ -56,11 +56,17 @@
 {% endfor %}
       <!--จบเนื้อหาส่วนใน-->
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
       $(document).ready(function () {
         $(".sidebar-btn").click(function () {
           $(".wrapper").toggleClass("collapse");
         });
       });
-    </script>
+        if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
+   $(".wrapper").toggleClass("collapse", true);
+}else{
+   
+     $(".wrapper").toggleClass("collapse", false);
+}
+    </script>-->
 {% endblock %}

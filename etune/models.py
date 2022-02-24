@@ -96,7 +96,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_date_of_birth = 	models.DateField(default=timezone.now) #date of birth
     sp_major = models.CharField(max_length=4,null=True) #major
     sp_grade = models.CharField(max_length=4,null=True) #grade
-    sp_path_to_pdf_json	= models.JSONField(null=True) #path to pdf file in json 
+    # sp_path_to_pdf_json	= models.JSONField(null=True) #path to pdf file in json 
     sp_std_address = models.JSONField(null=True) #address
     sp_std_tel_no = models.CharField(max_length=10,null=True) #tel
 
@@ -158,8 +158,12 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
 
 class File_Models(models.Model):
     fm_upload_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-    fm_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE,null=True)
-    fm_file = PrivateFileField("File")
+    fm_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE)
+    fm_file = PrivateFileField("File",null=True,blank=True)
+
+    def __str__(self):
+        return str(self.fm_upload_by)+" "+str(self.fm_Scholar)
+
 
 class Scholar_app(models.Model):
     sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
@@ -192,7 +196,7 @@ class Scholar_app(models.Model):
     sa_father_firstname	= models.CharField(max_length=64,) #firstname dad
     sa_father_middlename = models.CharField(max_length=64,) #middlename dad 
     sa_father_lastname = models.CharField(max_length=64,) #lastname dad
-    sa_father_date_of_birth = models.DateField(default=timezone.now)    #วันเกิด
+    sa_father_date_of_birth = models.DateField(default=timezone.now,)    #วันเกิด
     sa_father_age = models.IntegerField()   #อายุ
     sa_father_status_married = models.CharField(max_length=64,)  #สถานะสมรส
     sa_father_statuslife = models.CharField(max_length=64,)  #สถานะการมีชีวิตอยู่
@@ -208,7 +212,7 @@ class Scholar_app(models.Model):
     sa_mother_middlename = models.CharField(max_length=64,) #middlename mom
     sa_mother_lastname = models.CharField(max_length=64,) #lastname mom
     sa_mother_address = models.JSONField() #address mom
-    sa_mother_date_of_birth = models.DateField(default=timezone.now)#วันเกิด
+    sa_mother_date_of_birth = models.DateField(default=timezone.now,)#วันเกิด
     sa_mother_age = models.IntegerField()   #อายุ
     sa_mother_status_married = models.CharField(max_length=64,) #สถานะสมรส
     sa_mother_statuslife = models.CharField(max_length=64,)  #สถานะการมีชีวิตอยู่
@@ -240,7 +244,7 @@ class Scholar_app(models.Model):
     sa_report = models.TextField() #detail
 
     def __str__(self):
-        return str(self.sa_userid)
+        return str(self.sa_userid)+" สมัครทุน "+str(self.sa_si_id)
     
 class avatar_profile (models.Model):
     sa_userid = models.OneToOneField(User,on_delete=models.CASCADE) 

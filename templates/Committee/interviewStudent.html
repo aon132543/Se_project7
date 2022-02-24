@@ -1,0 +1,11 @@
+{% extends 'Menubar-Template.html' %} 
+{% load static %}
+{% block content %}
+{% for app in apps %}
+
+{{app.sa_userid.first_name}} {{app.sa_userid.last_name}}
+<a href=""><button type="button">Click Me!</button></a>
+<br>
+{%endfor%}
+
+{% endblock %}

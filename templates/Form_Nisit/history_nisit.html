@@ -91,10 +91,6 @@
     <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">\
     <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>\
     <br>\
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">\
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">\
-    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>\
-    <br>\
     <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">\
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">\
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling"> \
@@ -137,31 +133,30 @@
   <div align = "center">
   <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
   </div>
-    <div class="container">
+  <div class="container">
     <form action ="profileHistoryNisit" method="POST"  enctype="multipart/form-data" >
-    
-    
     {% csrf_token %}
-    <h1 align = 'center'><b><font size="5px" color="white"> กรอกประวัติสำหรับใช้งานระบบทุนการศึกษา </font></b></h1> 
-        
+    <h1 align = 'center'>
+      <b>
+        <font size="5px" color="white">กรอกประวัติสำหรับใช้งานระบบทุนการศึกษา</font>
+      </b>
+    </h1>
     <div class="box">
- 
       <div class="box">
         <h6 class="title is-6 has-text-centered">รูปประจำตัว </h6>
         <div class="avatar-wrapper">
-          
           <img class="profile-pic" src="{{pic.sp_path_to_avatar.url}}" />
           <div class="upload-button">
             <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
           </div>
           <input class="file-upload" type="file" accept="image/*" id="resume" name="resume" />
         </div>
-        <span class="tag is-warning"><h6 class="title is-6 has-text-centered"><i>กรุณาอัพโหลดภาพประจำตัว</i></h6></span>
-
+        <span class="tag is-warning">
+          <h6 class="title is-6 has-text-centered">
+            <i>กรุณาอัพโหลดภาพประจำตัว</i>
+          </h6>
+        </span>
       </div>
-      
-      
-
       <h2 align = "right"><b><font face="Arial">อาจารย์ที่ปรึกษา</font></b></h2>
       <div class="level-right">
       <input class="resizedTextbox" class="input is-right" type="text"  placeholder="ชื่อ-สกุล"name="advisor_professor"> 
@@ -239,7 +234,7 @@
         <option value = "หย่าร้าง" >หย่าร้าง</option>
       </select>
     </div>
-    <input class="resizedTextbox" class="input" type="text" placeholder="รายได้" name="Income-dad">
+    <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-dad">
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad">
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad">
     <hr>
@@ -278,7 +273,7 @@
         <option value = "หย่าร้าง" >หย่าร้าง</option>
       </select>
     </div>
-    <input class="resizedTextbox" class="input" type="text" placeholder="รายได้" name="Income-mom">
+    <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-mom">
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom">
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom">
     <hr>
@@ -295,11 +290,6 @@
     <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
-    <br>
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-sibling">
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-sibling">
-    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-sibling"><br>
-    <br>
     <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
     <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
@@ -347,7 +337,7 @@
         </select>
       </div>      
       <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime">   
-      <input class="resizedTextbox" class="input" type="text" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income">
+      <input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income">
       <br><br>
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
 
@@ -361,6 +351,7 @@
      </div>
 
      <hr>
+     <div style="color:red">หมายเหตุ: กรณีที่ไม่มีข้อมูลสามารถใส่ "-" ได้ </div>
       <br>
       <div class="level-item has-text-centered">
         <div class="columns" > 

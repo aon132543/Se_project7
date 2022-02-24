@@ -48,11 +48,13 @@ urlpatterns = [
     path('profileHistoryNisit',views.profileHistoryNisit,name="profileHistoryNisit"),# แบบฟอร์มของนิสิตสำหรับเข้าครั้งแรก
     path('editHistoryNisit',views.editHistoryNisit,name="editHistoryNisit"),  #แก้ไขข้อมูลแบบฟอร์มของนิสิต
     path('statusNisit',views.statusNisit,name="statusNisit"),  #ประวัติคำร้องนิสิต
-    path('checkInfo/<int:user_id>/<int:info_id>',views.checkInfo,name="checkInfo"),  #ตรวจสอบข้อมูลก่อนสมัครทุน
+    path('checkInfo/<int:info_id>',views.checkInfo,name="checkInfo"),  #ตรวจสอบข้อมูลก่อนสมัครทุน
     path('interview',views.interview,name="interview"), #สัมภาษณ์
     path('historyGetScholar',views.historyGetScholar,name="historyGetScholar"), #ประวัติรายชื่อผู้ได้รับทุน
     path('firstAppilcationAdmin',views.firstAppilcationAdmin,name="firstAppilcationAdmin"), #รายชื่อทุนแต่ละทุน สำหรับตรวจสอบรายชื่อนิสิต(admin) 1
-    path('secondAppilcationAdmin/<int:home_id>',views.secondAppilcationAdmin,name="secondAppilcationAdmin") #รายชื่อนิสิตในทุนนั้นๆ สำหรับตรวจสอบรายชื่อนิสิต(admin) 2
+    path('secondAppilcationAdmin/<int:home_id>',views.secondAppilcationAdmin,name="secondAppilcationAdmin"), #รายชื่อนิสิตในทุนนั้นๆ สำหรับตรวจสอบรายชื่อนิสิต(admin) 2
+    path('interviewStudent/<int:info_id>',views.interviewStudent,name="interviewStudent"),
+    path('interviewStudentTest/<int:info_id>',views.interviewStudentTest,name="interviewStudentTest")
     ]
 
 urlpatterns += [

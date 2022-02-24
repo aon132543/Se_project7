@@ -2,10 +2,21 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-
+<link rel="stylesheet" href="{% static 'css/ApplistAdmin.css' %}?{% now " U" %}" />
 {% for scholar in scholars %}
-<img src="{{scholar.si_photo_bg.url}}" alt="" />
+    <div class="main-container">
+        <div class="cardbox">
+            <ul>
+            <li><b>{{scholar.si_name}}</b></li>
+            </ul>
+        </div>
+        <div class="card">
+            <img src="{{scholar.si_photo_bg.url}}" alt="" width="250" />
+        </div>
+    </div>
 
 {%endfor%}
-
+{% for listApp in listApps %}
+<p2>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}</p2><br/>
+{%endfor%}
 {% endblock %}

@@ -10,12 +10,8 @@
         <div class="message-body">
             {{info.si_create_time}}
             <p>เครื่องมือจัดการแบบฟอร์ม</p>
-            {% if info.status == True%}
-            <a href="scholarWeightScore/{{info.id}}"><button class="button is-warning">แก้ไขแบบฟอร์ม</button></a>
-            {%else%}
             
-            <a href="scholarWeightScore/{{info.id}}"><button class="button is-info">สร้างแบบฟอร์ม</button></a>
-            {%endif%}
+            <a href="scholarWeightScore/{{info.id}}"><button class="button is-warning"><p>แก้ไขแบบฟอร์ม</p></button></a>
         </div>
       </article>
    
