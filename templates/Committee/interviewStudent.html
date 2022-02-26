@@ -4,7 +4,7 @@
 {% for app in apps %}
 
 {{app.sa_userid.first_name}} {{app.sa_userid.last_name}}
-<a href=""><button type="button">Click Me!</button></a>
+<a href="/interviewStudentTest/{{app.sa_si_id.id}}/{{app.sa_userid.id}}"><button type="button">Click Me!</button></a>
 <br>
 {%endfor%}
 

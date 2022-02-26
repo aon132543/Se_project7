@@ -2,23 +2,25 @@
 {% load static %}
 {% block content %}
 
-{% for state in states %}
+{% for state,file in states.items %}
+
         <div class="cardforStatus">
           <div class = "progessConatainer">
             <div class="progressionInfomantHeader">
-              {{state.sa_si_id.si_name}}
+               {{state.sa_si_id.si_name}} 
             </div>
              <div class="progressionInfomantDate">
-              {{state.sa_si_id.si_create_time}}
+               {{state.sa_si_id.si_create_time}} 
             </div>
               <div class="progressionInfomantStatus">
               ผ่านการคัดเลือก
               {% if state.sa_status == 21 %}
-                <button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button>
+                <a href = "{{file.fm_file.url}}"><button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button></a>
               {% endif %}
             </div>
             
             <div class="progessBar">
+              
           {% if state.sa_status == 11 %}
               <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
               <li class="inprogess" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>

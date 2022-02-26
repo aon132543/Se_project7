@@ -16,7 +16,7 @@ class Scholar_news (models.Model):          #Database สำหรับข่�
     sn_header = models.CharField(max_length=256)
     sn_description = models.TextField() #text
     sn_expire_date = models.DateField() #วันที่
-    sn_photo_bg = models.ImageField(upload_to='uploads/') #photo
+    sn_photo_bg = ResizedImageField(upload_to='uploads/',size=[1280, 720], crop=['middle', 'center'],quality=100)
     sn_path_to_pdf = models.FileField(upload_to='documents/') #pdf
     sn_create_time = models.DateField(default=timezone.now)
     
@@ -37,15 +37,14 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
     si_remain_scholar = models.IntegerField() #จำนวนเงินทุนที่เหลือปัจจุบัน
     si_source	 = models.CharField(max_length=256) #ภายนอก/ใน
     si_source_name	= models.JSONField() #ผู้ให้ทุน
-    si_photo_bg = ResizedImageField(upload_to='uploads/info',size=[1280, 720], crop=['middle', 'center'],quality=100)
-    si_path_to_pdf = models.FileField(upload_to='documents/info')
     si_note	= models.TextField()	
     si_grade_require = 	models.FloatField(null=True)
     si_create_time = models.DateField(default=timezone.now)
     si_expire_time = models.DateField()
     si_year = models.CharField(max_length=4)
     si_semester = models.IntegerField()
-
+    si_photo_bg = ResizedImageField(upload_to='uploads/info',size=[1280, 720], crop=['middle', 'center'],quality=100)
+    si_path_to_pdf = models.FileField(upload_to='documents/info')
     class Meta:
         ordering = ['-si_create_time']
 
@@ -153,6 +152,7 @@ class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิ
     sp_report = models.TextField(null=True) #detail
     
 
+
     def __str__(self):
         return str(self.sp_userid)
 
@@ -160,6 +160,7 @@ class File_Models(models.Model):
     fm_upload_by = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
     fm_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE)
     fm_file = PrivateFileField("File",null=True,blank=True)
+    fm_state = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.fm_upload_by)+" "+str(self.fm_Scholar)
@@ -169,9 +170,9 @@ class Scholar_app(models.Model):
     sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
     sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
     sa_status =	models.IntegerField(default=11)	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
-    sa_score = models.IntegerField() #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
+    sa_score = models.FloatField(default=0) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
+    sa_person = models.IntegerField(default=0)
     sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
-    sa_path_to_pdf = PrivateFileField("File") #ไฟล์ข้อมูลเพิ่มเติม
 
     #ข้อมูลส่วนตัว
     sa_advisor_professor =  models.CharField(max_length=64,) #อาจารย์ที่ปรึกษา
@@ -241,7 +242,9 @@ class Scholar_app(models.Model):
     sa_json_scholar = models.JSONField()
 
     #เขียนรายละเอียดเพิ่มเติม
-    sa_report = models.TextField() #detail
+    # sa_report = models.TextField() #detail
+
+    
 
     def __str__(self):
         return str(self.sa_userid)+" สมัครทุน "+str(self.sa_si_id)
@@ -252,3 +255,12 @@ class avatar_profile (models.Model):
 
     def __str__(self):
         return str(self.sa_userid)
+
+class Log_score (models.Model):
+    ls_commit = models.ForeignKey(User,on_delete=models.CASCADE,related_name='%(class)s_requests_created') 
+    ls_student = models.ForeignKey(User,on_delete=models.CASCADE) 
+    ls_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE)
+    score = models.JSONField()
+
+    def __str__(self):
+        return str(self.ls_idcommit) +" ให้คะแนน "+ str(self.ls_idstudent) + " ในทุน " + str(self.ls_idScholar)

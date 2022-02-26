@@ -4,15 +4,10 @@
     list-style: none;
     text-decoration: none;
     box-sizing: border-box;
-    font-family: 'Kanit', sans-serif;
-    font-family: monospace;
+
   }
   
-  body {
-    background: #fff;
-    font-family: 'IBM Plex Sans Thai', sans-serif;
-    font-family: 'Kanit', sans-serif; 
-  }
+
   
   .wrapper .header {
     z-index: 1;
@@ -34,9 +29,9 @@
   }
   
   .wrapper .header li {
-    font-size: 20px;
+    font-size: 20px; 
     color: rgb(255, 255, 255);
-    font-style: none;
+    font-style: none; 
   }
   
   .wrapper .header .header-menu .title {
@@ -225,13 +220,11 @@
   
   .wrapper .main-container {
     width: (100% - 250px);
+    height: auto;
     margin-top: 50px;
     margin-bottom:0px;
     margin-left: 250px;
     padding: 2px;
-    background: rgb(231, 231, 231);
-    background-size: cover;
-    height: auto;
     transition: 0.3s;
   }
   
@@ -267,23 +260,23 @@
     padding-left: 3px;
   }
   
-  .wrapper.collapse .main-container {
+  /*.wrapper.collapse .main-container {
     width: calc(100% - 70px);
     margin-left: 70px;
-  }
+  }*/
   
-  .wrapper .main-container .card {
-    padding: 15px;
+  /*.wrapper .main-container .card {
+    padding: 10px;
     margin-top:10px;
     margin-bottom: 10px;
     font-size: 14px;
     font-family: 'Courier New', Courier, monospace;
     width: 80%;
-    height: 300px;
+    height: auto;
     display: block;
     margin-right: auto;
     margin-left: auto;
-  }
+  }*/
   
   .card-headstatus {
     list-style: none;
@@ -293,19 +286,19 @@
     padding: 1px 20px;
     justify-content: space-between;
     margin-bottom: 20px;
-    margin-left: 920px;
+    margin-left: 930px;
   }
   
   .cardbox {
-    width:78%;
+    width:96%;
     height: 45px;
-    background-color:rgb(196, 189, 189);
+    background-color:rgb(196, 194, 194);
     padding: 10px;
     margin-bottom: 0px;
     margin-top:10px;
     font-size: 18px;
     font-family: 'Courier New', Courier, monospace;
-    color: white;
+    color: rgb(255, 255, 255);
     display: block;
     align-items: center;
     justify-content: space-between;
@@ -345,14 +338,13 @@
     height: 45px;
     background-color:rgb(233, 110, 110);
     padding: 10px;
-    
     font-size: 17px;
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
     justify-content: space-between;
     border-radius: 22px;
-    margin-left: 70px;
+    margin-left: 90px;
   }
   .cardbox-status ul li {
     list-style: none;
@@ -372,7 +364,7 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: 140px;
+    margin-left: 20%;
     margin-top: -65px;
     margin-bottom: 20px;
     justify-content: space-between;
@@ -414,13 +406,14 @@
     border-bottom: 1px solid #dddddd;
     border-left: 1px solid #dddddd;
     border-right: 1px solid #dddddd;
-  
-    padding: 10px 20px;
-    font-size: 14px;
+    padding:10px 15px;
+    font-size: 15px;
+    width: 300px;
+    
   }
   .threadd th {
     font-size: 15px;
-    margin-top: 0px;
+    margin-top:0px;
     background-color:  rgb(226, 226, 226);
   }
   .button{
@@ -431,8 +424,8 @@
   }
   
   .dropdown {
-    margin-left: 70px;
-    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-bottom: 40px;
   }
   .cardbox-list{
     width:190px;
@@ -444,12 +437,26 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: 920px;
+    margin-left: 1100px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius:22px;
     justify-content: space-between;
   }
+
+.cardbox-status form{
+    width:230px;
+    height: 2000px;
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 22px;
+    margin-left: 90px;
+  }
+
   .cardbox-list ul li {
     list-style: none;
     margin: 0 5px;
@@ -467,7 +474,7 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: 290px;
+    margin-left: 350px;
     margin-bottom: 20px;
     border-radius:22px;
     justify-content: space-between;
@@ -479,3 +486,79 @@
     color: rgb(8, 8, 8);
     padding: 1px 20px;
   }
+  
+  .pageChangerWrapper{
+     position: relative;
+     bottom:20px;
+     margin-bottom:100px ;
+  }
+
+  .conditionStatusOnProgress{
+   width:230px;
+    height: 45px;
+    background-color:rgb(255, 186, 122);
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 22px;
+    margin-left: 90px;
+    font-weight: bold;
+    
+  }
+
+  .conditionStatusNotPass{
+   width:230px;
+    height: 45px;
+    background-color:rgb(233, 110, 110);
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 22px;
+    margin-left: 90px;
+    font-weight: bold;
+  }
+
+  .conditionStatusPass{
+     width:230px;
+    height: 45px;
+    background-color:rgb(179, 255, 207);
+    padding: 10px;
+    font-size: 17px;
+    font-family: 'Courier New', Courier, monospace;
+    display: block;
+    text-align: center;
+    justify-content: space-between;
+    border-radius: 22px;
+    margin-left: 90px;
+    font-weight: bold;
+  }
+/*
+  
+  .documentCoufirm{
+    position:absolute;
+    margin-top:100px;
+    margin-right:-800px;
+  }*/
+
+  .uploadBox{
+    margin-left:5000px;
+
+  }
+@media only screen and (max-width: 800px) {
+   .dropdown {
+    margin-left: 1px;
+    margin-bottom: 20px;
+  }
+  .wrapper .sidebar .sidebar-menu {
+    overflow: hidden;
+    padding-bottom: 75px;
+    cursor: pointer;
+  }
+
+}

@@ -4,7 +4,6 @@
     list-style: none;
     text-decoration: none;
     box-sizing: border-box;
-    font-family: 'Kanit', sans-serif;
   }
   
   body {
@@ -230,7 +229,7 @@
   .wrapper .main-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+   
   }
   
   .wrapper.collapse .sidebar {
@@ -299,7 +298,6 @@
   
   .button-th{
     font-size:15px;
-    font-family: "Mitr";
     color:rgb(255, 250, 250);
     background-color: rgb(224, 26, 76);
     width:80%;
@@ -319,7 +317,6 @@
     top:0;
     display: flex;
     cursor: pointer;
-    font-family: "Mitr";
     font-weight: 400;
     text-align: center;
     white-space: nowrap;

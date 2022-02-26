@@ -428,7 +428,6 @@ def viewWightScore(request,id_info):
     json= {"หัวข้อ":"คะแนน"}
     if  Scholar_weight_score.objects.filter(sws_si_id=info_data).exists() == True:
         json = Scholar_weight_score.objects.filter(sws_si_id=info_data.id)
-        print(json)
         json = json[0]
         json = json.sws_info
 
@@ -896,8 +895,20 @@ def editHistoryNisit(request):
 def statusNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
-    states = Scholar_app.objects.filter(sa_userid = user_obj).select_related('sa_si_id','sa_userid')
-    return render(request,'Status_Page/statusNisit.html',{'states':states})
+    lst = {} 
+    states = Scholar_app.objects.filter(sa_userid = user_obj)
+    if states.exists() == True:
+        states.select_related('sa_si_id','sa_userid')
+        for state in states:
+            file = File_Models.objects.filter(fm_state=1,fm_Scholar=state.sa_si_id)
+            if file.exists() == True:
+                lst[state] = file[0]
+            else:
+                lst[state] = "None"
+        return render(request,'Status_Page/statusNisit.html',{'states':lst})
+    else:
+        return render(request,'Status_Page/statusNisit.html')
+        
 
 def checkInfo(request,info_id):
     user_obj = User.objects.filter(id=request.user.id)
@@ -906,8 +917,8 @@ def checkInfo(request,info_id):
     info_obj = info_obj[0]
     check = lambda x : None if ( x == "None" or x == "กรุณาเลือก" )  else x
     try:
-        if request.method == 'POST':
-            if Scholar_app.objects.filter(sa_userid=user_obj).exists()==False:
+        if Scholar_app.objects.filter(sa_userid=user_obj ,sa_si_id = info_id).exists()==False:
+            if request.method == 'POST':
                 #ของนิสิต
                 advisor_professor = check(request.POST['advisor_professor'])
                 title_thai = check(request.POST['title-thai'])
@@ -1110,25 +1121,29 @@ def checkInfo(request,info_id):
                         data3 = data3[0]
                         data3.fm_file = request.FILES.get('myPdf')
                         data3.save()
-            else:
+                return redirect('/viewHome/'+str(info_id)+"/"+str(request.user.id))
+            checkin = Scholar_profile.objects.filter(sp_userid = user_obj)
+            checkin = checkin[0]
+            json = checkin.sp_json_scholar
+            json_bro = checkin.sp_bro_n_sis
+            data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+            data2 = data2[0]              
+            return render(request,'apply_info/checkInfo.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
+        else:
+            if request.method == "POST" :
                 if len(request.FILES)!=0:
                     if request.FILES.get('myPdf',False):
                         data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
                         data3 = data3[0]
                         data3.fm_file = request.FILES.get('myPdf')
                         data3.save()
-                           
-            return redirect('/viewHome/'+str(info_id)+"/"+str(request.user.id))
-
-                    
-        checkin = Scholar_profile.objects.filter(sp_userid = user_obj)
-        checkin = checkin[0]
-        json = checkin.sp_json_scholar
-        json_bro = checkin.sp_bro_n_sis
-        data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
-        data2 = data2[0]
-                        
-        return render(request,'apply_info/checkInfo.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
+            checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id=info_id)
+            checkin = checkin[0]
+            json = checkin.sa_json_scholar
+            json_bro = checkin.sa_bro_n_sis
+            data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+            data2 = data2[0]
+            return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
     except : 
         messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
         return redirect('editHistoryNisit')
@@ -1146,25 +1161,38 @@ def interview(request):
         scholars_list_obj.append(Scholar_info.objects.filter(id=i))
     return render(request,'Committee/news_committee.html',{'scholars':scholars_list_obj})
 
-def historyGetScholar(request):  
+def historyGetScholar(request):
+    check = lambda x : None if ( x == "None" or x == "กรุณาเลือก" )  else x
     if request.method == 'POST':
         IDStudent = request.POST['studentID']   #เลขรหัสนิสิต
         scholarType = request.POST['scholarType']   #ทุนภายใน/นอก/ผสม
         scholarName = request.POST['scholarName']   #ชื่อทุน
         year = request.POST['year']  #ปีของทุน
-        print("abcdefggggggggggggg")
-        if IDStudent != None:
-            print(IDStudent)
+        print(IDStudent)
+        print(scholarType)
+        print(scholarName)
+        print(year)
     return render(request,'historyGetScholar_addmin/historyGetScholar.html')
 
 
-def firstAppilcationAdmin(request):
+def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
     return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': news})
     
-def secondAppilcationAdmin(request,home_id):
+def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรายชื่อนิสิตแต่ละทุน
     scholars = Scholar_info.objects.filter(id=home_id)
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
+    user_obj = User.objects.filter(id=request.user.id)
+    user_obj = user_obj[0]
+    if request.method == "POST":
+        if len(request.FILES)!=0:
+            if request.FILES.get('myPdf',False):
+                data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
+                data3 = data3[0]
+                data3.fm_file = request.FILES.get('myPdf')
+                data3.fm_state = 1
+                data3.save()
+
     return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listApps})
 
 def interviewStudent(request,info_id):
@@ -1173,12 +1201,131 @@ def interviewStudent(request,info_id):
     
     return render(request,'Committee/interviewStudent.html',{'apps':obj_info})
 
-def interviewStudentTest(request,info_id):
-    checkin = Scholar_profile.objects.filter(sp_userid = user_obj)
+def interviewStudentTest(request,info_id,user_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    info_obj = Scholar_info.objects.filter(id=info_id)
+    info_obj = info_obj[0]
+    checkin = Scholar_app.objects.filter(sa_userid = user_obj).filter(sa_si_id = info_obj)
     checkin = checkin[0]
-    json = checkin.sp_json_scholar
-    json_bro = checkin.sp_bro_n_sis
+    json_scholar = checkin.sa_json_scholar
+    json_bro = checkin.sa_bro_n_sis
     data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
     data2 = data2[0]
+
+    file_obj = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
+    file_obj = file_obj[0]
+
+    test_obj = Scholar_weight_score.objects.filter(sws_si_id=info_obj)
+    json_sws = test_obj[0]
+    json = json_sws.sws_info
+
+
+    data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).get()
+
+
     
-    return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
+    list_userid = data.sa_jsoncommit
+
+    if request.method == 'POST':
+
+        name_lst = request.POST.getlist('name[]')
+        weight_lst = request.POST.getlist('weight[]')
+
+        
+        
+        score_wieght = []
+        list_wieght = []
+        for key,value in json.items():
+            score_wieght.append(value)
+     
+
+        
+        
+        res = {}  
+        for key in name_lst:
+            for value in weight_lst:
+                res[key] = value
+                weight_lst.remove(value)
+                list_wieght.append(value)
+                break  
+
+
+        sum_weight = 0
+        sum_weightAll = 0
+        count_khor = 0
+        for i in range(len(score_wieght)):
+            sum_weightAll = sum_weightAll + float(score_wieght[i])
+            count_khor = count_khor + 1
+        
+        
+        for i in range(len(score_wieght)):
+            sum_weight += float(list_wieght[i])/float(score_wieght[i])
+        
+        sum_weight = (sum_weight/count_khor)*100
+        data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
+        data = data[0]
+        
+        person = data.sa_person 
+        score_database = data.sa_score
+
+        cal = (score_database+sum_weight)/person
+
+
+
+
+        #เพิ่ม userid ของกรรมการที่เคยให้ทุนแล้ว
+        list_userid = data.sa_jsoncommit
+        list_userid = list(list_userid)
+        list_userid.append(request.user.id)
+
+        
+   
+
+
+
+        now = timezone.now()
+
+        data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
+                sa_score_info = res,
+                sa_score = cal,
+                sa_person = person+1,
+                sa_jsoncommit = list_userid
+        )
+        return redirect('/interviewStudent/'+str(info_id))
+    
+
+    return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar,'list_userid':list_userid})
+
+def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบเอกสารของแอดมิน
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    info_obj = Scholar_info.objects.filter(id=home_id)
+    info_obj = info_obj[0]
+    checkin = Scholar_app.objects.filter(sa_userid = user_obj).filter(sa_si_id = home_id)
+    checkin = checkin[0]
+    json_scholar = checkin.sa_json_scholar
+    json_bro = checkin.sa_bro_n_sis
+    data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+    data2 = data2[0]
+
+    file_obj = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=home_id)
+    file_obj = file_obj[0]
+
+    test_obj = Scholar_weight_score.objects.filter(sws_si_id=home_id)
+    json = test_obj[0]
+    json = json.sws_info
+    if request.method == 'POST':
+        button = request.POST['button']
+        if button == "ยืนยัน":
+            status = 21
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = status)
+            return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+        elif button == "ไม่ผ่าน":
+            status = 20
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = status)
+            return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+    return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
+
