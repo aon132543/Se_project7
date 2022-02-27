@@ -83,60 +83,18 @@
         <div class="bodytable">
         <table>
             <thead>
-                <th>ลำดับ</th>
                 <th>รหัสนิสิต</th>
                 <th>ชื่อ-นามสกุล</th>
                 <th>สถานะ</th>
             </thead>
             <tbody>
+        {% for info in infomation %}
             <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
+                  <td>{{info.sa_std_code}}</td>
+                  <td>{{info.sa_title_th}}{{info.sa_firstname_th}}   {{info.sa_lastname_th}}</td>
                   <td><b><button>ได้รับทุน</button></b></td>
               </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
-              <tr>
-                  <td>1</td>
-                  <td>6230300500</td>
-                  <td>นางสาวงดงาม ดวงใจ</td>
-                  <td><b><button>ได้รับทุน</button></b></td>
-              </tr>
+        {%endfor%}     
         </table>
         <br>
         </br>

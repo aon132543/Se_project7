@@ -1,3 +1,5 @@
+@import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+
 * {
     margin: 0;
     padding: 0;
@@ -283,7 +285,7 @@
     margin: 0 5px;
     text-decoration: none;
     color: rgb(8, 8, 8);
-    padding: 1px 20px;
+    padding: 10px 20px;
     justify-content: space-between;
     margin-bottom: 20px;
     margin-left: 930px;
@@ -424,8 +426,10 @@
   }
   
   .dropdown {
-    margin-left: 40px;
-    margin-bottom: 40px;
+    margin-left: 85px;
+    margin-bottom: 60px;
+    margin-right: 150px;
+   
   }
   .cardbox-list{
     width:190px;
@@ -437,7 +441,7 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: 1100px;
+    margin-left: 900px;
     margin-top: 20px;
     margin-bottom: 20px;
     border-radius:22px;
@@ -465,7 +469,7 @@
     padding: 1px 20px;
   }
   .cardbox-weight{
-    width:100px;
+    width:150px;
     height: 45px;
     background-color:rgb(235, 223, 61);
     padding: 10px;
@@ -474,7 +478,7 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: 350px;
+    margin-left: 175px;
     margin-bottom: 20px;
     border-radius:22px;
     justify-content: space-between;
@@ -538,16 +542,10 @@
     margin-left: 90px;
     font-weight: bold;
   }
-/*
-  
-  .documentCoufirm{
-    position:absolute;
-    margin-top:100px;
-    margin-right:-800px;
-  }*/
 
   .uploadBox{
-    margin-left:5000px;
+    position:relative;
+    right:225px;
 
   }
 @media only screen and (max-width: 800px) {

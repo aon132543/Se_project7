@@ -171,7 +171,7 @@ class Scholar_app(models.Model):
     sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
     sa_status =	models.IntegerField(default=11)	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
     sa_score = models.FloatField(default=0) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
-    sa_person = models.IntegerField(default=0)
+    sa_person = models.IntegerField(default=1)
     sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)
 
     #ข้อมูลส่วนตัว
@@ -243,8 +243,9 @@ class Scholar_app(models.Model):
 
     #เขียนรายละเอียดเพิ่มเติม
     # sa_report = models.TextField() #detail
+    #ได้รับการสอบสัมภาษณ์หรือยัง+
 
-    
+    sa_json_commit = models.JSONField(null=True,default={})
 
     def __str__(self):
         return str(self.sa_userid)+" สมัครทุน "+str(self.sa_si_id)
@@ -261,6 +262,7 @@ class Log_score (models.Model):
     ls_student = models.ForeignKey(User,on_delete=models.CASCADE) 
     ls_Scholar = models.ForeignKey(Scholar_info,on_delete=models.CASCADE)
     score = models.JSONField()
+    
 
     def __str__(self):
-        return str(self.ls_idcommit) +" ให้คะแนน "+ str(self.ls_idstudent) + " ในทุน " + str(self.ls_idScholar)
+        return str(self.ls_commit) +" ให้คะแนน "+ str(self.ls_student) + " ในทุน " + str(self.ls_Scholar)

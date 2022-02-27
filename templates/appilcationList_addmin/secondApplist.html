@@ -24,23 +24,24 @@
     <div class ="upload">
        
       <div class="box">
-        <div class="uploadBox">
+        <!-- หัว -->
+      {% if check %}
+      <div class="uploadBoxContainer">
        <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
+         <div class="uploadBox">
     <form action="/secondAppilcationAdmin/{{scholars.id}}" method="POST">
       {% csrf_token %}
     <div class="file has-name is-boxed">
       <label class="file-label">
         <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList2()" onchange="previewFile()">
-        <span class="file-cta">
+          <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
           </span>
-         
-          <span class="file-label">
-            Choose a file…
+            <span class="file-label">
+              Choose a file…
+            </span>
           </span>
-        </span>
-        
           <span class="file-name">
             <div id="fileList2">None.pdf </div>
           </span>
@@ -52,7 +53,9 @@
     
     </div>
     </form>
-
+  </div>
+  {%endif%}
+  <!-- หาง -->
     <div class="cardbox-list">
         <ul>
           <li><b>คงเหลือ {{scholar.si_individual_amount}}/{{scholar.si_individual_amount}}</b></li>
@@ -64,7 +67,7 @@
     </div>
     {% for listApp in listApps %}
         <div class="dropdown">
-        {%if listApp.sa_status == 11 or listApp.sa_status == 20%}
+        {%if listApp.sa_status == 11 or listApp.sa_status == 20 or listApp.sa_status == 10%}
         <div class="dropdown is-not-hoverable" >
           <!--if 2 ผ่าน 
           <div class="dropdown is-hoverable" >-->
@@ -74,43 +77,7 @@
             </button>
             
           </div>
-          
-          <!-- <div class="dropdown-menu" id="dropdown-menu5" role="menu">
-            <div class="dropdown-content">
-            
-                 <table>
-                  <thead class="threadd">
-                      <tr>
-                          
-                          <th align="center" width="100px" height="20px" valign="middle">หัวข้อ</th>
-                          <th align="center" width="100px" height="20px" valign="middle">คะแนน</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      
-                        
-                        <td align="center"><p>การพูดและสำเนียงไก่กาอาราเรย์</p></td>
-                        <td align="center"><p>7.5/10</p></b></td>
-                      
-                    </tr>
-                    <tr>
-                      
-                        
-                        <td align="center"><p>รายละเอียด</p></td>
-                        <td align="center"><p>8.6/10</p></b></td>
-                      
-                    </tr>
-                    <tr>
-                      
-                        <td align="center"><p>รายละเอียด</p></td>
-                        <td align="center"><p>9/10</p></b></td>
-                        
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
-          </div> -->
+         
         </div>
         {%elif listApp.sa_status == 21 or listApp.sa_status == 30 or listApp.sa_status == 31 or listApp.sa_status == 41%}
         <div class="dropdown is-hoverable" >
@@ -133,34 +100,40 @@
                       </tr>
                   </thead>
                   <tbody>
+                    {% for key,value in listApp.sa_score_info.items %}
                     <tr>
-                        <td align="center"><p>การพูดและสำเนียงไก่กาอาราเรย์</p></td>
-                        <td align="center"><p>7.5/10</p></b></td>
+                        <td align="center"><p>{{key}}</p></td>
+                        <td align="center"><p>{{value}}</p></b></td>
                     </tr>
-                    <tr>
-                        <td align="center"><p>รายละเอียด</p></td>
-                        <td align="center"><p>8.6/10</p></b></td>
-                    </tr>
-                    <tr>
-                        <td align="center"><p>รายละเอียด</p></td>
-                        <td align="center"><p>9/10</p></b></td>
-                    </tr>
+                    {% endfor %}
                   </tbody>
                 </table>
             </div>
           </div>
         </div>
         {% endif %}
-        <!--<span class="cardbox-weight">
+        {% if listApp.sa_status == 10 or listApp.sa_status == 11 or listApp.sa_status == 20%}
+        <span class="cardbox-weight">
           <ul>
-            <li><b>75%</b></li>
+            <li><b>-</b></li>
           </ul>
-        </span>-->
-        <!---<span class="cardbox-status">-->
+        </span>
+        {% elif listApp.sa_status == 21 or listApp.sa_status == 30 or listApp.sa_status == 31 or listApp.sa_status == 41%}
+            <span class="cardbox-weight">
+              <ul>
+                <li><b>{{listApp.sa_score|floatformat:2}}</b></li>
+              </ul>
+            </span>
+        {% endif %}
           <ul>
-            {%if listApp.sa_status == 11 %}
+            {%if listApp.sa_status == 10 %}
             <li>
-              
+              <div class="conditionStatusOnProgress">
+                <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">แจ้งแก้ไขเอกสาร</a>
+              </div>
+            </li>
+            {%elif listApp.sa_status == 11 %}
+            <li>
               <div class="conditionStatusOnProgress">
                 <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">ตรวจสอบเอกสาร</a>
               </div>
@@ -172,7 +145,10 @@
                 </li>
             {%elif listApp.sa_status == 21 %}
                 <li>
-                  <div class="conditionStatusOnProgress"><b>สอบสัมภาษณ์</b></div></li>
+                  <div class="conditionStatusOnProgress">
+                    <a href="/checkStatus/{{listApp.sa_si_id.id}}">สอบสัมภาษณ์ยังกดไม่ได้</a>
+                  </div>
+                </li>
             {%elif listApp.sa_status == 30 %}
                 <li><div class="conditionStatusNotPass"><b>ไม่ผ่านรอบสัมภาษณ์</b></div></li>
             {%elif listApp.sa_status == 31 %}
@@ -183,6 +159,7 @@
           </ul>
           <!---</span>-->
       </div>
+      
     {% endfor %}
       <!--เปลี่ยนหน้า-->
       <div class="pageChangerWrapper">

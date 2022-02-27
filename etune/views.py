@@ -1045,7 +1045,7 @@ def checkInfo(request,info_id):
                     sa_status =	11,	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
                     # sa_path_to_pdf = PrivateFileField("File") ไฟล์ข้อมูลเพิ่มเติม
                     sa_score = 0,
-                    sa_score_info =	0,
+                    sa_score_info =	{},
                     sa_advisor_professor = advisor_professor,
                     sa_title_en =title_eng, 
                     sa_firstname_en = firstname_eng,
@@ -1162,18 +1162,36 @@ def interview(request):
     return render(request,'Committee/news_committee.html',{'scholars':scholars_list_obj})
 
 def historyGetScholar(request):
-    check = lambda x : None if ( x == "None" or x == "กรุณาเลือก" )  else x
+    check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
+    data = Scholar_app.objects.all()
     if request.method == 'POST':
-        IDStudent = request.POST['studentID']   #เลขรหัสนิสิต
-        scholarType = request.POST['scholarType']   #ทุนภายใน/นอก/ผสม
-        scholarName = request.POST['scholarName']   #ชื่อทุน
-        year = request.POST['year']  #ปีของทุน
-        print(IDStudent)
-        print(scholarType)
-        print(scholarName)
-        print(year)
-    return render(request,'historyGetScholar_addmin/historyGetScholar.html')
-
+        IDStudent = check(request.POST['studentID'])   #เลขรหัสนิสิต
+        scholarType = check(request.POST['scholarType'])   #ทุนภายใน/นอก/ผสม
+        scholarName = check(request.POST['scholarName'])   #ชื่อทุน
+        year = check(request.POST['year'])  #ปีของทุน
+        if IDStudent != None:
+            data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
+        if scholarType != None:
+            infoes = Scholar_info.objects.filter(si_source=scholarType)
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        if scholarName != None:
+            infoes = Scholar_info.objects.filter(si_name=scholarName) 
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        if year != None:
+            info = Scholar_info.objects.filter(si_year=year) 
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infomation':data})
+    else:
+        return render(request,'historyGetScholar_addmin/historyGetScholar.html')
 
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
@@ -1193,13 +1211,35 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
                 data3.fm_state = 1
                 data3.save()
 
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listApps})
+    json = Scholar_weight_score.objects.filter(sws_si_id=home_id)
+    check = True
+    if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists():
+        check = False 
+
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listApps,'json':json ,'check':check})
 
 def interviewStudent(request,info_id):
     info_obj = Scholar_info.objects.get(id = info_id)
     obj_info = Scholar_app.objects.filter(sa_si_id = info_id)
-    
-    return render(request,'Committee/interviewStudent.html',{'apps':obj_info})
+    my_userid = User.objects.get(id =request.user.id)
+    my_userid = my_userid.id
+    my_userid = str(my_userid)
+    # print(type(my_userid))
+    status =Scholar_app.objects.filter(sa_si_id = info_id).filter(sa_status=21).exists()
+    dic = {}
+    for i in obj_info:
+        if bool(i.sa_json_commit) :
+            for j,k in i.sa_json_commit.items():
+                # if bool(j):
+                if my_userid == j:
+                    dic[i.sa_userid.first_name,i.sa_userid.last_name,i.sa_userid.id,info_id,i.sa_status] = True
+                    break
+                else:
+                    dic[i.sa_userid.first_name,i.sa_userid.last_name,i.sa_userid.id,info_id,i.sa_status] = False
+        else:
+            dic[i.sa_userid.first_name,i.sa_userid.last_name,i.sa_userid.id,info_id,i.sa_status] = False
+    print(dic)
+    return render(request,'Committee/interviewStudent.html',{'apps':obj_info,'my_userid':my_userid,'dic':dic,'status':status})
 
 def interviewStudentTest(request,info_id,user_id):
     user_obj = User.objects.filter(id=user_id)
@@ -1221,11 +1261,12 @@ def interviewStudentTest(request,info_id,user_id):
     json = json_sws.sws_info
 
 
+
     data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).get()
 
 
     
-    list_userid = data.sa_jsoncommit
+    
 
     if request.method == 'POST':
 
@@ -1236,21 +1277,43 @@ def interviewStudentTest(request,info_id,user_id):
         
         score_wieght = []
         list_wieght = []
+
+        #---------------fetch databases-------------
+
+        database_score = []
+        for key,value in data.sa_score_info.items():
+            database_score.append(float(value))
+
+
+
+
+        #-------------------------------------------
+     
+        
         for key,value in json.items():
             score_wieght.append(value)
      
 
         
+ 
+        if(len(database_score) !=0 ):
+            res = {}  
+            for key in name_lst:
+                for value in range(len(weight_lst)):
+                    res[key] = (float(weight_lst[value])+database_score[value])/2
+                    #weight_lst.remove(weight_lst[value])
+                    list_wieght.append((float(weight_lst[value])+database_score[value])/2)
+                    break  
+        else:
+            res = {}
+            for key in name_lst:
+                for value in weight_lst:
+                    res[key] = value
+                    weight_lst.remove(value)
+                    list_wieght.append(value)
+
+            
         
-        res = {}  
-        for key in name_lst:
-            for value in weight_lst:
-                res[key] = value
-                weight_lst.remove(value)
-                list_wieght.append(value)
-                break  
-
-
         sum_weight = 0
         sum_weightAll = 0
         count_khor = 0
@@ -1263,6 +1326,8 @@ def interviewStudentTest(request,info_id,user_id):
             sum_weight += float(list_wieght[i])/float(score_wieght[i])
         
         sum_weight = (sum_weight/count_khor)*100
+
+
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
         data = data[0]
         
@@ -1270,32 +1335,57 @@ def interviewStudentTest(request,info_id,user_id):
         score_database = data.sa_score
 
         cal = (score_database+sum_weight)/person
-
-
-
-
-        #เพิ่ม userid ของกรรมการที่เคยให้ทุนแล้ว
-        list_userid = data.sa_jsoncommit
-        list_userid = list(list_userid)
-        list_userid.append(request.user.id)
-
-        
-   
-
-
-
         now = timezone.now()
 
+
+        #add กรรมการลงในที่เคยสัมภาษณ์
+        data_commit  = data.sa_json_commit
+        
+        data_commit[int(request.user.id)] = "True"
+
+        
+
+
+
+
+
+
+        
+        #--------------------- add log กรรมการ 
+        my_user = User.objects.get(id = request.user.id)
+        student_user = User.objects.get(id = user_id)
+        log_data  = Log_score.objects.filter(ls_commit = my_user).filter(ls_student =  student_user).filter(ls_Scholar = info_obj).update(score = res)
+
+        #-----------------------
+        
+    
+        
+
+
+
+
+        #อัพเดทคะแนนรวม และรายข้อ
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
                 sa_score_info = res,
                 sa_score = cal,
                 sa_person = person+1,
-                sa_jsoncommit = list_userid
+              sa_json_commit = data_commit
         )
+        #--------------------------
         return redirect('/interviewStudent/'+str(info_id))
     
 
-    return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar,'list_userid':list_userid})
+    my_user = User.objects.get(id = request.user.id)
+    student_user = User.objects.get(id = user_id)
+    log_data  = Log_score.objects.create(
+        ls_commit = my_user,
+        ls_student =  student_user,
+        ls_Scholar = info_obj,
+        score = "",
+    )
+    log_data.save()
+        
+    return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
 def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบเอกสารของแอดมิน
     user_obj = User.objects.filter(id=user_id)
@@ -1327,5 +1417,11 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = status)
             return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+        else:
+            status = 10
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = status)
+            return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
