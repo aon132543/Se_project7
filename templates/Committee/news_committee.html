@@ -20,10 +20,31 @@
     
 
 {%endfor%}
-<a href="/CreateScholar">
-<div class="add-button">
-  <i class="fa fa-2x fa-plus add-button__icon"></i>
+
+
+<div class="level-item has-text-centered">
+  <nav class="pagination" role="navigation" aria-label="pagination">
+    <ul class="pagination-list">
+      {%if scholars.paginator.num_pages > 1 %}
+      {% for pagenumber in scholars.paginator.page_range %}
+      <li>
+        <a class="pagination-link 
+        
+        
+        {% if scholars.number == pagenumber %}
+        is-current 
+  
+        {% endif %}
+  
+  
+        " aria-label="Goto page 1" href="?page={{pagenumber}}">{{pagenumber}}</a>
+      </li>
+      {% endfor %}
+      {%endif%}
+   
+    </ul>
+  </nav>
   </div>
-</a>
+  <!-- end page -->
 
 {% endblock %}

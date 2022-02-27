@@ -105,10 +105,7 @@
         <br>
         </br>
       </div>
-      <div class="changePage">
-       <button class="icon page">1</button>
-      <button class="icon page">>></button>
-      </div>
+    
           </div>
         </div>
       
@@ -125,5 +122,32 @@ $(".wrapper").toggleClass("collapse");
 });
 });
 </script>-->
+
+<!--page-->
+
+<div class="level-item has-text-centered">
+  <nav class="pagination" role="navigation" aria-label="pagination">
+    <ul class="pagination-list">
+      {%if infomation.paginator.num_pages > 1 %}
+      {% for pagenumber in infomation.paginator.page_range %}
+      <li>
+        <a class="pagination-link 
+        
+        
+        {% if infomation.number == pagenumber %}
+        is-current 
+  
+        {% endif %}
+  
+  
+        " aria-label="Goto page 1" href="?page={{pagenumber}}">{{pagenumber}}</a>
+      </li>
+      {% endfor %}
+      {%endif%}
+   
+    </ul>
+  </nav>
+  </div>
+  <!-- end page -->
 </body>
 {% endblock %}

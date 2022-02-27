@@ -161,21 +161,35 @@
       </div>
       
     {% endfor %}
-      <!--เปลี่ยนหน้า-->
-      <div class="pageChangerWrapper">
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <ul class="pagination-list">
-            <li><a class="pagination-link is-current" aria-label=" page 1"aria-current="page">1</a></li>
-            <li><a class="pagination-link" aria-label="Goto page 2">2</a></li>
-            <li><a class="pagination-link " aria-label="Goto Page 3">3</a></li>
-            <li><span class="pagination-ellipsis">&hellip;</span></li>
-            <li><a class="pagination-link" aria-label="Goto page 6">6</a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-    </div>
 
+      <!--page-->
+
+<div class="level-item has-text-centered">
+  <nav class="pagination" role="navigation" aria-label="pagination">
+    <ul class="pagination-list">
+      {%if listApps.paginator.num_pages > 1 %}
+      {% for pagenumber in listApps.paginator.page_range %}
+      <li>
+        <a class="pagination-link 
+        
+        
+        {% if listApps.number == pagenumber %}
+        is-current 
+  
+        {% endif %}
+  
+  
+        " aria-label="Goto page 1" href="?page={{pagenumber}}">{{pagenumber}}</a>
+      </li>
+      {% endfor %}
+      {%endif%}
+   
+    </ul>
+  </nav>
+  </div>
+  <!-- end page -->
+
+  
   <!--<script type="text/javascript">
     $(document).ready(function () {
       $(".sidebar-btn").click(function () {

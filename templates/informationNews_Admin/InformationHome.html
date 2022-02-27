@@ -57,5 +57,30 @@
          <i class="fa fa-2x fa-plus add-button__icon"></i>
           </div>
         </a>
+<!--page-->
 
+<div class="level-item has-text-centered">
+  <nav class="pagination" role="navigation" aria-label="pagination">
+    <ul class="pagination-list">
+      {%if info.paginator.num_pages > 1 %}
+      {% for pagenumber in info.paginator.page_range %}
+      <li>
+        <a class="pagination-link 
+        
+        
+        {% if info.number == pagenumber %}
+        is-current 
+  
+        {% endif %}
+  
+  
+        " aria-label="Goto page 1" href="?page={{pagenumber}}">{{pagenumber}}</a>
+      </li>
+      {% endfor %}
+      {%endif%}
+   
+    </ul>
+  </nav>
+  </div>
+  <!-- end page -->
 {% endblock %}

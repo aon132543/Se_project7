@@ -13,6 +13,7 @@ from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
 from datetime import date
 from django.utils.datastructures import MultiValueDictKeyError
+from django.core.paginator import Paginator , EmptyPage ,InvalidPage
 
 import json as js
 
@@ -43,8 +44,22 @@ def log_user_out(request):
 
 @login_required (login_url='index')
 def home(request):                  #หน้าหลังจาก login ของทุกคน
-    news = Scholar_info.objects.all()       
-    return render(request,'home-std.html',{'scholars': news})
+    news = Scholar_info.objects.all()
+    paginator = Paginator(news,4)  
+
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        newsperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        newsperPage = paginator.page(paginator.num_pages)
+
+
+
+    return render(request,'home-std.html',{'scholars': newsperPage})
     
 @login_required (login_url='index')
 def information(request):           #หน้าสร้างข่าวประชาสัมพันธ์ของ admin
@@ -235,7 +250,20 @@ def editScholar(request,order_id):
 
 def InformationHome(request):  
     news = Scholar_news.objects.all()
-    return render(request,'informationNews_Admin/informationhome.html',{'info':news})
+
+    paginator = Paginator(news,4)  
+
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        newsperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        newsperPage = paginator.page(paginator.num_pages)
+
+    return render(request,'informationNews_Admin/informationhome.html',{'info':newsperPage})
 
 def viewInfomation(request,order_id):       #หน้าดูข่าวสารของ admin
     news = Scholar_news.objects.filter(id=order_id)
@@ -296,7 +324,19 @@ def viewHome(request,home_id,user_id):
 
 def manageCommitteeHome(request):   #หน้าแสดงรายชื่อคณะกรรมการทั้งหมด
     news = User.objects.filter(is_staff=True) #ดึงฐานdatabase
-    return render(request,'manageCommittee_Admin/manageCommitteeHome.html',{'scholars':news})
+    paginator = Paginator(news,5)  
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        newsperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        newsperPage = paginator.page(paginator.num_pages)
+
+
+    return render(request,'manageCommittee_Admin/manageCommitteeHome.html',{'scholars':newsperPage})
 
 def delmanageCommitteeHome(request,user_id):
     user_obj = User.objects.get(id=user_id)
@@ -1159,7 +1199,20 @@ def interview(request):
     scholars_list_obj =[]
     for i in scholars_list_id:
         scholars_list_obj.append(Scholar_info.objects.filter(id=i))
-    return render(request,'Committee/news_committee.html',{'scholars':scholars_list_obj})
+
+    paginator = Paginator(scholars_list_obj,4)  
+
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        newsperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        newsperPage = paginator.page(paginator.num_pages)
+
+    return render(request,'Committee/news_committee.html',{'scholars':newsperPage})
 
 def historyGetScholar(request):
     check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
@@ -1189,13 +1242,40 @@ def historyGetScholar(request):
             for info in infoes:
                 info_id.append(info.id)
             data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infomation':data})
+
+
+        paginator = Paginator(data,8)  
+
+        try:
+            page = int(request.GET.get('page','1'))
+        except:
+            page=1
+    
+        try:
+            dataperPage =  paginator.page(page)
+        except(EmptyPage,InvalidPage):
+            dataperPage = paginator.page(paginator.num_pages)
+
+  
+        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infomation':dataperPage})
     else:
         return render(request,'historyGetScholar_addmin/historyGetScholar.html')
 
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
-    return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': news})
+    paginator = Paginator(news,4)  
+
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        newsperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        newsperPage = paginator.page(paginator.num_pages)
+
+    return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': newsperPage})
     
 def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรายชื่อนิสิตแต่ละทุน
     scholars = Scholar_info.objects.filter(id=home_id)
@@ -1216,7 +1296,19 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists():
         check = False 
 
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listApps,'json':json ,'check':check})
+    paginator = Paginator(listApps,10)  
+
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        listAppsPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        listAppsPage = paginator.page(paginator.num_pages)
+    
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listAppsPage,'json':json ,'check':check})
 
 def interviewStudent(request,info_id):
     info_obj = Scholar_info.objects.get(id = info_id)
@@ -1252,50 +1344,24 @@ def interviewStudentTest(request,info_id,user_id):
     json_bro = checkin.sa_bro_n_sis
     data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
     data2 = data2[0]
-
     file_obj = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
     file_obj = file_obj[0]
-
     test_obj = Scholar_weight_score.objects.filter(sws_si_id=info_obj)
     json_sws = test_obj[0]
     json = json_sws.sws_info
-
-
-
     data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).get()
-
-
-    
-    
-
     if request.method == 'POST':
-
         name_lst = request.POST.getlist('name[]')
         weight_lst = request.POST.getlist('weight[]')
-
-        
-        
         score_wieght = []
         list_wieght = []
-
         #---------------fetch databases-------------
-
         database_score = []
         for key,value in data.sa_score_info.items():
             database_score.append(float(value))
-
-
-
-
         #-------------------------------------------
-     
-        
         for key,value in json.items():
             score_wieght.append(value)
-     
-
-        
- 
         if(len(database_score) !=0 ):
             res = {}  
             for key in name_lst:
@@ -1311,59 +1377,31 @@ def interviewStudentTest(request,info_id,user_id):
                     res[key] = value
                     weight_lst.remove(value)
                     list_wieght.append(value)
-
-            
-        
         sum_weight = 0
         sum_weightAll = 0
         count_khor = 0
         for i in range(len(score_wieght)):
             sum_weightAll = sum_weightAll + float(score_wieght[i])
             count_khor = count_khor + 1
-        
-        
         for i in range(len(score_wieght)):
             sum_weight += float(list_wieght[i])/float(score_wieght[i])
         
         sum_weight = (sum_weight/count_khor)*100
-
-
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
         data = data[0]
-        
         person = data.sa_person 
         score_database = data.sa_score
-
         cal = (score_database+sum_weight)/person
         now = timezone.now()
-
-
         #add กรรมการลงในที่เคยสัมภาษณ์
         data_commit  = data.sa_json_commit
-        
         data_commit[int(request.user.id)] = "True"
-
-        
-
-
-
-
-
-
-        
         #--------------------- add log กรรมการ 
         my_user = User.objects.get(id = request.user.id)
         student_user = User.objects.get(id = user_id)
         log_data  = Log_score.objects.filter(ls_commit = my_user).filter(ls_student =  student_user).filter(ls_Scholar = info_obj).update(score = res)
 
         #-----------------------
-        
-    
-        
-
-
-
-
         #อัพเดทคะแนนรวม และรายข้อ
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
                 sa_score_info = res,
@@ -1373,7 +1411,7 @@ def interviewStudentTest(request,info_id,user_id):
         )
         #--------------------------
         return redirect('/interviewStudent/'+str(info_id))
-    
+
 
     my_user = User.objects.get(id = request.user.id)
     student_user = User.objects.get(id = user_id)
