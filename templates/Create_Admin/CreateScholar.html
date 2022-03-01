@@ -2,6 +2,17 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
+<script src='https://cdn.tiny.cloud/1/h3zt1lw1emdet6rxm1vos4jkjli5161zjiq3rn6q0qemmc98/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+</script>
+<script>
+  tinymce.init({
+    selector: '#mytextarea',
+    plugins: ['table','print'],
+    table_use_colgroups: true
+  });
+</script>
+</head>
+
 
 <script type="text/JavaScript">
     // เก๊าแก้ไขหน้านี้ ถ้าอยากได้รูปแบบเดิม โค้ดอยู่ที่ ...ลืมสร้าง 555
@@ -42,6 +53,7 @@ $(document).ready(function(){
 </script>
 
 
+
 <script>
     updateList = function () {
         var input = document.getElementById('img');
@@ -73,6 +85,7 @@ $(document).ready(function(){
 
 <form action ="CreateScholar" method="POST" enctype="multipart/form-data" >
     {% csrf_token %}
+
     <!--ชื่อทุน-->
     <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -94,11 +107,17 @@ $(document).ready(function(){
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <textarea placeholder="เนื้อหา" class="field" name ="detail"></textarea>
+                    <!--<textarea placeholder="เนื้อหา" class="field" name ="detail"></textarea> -->
+                    
+                    <textarea id="mytextarea" name="mytextarea">
+                        กรุณากรอกเนื้อหา
+                      </textarea>
+
                 </p>
             </div>
         </div>
     </div>
+
     <!--จำนวนเงิน(รวม)-->
     <div class="field is-horizontal">
         <div class="field-label is-normal">
@@ -133,7 +152,7 @@ $(document).ready(function(){
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <input class="field" type="number"  name ="total_all"  value ="0" placeholder="จำนวนคนที่จะได้รับ (AUTO)" disabled id="total" >
+                    <input class="field" type="number"  name ="total_all"  value ="0" placeholder="จำนวนคนที่จะได้รับ (AUTO)" readonly id="total" >
                 </p>
             </div>
         </div>
@@ -294,4 +313,6 @@ $(document).ready(function(){
     </div>
     <button class="button is-success is-fullwidth">Send</button>
 </form>
+
+
 {% endblock %}

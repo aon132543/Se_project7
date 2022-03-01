@@ -14,7 +14,7 @@
   }
   
   .wrapper .header {
-    z-index: 1;
+    z-index: 2;
     background: #6b0d1d;
     position: fixed;
     width: calc(100% - 0%);
@@ -469,7 +469,7 @@
   
 @media only screen and (max-width: 800px) {
   .wrapper .sidebar {
-  z-index: 1;
+  z-index: 2;
   background: #852b3a;
   position: fixed;
   top: 50px;

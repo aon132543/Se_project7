@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'tinymce',
+    
+    
 ]
 
 SOCIALACCOUNT_LOGIN_ON_GET=True

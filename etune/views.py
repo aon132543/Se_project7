@@ -96,7 +96,7 @@ def viewpost(request,id_post):              #หน้าดูรายละ�
 def CreateScholar (request):                #หน้าสร้างประกาศรับทุน admin
     if request.method == 'POST':
         name_scholar = request.POST['name_scholar']
-        detail = request.POST['detail']
+        detail = request.POST['mytextarea']
         amount = request.POST['amount']
         amount_per_person = request.POST['amount_per_person']
         total = math.floor(int(amount)/int(amount_per_person))
@@ -108,7 +108,7 @@ def CreateScholar (request):                #หน้าสร้างปร�
         keys =[]
         
         for i in range(len(namelst)):
-            keys.append(str("ผู้สนับสนุนทุนท่าที่ ")+str(i+1))
+            keys.append(str("ผู้สนับสนุนทุนท่านที่ ")+str(i+1))
 
         file_to = None
         img =None
@@ -120,9 +120,10 @@ def CreateScholar (request):                #หน้าสร้างปร�
         res = {}
         for key in keys:
             for value in namelst:
-                res[key] = value
-                namelst.remove(value)
-                break
+                if value != "":
+                    res[key] = value
+                    namelst.remove(value)
+                    break
         data = Scholar_info.objects.create(
             si_name =name_scholar,
             si_description = detail,
@@ -154,6 +155,7 @@ def CreateScholar (request):                #หน้าสร้างปร�
             messages.success(request, "เพิ่มในข่าวหน้าประชาสัมพัมธ์เรียบร้อยแล้ว")
         messages.success(request, "สร้างทุนเรียบร้อยแล้ว")
         return redirect('home')
+    #form = Contents()
 
     return render(request,'Create_Admin/CreateScholar.html')
     
@@ -161,7 +163,7 @@ def CreateScholar (request):                #หน้าสร้างปร�
 def editScholar(request,order_id):
     if request.method == 'POST':
         name_scholar_text = request.POST['name_scholar']
-        detail = request.POST['detail']
+        detail = request.POST['mytextarea']
         amount = request.POST['amount']
         amount_per_person = request.POST['amount_per_person']
         total = math.floor(int(amount)/int(amount_per_person))
@@ -173,16 +175,17 @@ def editScholar(request,order_id):
         keys =[]
         
         for i in range(len(namelst)):
-            keys.append(str("ผู้สนับสนุนทุนท่าที่ ")+str(i+1))
+            keys.append(str("ผู้สนับสนุนทุนท่านที่ ")+str(i+1))
 
         
 
         res = {}
         for key in keys:
             for value in namelst:
-                res[key] = value
-                namelst.remove(value)
-                break
+                if value != "":
+                    res[key] = value
+                    namelst.remove(value)
+                    break
 
 
         name_scholar_obj = Scholar_info.objects.filter(id=order_id)
@@ -405,7 +408,7 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
         else:
             dic[str(scholar[i].si_name),int(scholar[i].id)]=False
 
-    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'users_obj':users_obj,'user_id':user_obj_id,'json':dic})
+    return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'users_obj':users_obj,'user_id':user_obj_id,'json':dic,'scholar':scholar})
 
 def addCommittee(request):
     if request.method == 'POST':
@@ -795,6 +798,7 @@ def editHistoryNisit(request):
         career_sibling = request.POST.getlist('career-sibling')
         workplace_sibling = request.POST.getlist('workplace-sibling')
         lst_bro=[]
+        
         for i in range(len(firstname_sibling)):
             dic = {}
             dic['title_sibling']=title_sibling[i]
@@ -1222,6 +1226,7 @@ def historyGetScholar(request):
         scholarType = check(request.POST['scholarType'])   #ทุนภายใน/นอก/ผสม
         scholarName = check(request.POST['scholarName'])   #ชื่อทุน
         year = check(request.POST['year'])  #ปีของทุน
+       
         if IDStudent != None:
             data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
         if scholarType != None:
@@ -1243,8 +1248,17 @@ def historyGetScholar(request):
                 info_id.append(info.id)
             data = data.filter(sa_si_id__in = info_id,sa_status = 41)
 
-
-        paginator = Paginator(data,8)  
+        dic = []
+        
+        money = 0
+        infoes = Scholar_info.objects.all()
+        for info in infoes:
+            d = data.filter(sa_si_id = info.id)
+            if d.exists() == True:
+                money += len(d)*info.si_individual_amount
+                dic.append([info,d])
+            
+        paginator = Paginator(dic,8)  
 
         try:
             page = int(request.GET.get('page','1'))
@@ -1256,9 +1270,9 @@ def historyGetScholar(request):
         except(EmptyPage,InvalidPage):
             dataperPage = paginator.page(paginator.num_pages)
 
-  
-        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infomation':dataperPage})
+        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'history':dataperPage,"money":money})
     else:
+
         return render(request,'historyGetScholar_addmin/historyGetScholar.html')
 
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
@@ -1455,11 +1469,16 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = status)
             return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
-        else:
-            status = 10
-            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                sa_status = status)
-            return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
 
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
+def delApp(request,home_id,user_id):  
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=home_id).delete()
+    return redirect('/viewHome/'+str(home_id)+"/"+str(user_id))
+
+def changeStatus(request,home_id,user_id):
+    #ทำไม่เป็นนนนนนนนนนนนนนนนนน
+    # return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+    return render(request,'appilcationList_addmin/changeStatus.html')

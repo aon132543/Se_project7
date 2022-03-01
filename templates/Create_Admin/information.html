@@ -1,6 +1,15 @@
 {% extends 'Menubar-Template.html' %}
 {% load static %}
 {% block content %}
+<script src='https://cdn.tiny.cloud/1/h3zt1lw1emdet6rxm1vos4jkjli5161zjiq3rn6q0qemmc98/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+</script>
+<script>
+  tinymce.init({
+    selector: '#mytextarea',
+    plugins: ['table','print'],
+    table_use_colgroups: true
+  });
+</script>
 
 <script>
   // เก๊าแก้ไขหน้านี้ ถ้าอยากได้รูปแบบเดิม โค้ดอยู่ที่ information_old.html
@@ -67,7 +76,10 @@
       <div class="field-body">
           <div class="field">
               <p class="control">
-                  <textarea placeholder="เนื้อหาของข่าวประชาสัมพันธ์" class="field" name="detail_news"></textarea>
+                  <textarea id="mytextarea" name="detail_news">
+                    กรุณากรอกเนื้อหา
+                  </textarea>
+
               </p>
           </div>
       </div>

@@ -2,8 +2,28 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
+<script>
+function call(info_id,userid){
+  
+  Swal.fire({
+    "title":"ท่านยืนยันที่จะทำรายการต่อหรือไม่ ? ",
+    "icon":"question",
+    "showCancelButton":true,
+    "cancelButtonText":"ย้อนกลับ",
+    "confirmButtonText":"ใช่"
+  })
+  .then(function (result){
+    if (result.isConfirmed){
+      window.location.href="/checkStatus/"+info_id +"/"+userid
+    }
+  })
+
+}
+</script>
 
 {% for scholar in scholars %}
+
+
 <link rel="stylesheet" href="{% static 'css/ApplistAdmin.css' %}?{% now " U" %}" />
 
     <div class="cardbox">
@@ -126,35 +146,41 @@
             </span>
         {% endif %}
           <ul>
-            {%if listApp.sa_status == 10 %}
-            <li>
-              <div class="conditionStatusOnProgress">
-                <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">แจ้งแก้ไขเอกสาร</a>
-              </div>
-            </li>
-            {%elif listApp.sa_status == 11 %}
-            <li>
-              <div class="conditionStatusOnProgress">
-                <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">ตรวจสอบเอกสาร</a>
-              </div>
-            </li>
+            {%if listApp.sa_status == 11 %}
+              <li>
+                <div class="conditionStatusOnProgress">
+                  <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">ตรวจสอบเอกสาร</a>
+                </div>
+              </li>
             {%elif listApp.sa_status == 20 %}
-                <li>
-                  <div class="conditionStatusNotPass"><b>เอกสารไม่ผ่านเงื่อนไข</b>
-                  </div>
-                </li>
+              <li>
+                <div class="conditionStatusNotPass"><b>เอกสารไม่ผ่านเงื่อนไข</b>
+                </div>
+              </li>
             {%elif listApp.sa_status == 21 %}
-                <li>
-                  <div class="conditionStatusOnProgress">
-                    <a href="/checkStatus/{{listApp.sa_si_id.id}}">สอบสัมภาษณ์ยังกดไม่ได้</a>
-                  </div>
-                </li>
+              <li>
+                <div class="conditionStatusOnProgress">
+                  <a href="/changeStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">สอบสัมภาษณ์ยังกดไม่ได้</a>
+                </div>
+              </li>
             {%elif listApp.sa_status == 30 %}
-                <li><div class="conditionStatusNotPass"><b>ไม่ผ่านรอบสัมภาษณ์</b></div></li>
+              <li>
+                <div class="conditionStatusNotPass">
+                  <b>ไม่ผ่านรอบสัมภาษณ์</b>
+                </div>
+              </li>
             {%elif listApp.sa_status == 31 %}
-                <li><div class="conditionStatusOnProgress"><b>ดำเนินการรับทุน</b></div></li>
+              <li>
+                <div class="conditionStatusOnProgress">
+                  <b>ดำเนินการรับทุน</b>
+                </div>
+              </li>
             {%elif listApp.sa_status == 41 %}
-                <li><div class="conditionStatusPass"><b>รับทุนเรียบร้อย</b></div></li>
+              <li>
+                <div class="conditionStatusPass">
+                  <b>รับทุนเรียบร้อย</b>
+                </div>
+              </li>
             {% endif %}
           </ul>
           <!---</span>-->

@@ -6,6 +6,9 @@ from django.contrib.postgres.fields import JSONField
 from django.utils import timezone
 from django_resized import ResizedImageField
 from django.contrib.auth.models import User
+from tinymce.models import HTMLField
+#from ckeditor_uploader.fields import RichTextUploadingField
+#from ckeditor.fields import RichTextField
 
 
 import os
@@ -14,7 +17,7 @@ import os
 
 class Scholar_news (models.Model):          #Database สำหรับข่าวประชาสัมพันธ์ท้งหมด
     sn_header = models.CharField(max_length=256)
-    sn_description = models.TextField() #text
+    sn_description = HTMLField() #text
     sn_expire_date = models.DateField() #วันที่
     sn_photo_bg = ResizedImageField(upload_to='uploads/',size=[1280, 720], crop=['middle', 'center'],quality=100)
     sn_path_to_pdf = models.FileField(upload_to='documents/') #pdf
@@ -31,8 +34,10 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
     
     si_name	= models.CharField(max_length=256)
     si_description	= models.TextField()
+    si_description = HTMLField(blank=True,null=True)
+    
     si_total_amount	= models.IntegerField() #จำนวนเงินทั้งหมด
-    si_individual_amount = models.IntegerField() #เงินหารเฉลี่ย
+    si_individual_amount = models.IntegerField() #เงินหารเฉลี่ยต่อคน
     si_max_scholar	= models.IntegerField() #จำนวนคนที่ได้รับ
     si_remain_scholar = models.IntegerField() #จำนวนเงินทุนที่เหลือปัจจุบัน
     si_source	 = models.CharField(max_length=256) #ภายนอก/ใน

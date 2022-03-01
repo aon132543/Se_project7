@@ -1,0 +1,187 @@
+
+ul {
+    display: flex;
+  }
+  
+  .fontli {
+    font-size: 20px;
+    margin-top: 5px;
+  }
+  
+  .lobox {
+    margin-left: 50px;
+    margin-top: 8px;
+    font-size: 18px;
+  }
+  
+  .lobox img {
+    width: 80%;
+    height: 175px;
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+  }
+  
+  .lofont {
+    margin-top: 10px;
+  }
+  
+  .boxcheck {
+    height: 200px;
+    width: 400px;
+    background-color: white;
+    box-shadow: 0 0 25px rgba(17, 1, 68, 0.08);
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  input[type="checkbox"] {
+    z-index: 1;
+    -webkit-appearance: none;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  input[type="checkbox"]::after {
+    position: absolute;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 400;
+    content: "\f111";
+    font-size: 18px;
+    color: red;
+    top: -5px;
+    left: 10px;
+  }
+  
+  input[type="checkbox"]:checked::after {
+    font-weight: 900;
+    content: "\f058";
+    color: red;
+  }
+  
+  .btn {
+    width: 50%;
+    padding: 0.5rem 1rem;
+    background-color: #2ecc71;
+    color: #fff;
+    font-size: 1rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 50px;
+    margin-left: 400px;
+  }
+  
+  .ButtonWrapper {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 50px;
+  }
+  
+  .btn:hover {
+    background-color: #27ae60;
+  }
+  
+  .column {
+    float: left;
+    width: 33.33%;
+    justify-content: center;
+  }
+  
+  .row {
+    margin-bottom: 50px;
+  }
+  
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    justify-content: center;
+  }
+  
+  .scholarName {
+    width: 300px;
+    height: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  
+  .list-wrapper {
+    max-width: 400px;
+    margin: 50px auto;
+  }
+  
+  .list {
+    background: #fff;
+    border-radius: 2px;
+    list-style: none;
+    padding: 10px 20px;
+  }
+  
+  .list-item {
+    display: flex;
+    margin: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  .list-item:last-child {
+    border-bottom: none;
+  }
+  .list-item-image {
+    border-radius: 50%;
+    width: 64px;
+  }
+  .list-item-content {
+    margin-left: 20px;
+  }
+  .list-item-content h4,
+  .list-item-content p {
+    margin: 0;
+  }
+  .list-item-content h4 {
+    margin-top: 10px;
+    font-size: 18px;
+  }
+  .list-item-content p {
+    margin-top: 5px;
+    color: #aaa;
+  }
+  .resizedTextbox2 {
+    width: 80%;
+    height: auto;
+    background-color: rgb(225, 225, 225);
+    margin-right: 0px;
+    margin-left: 275px;
+    margin-top: 100px;
+    border-radius: 20px;
+  }
+
+  @media screen and (min-width: 950px) {
+    .wrapper {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .boxcheck {
+      height: 300px;
+      width: 300px;
+    }
+    input[type="checkbox"]:after {
+      font-size: 22px;
+    }
+  }
+  

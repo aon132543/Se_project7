@@ -12,16 +12,21 @@ sn_path_to_pdf = models.FileField(upload_to='documents/') #pdf -->
 {% for new in news %}
 <br>
 <h1 class="title">{{new.sn_header}}</h1>
-<h2 class="subtitle">{{new.sn_description}}</h2>
+
+<div class="box">
+    {{new.sn_description | safe}}
+</div>
 <span class="tag is-info is-large">จะหมดอายุใน : {{new.sn_expire_date}}</span> 
 <br>
 <br>
+
+
 {% if new.sn_photo_bg %}
 <img src="{{new.sn_photo_bg.url}}">
 {%else%}
 <p></p>
 {%endif%}
-{% if new.sn_path_to_pdf %}<a href="{{new.sn_path_to_pdf.url}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a>
+<div class="box">{% if new.sn_path_to_pdf %}<a href="{{new.sn_path_to_pdf.url}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a></div>
 
 {%else%}
 <p></p>

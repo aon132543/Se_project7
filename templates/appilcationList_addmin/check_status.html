@@ -364,7 +364,6 @@
                 <form action="/checkStatus/{{checkin.sa_si_id.id}}/{{checkin.sa_userid.id}}" method="POST">
                   {% csrf_token %}
                 <a ><input type="submit" value="ยืนยัน" name="button" class="button is-primary"></a>
-                <a ><input type="submit" value="แจ้งแก้ไขเอกสาร" name="button" class="button is-warning"></a>
                 <a ><input type="submit" value="ไม่ผ่าน"  name="button" class="button is-danger"></a>
                 </form>
               </div>

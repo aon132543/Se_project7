@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/card.css' %}?{% now "U" %}" />
-
+<link rel="stylesheet" href="{% static 'css/viewmanageCommitteeHome.css' %}?{% now "U" %}" />
 
 {% for user_obj in users_obj %}
     <font size="5">
@@ -13,23 +13,64 @@
 <font size="5">
     <p align='left'>&nbsp;&nbsp;<b>รายชื่อทุน:</b></p>
 </font>
-<font size="4">
-    <form action="/viewManageCommitteeHome/{{user_id}}" method="POST" align='left'>
-        {% csrf_token %}
 
-        {% for key1,value1 in json.items %}
-            {% if value1 %}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" name="idScholar" value="{{key1.1}}" checked>    
-                <label for="{{key1.0}}">{{key1.0}}</label><br>
-            {%else%}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <input type="checkbox" name="idScholar" value="{{key1.1}}">    
-                <label for="{{key1.0}}">{{key1.0}}</label><br>
-            {%endif%}
+    
+    <form action="/viewManageCommitteeHome/{{user_id}}" method="POST" align='left'>
+        <div class="lobox">
+            
+            <div class="row">
+                
+                {% csrf_token %}
+                {% for key1,value1 in json.items %}
+                    <div class="column">
+                       <div class="box">
+                        <div class="boxcheck">
+                            {% if value1 %}
+                                    <input type="checkbox" name="idScholar" value="{{key1.1}}" checked>
+
+                                   {%for index_scholar in scholar%}
+                                   
+                                        {%if index_scholar.id == key1.1%}
+                                        <label for="ชื่อทุน"></label>
+                                        <img src="{{index_scholar.si_photo_bg.url}}"  /> 
+                                        
+                                        {%endif%}
+                                    {%endfor%}
+                                   <!--มีดิฟตรงแต่ลืมเอาออก-->
+                              
+                            {%else%}
+                            
+                               <input type="checkbox" name="idScholar" value="{{key1.1}}">
+                                    {%for index_scholar in scholar%}
+                                    {%if index_scholar.id == key1.1%}
+                                    <label for="ชื่อทุน"></label>
+                                        <img src="{{index_scholar.si_photo_bg.url}}"  /> 
+                                    </label> 
+                                    {%endif%}
+                                    {%endfor%} 
+                                    <!-- <label for="{{key1.0}}">{{key1.0}}</label><br> -->
+                             
+                          <!-- close boxcheck-->  
+                        <!-- </div> -->
+                            {%endif%}</div>
+                            <div class="scholarName">
+                                <!--ลุงพีเจอเพชรแล้วเย่ห้ ลุงพีเจอเพชรแล้วโย้วโฮ -->
+                                <h3>{{key1.0}}</h3>
+                                <!--ลุงพีเจอเพชรแล้วเย่เห้ ลุงพีเจอเพชรแล้วโย้วโฮ {{key1.0}} -->
+                            </div>  
+                        </div>  
+                            
+                            
+                    </div>
+
         {%endfor%}
+        
+        </div><!-- close row-->
+    </div> <!--close lobox-->
 
         <input type="submit" value="ยืนยัน" class="btn btn-primary">
     </form> 
-</font>
+
+    
+
 {% endblock %}

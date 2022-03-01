@@ -358,9 +358,38 @@
             <font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font>
           </b></h2>
 
+          {% if json_obj == None %}
+          <div class="wraper2">
+            <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
+            <div class="select">
+              <select name ="title-siblingthai">
+                <option value = "กรุณาเลือก" >กรุณาเลือก</option>
+                <option value = "นาย" >นาย</option>
+                <option value = "นางสาว" >นางสาว</option>
+                <option value = "นาง" >นาง</option>
+              </select>
+             </div> 
+            <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
+            <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
+            <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
+            <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
+            <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
+            <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+            <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้ทุน </i> </button>
+          </div>
+          {%endif%}
 
-        <div class="wraper2">
+%endif%
+%endif%
+%endif%
+%endif%
+%endif%
+%endif%
+%endif%
+%endif%
           {% for json_obj in json_bro %}
+          
+          <div class="wraper2">
           <div class="select">
             <select name="title-siblingthai">
               <option value="" disabled selected>กรุณาเลือก</option>
@@ -389,7 +418,11 @@
           </button><br>
           {%else%}
           <a href="#" class="delete">delete</a><br>
+
           {%endif%}
+
+ 
+
           {%endfor%}
         </div>
 
@@ -464,6 +497,18 @@
             <font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font>
           </b></h2>
 
+        {%if json == None %}
+
+        <div class="wraper">
+          <div>
+            <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
+            <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
+            <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+            <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้มอบทุน </i> </button>
+         </div>
+       </div>
+
+        {%endif%}
         <div class="wraper">
           {% for json_obj in json %}
 

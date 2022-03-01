@@ -55,7 +55,9 @@ urlpatterns = [
     path('secondAppilcationAdmin/<int:home_id>',views.secondAppilcationAdmin,name="secondAppilcationAdmin"), #รายชื่อนิสิตในทุนนั้นๆ สำหรับตรวจสอบรายชื่อนิสิต(admin) 2
     path('interviewStudent/<int:info_id>',views.interviewStudent,name="interviewStudent"),
     path('interviewStudentTest/<int:info_id>/<int:user_id>',views.interviewStudentTest,name="interviewStudentTest"),
-    path('checkStatus/<int:home_id>/<int:user_id>',views.checkStatus,name="checkStatus") #เช็คสถานะนิสิต
+    path('checkStatus/<int:home_id>/<int:user_id>',views.checkStatus,name="checkStatus"), #เช็คสถานะนิสิต
+    path('delApp/<int:home_id>/<int:user_id>',views.delApp,name="delApp"), #ลบใบสมัคร
+    path('changeStatus/<int:home_id>/<int:user_id>',views.changeStatus,name="changeStatus") #สำหรับเปลี่ยนสถานะ 21 20 31 30 41
     ]
 
 urlpatterns += [

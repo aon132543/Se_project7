@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -22,7 +23,14 @@
 
 <body>
   {% block js %}
-  
+  <script>
+    tinymce.init({
+      selector: '#mytextarea',
+      plugins: ['table','print'],
+      table_use_colgroups: true
+    });
+  </script>
+
 
   {%if messages %}
   {%for m in messages %}

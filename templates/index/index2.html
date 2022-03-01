@@ -73,6 +73,7 @@
       <!--จบส่วนเมนูข้าง-->
       <!--เนื้อหาด้านใน-->
       <div class="main-container">
+
         {% for new in news%}
         <div class="card">
           <h1>{{new.sn_header}}</h1>
@@ -80,19 +81,20 @@
               <img src="{{new.sn_photo_bg.url}}">
           {% endif %}
         <div class="description"> 
-          <p> {{new.sn_description}} </p>
+          <p> {{new.sn_description | safe}} </p>
         </div>
         <div class="level-item has-text-centered">
         <span class="tag is-primary is-large">{{new.sn_expire_date}}</span> 
-      </div>
+        </div>
       {% if new.sn_path_to_pdf %} 
        <a href="/viewpost/{{new.id}}"> <button class="button is-link is-fullwidth">รายละเอียดเพิ่มเติม</button> </a>
-        </div>
-      {%endif%}
-        {%endfor%}
       
+      {%endif%}
+      </div>
+      {%endfor%}
       </div>
       <!--จบเนื้อหาส่วนใน-->
+      
     </div>
     <!--จบทั้งหมด-->
 
