@@ -14,10 +14,20 @@ from django.utils import timezone
 from datetime import date
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator , EmptyPage ,InvalidPage
-
 import json as js
 
-# Create your views here.
+# from allauth.socialaccount.adaptor import DefaultSocialAccountAdapter
+
+# import json as js
+
+# # Create your views here.
+
+# class MySocialAccount(DefaultSocialAccountAdapter):
+#     def pre_social_login(self, request, sociallogin):
+#         u = sociallogin.account.user
+#         if not u.email.split('@')[1] == "ku.th":
+#             raise ImmediateHttpResponse(render_to_response('error.html'))
+
 
 def index(request):         #หน้าข่าวประชาสัมพันธ์หน้าแรกก่อนเข้า login 
     file_my = None   
@@ -105,6 +115,7 @@ def CreateScholar (request):                #หน้าสร้างปร�
         namelst = request.POST.getlist('text[]')
         type_scholar=request.POST['type_scholar']
         news = request.POST.get('news',None)  
+        year = request.POST['year']
         keys =[]
         
         for i in range(len(namelst)):
@@ -137,10 +148,14 @@ def CreateScholar (request):                #หน้าสร้างปร�
             si_path_to_pdf= file_to,
             si_note =option,
             si_expire_time =date_e,
-            si_year = datetime.date.today().year,
+            #si_year = datetime.date.today().year,
+            si_year= year,
             si_semester = 2
         ) 
         data.save()
+        
+        weight = Scholar_weight_score.objects.create(sws_si_id=data,sws_info={'หัวข้อที่1':'0'})
+        weight.save()
 
 
         if news == "1" :
@@ -172,6 +187,7 @@ def editScholar(request,order_id):
         namelst = request.POST.getlist('text[]')
         type_scholar=request.POST['type_scholar']
         news = request.POST.get('news',None)  
+        year = request.POST['year']
         keys =[]
         
         for i in range(len(namelst)):
@@ -203,8 +219,10 @@ def editScholar(request,order_id):
             si_source_name =res,
             si_note =option,
             si_expire_time =date_e,
-            si_year = datetime.date.today().year,
+           # si_year = datetime.date.today().year,
+            si_year =year,
             si_semester = 2
+            
         )
         fileurl_img = None
         if request.FILES.get('img') != None :
@@ -428,10 +446,18 @@ def addCommittee(request):
     return render(request,'manageCommittee_Admin/addCommittee.html')
     
 def viewScore(request):
+
+
     infoes = Scholar_info.objects.all() #ดึงฐานdatabase
     scholar = Scholar_weight_score.objects.all()
+    res={}
+    for key in scholar:
+        res[key] = key.status
     
-    return render(request,'score/scholar_score.html',{'infoes':infoes,'scholars':scholar}) 
+
+    
+    
+    return render(request,'score/scholar_score.html',{'infoes':infoes,'scholars':scholar,'res':res}) 
 
 def viewWightScore(request,id_info):
     info = Scholar_info.objects.filter(id=id_info)
@@ -453,21 +479,11 @@ def viewWightScore(request,id_info):
         now = timezone.now()
         data = Scholar_weight_score.objects.filter(sws_si_id=id_info).update(
                 sws_info = res,
-                sws_date = now
+                sws_date = now,
+                status =True,
         )
         infoes = Scholar_info.objects.all()
         return redirect('scholarScore')
-
-    if Scholar_weight_score.objects.filter(sws_si_id=id_info).exists()==False:
-        res = {"สวัสดีครับ": "20", "สวัสดีครับท่าน": "3", "1": "1"}
-        data3 = Scholar_weight_score.objects.create(
-            sws_si_id = info[0],
-            sws_date = timezone.now(),
-            sws_info = res,
-            status = True,
-        )
-        data3.save()
-        return redirect('/scholarWeightScore'+"/"+str(id_info))
     json= {"หัวข้อ":"คะแนน"}
     if  Scholar_weight_score.objects.filter(sws_si_id=info_data).exists() == True:
         json = Scholar_weight_score.objects.filter(sws_si_id=info_data.id)
@@ -1218,63 +1234,74 @@ def interview(request):
 
     return render(request,'Committee/news_committee.html',{'scholars':newsperPage})
 
-def historyGetScholar(request):
+def historyGetScholarFind (request):
     check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
     data = Scholar_app.objects.all()
-    if request.method == 'POST':
-        IDStudent = check(request.POST['studentID'])   #เลขรหัสนิสิต
-        scholarType = check(request.POST['scholarType'])   #ทุนภายใน/นอก/ผสม
-        scholarName = check(request.POST['scholarName'])   #ชื่อทุน
-        year = check(request.POST['year'])  #ปีของทุน
-       
-        if IDStudent != None:
-            data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
-        if scholarType != None:
-            infoes = Scholar_info.objects.filter(si_source=scholarType)
-            info_id = []
-            for info in infoes:
-                info_id.append(info.id)
-            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-        if scholarName != None:
-            infoes = Scholar_info.objects.filter(si_name=scholarName) 
-            info_id = []
-            for info in infoes:
-                info_id.append(info.id)
-            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-        if year != None:
-            info = Scholar_info.objects.filter(si_year=year) 
-            info_id = []
-            for info in infoes:
-                info_id.append(info.id)
-            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-
-        dic = []
-        
-        money = 0
-        infoes = Scholar_info.objects.all()
-        for info in infoes:
-            d = data.filter(sa_si_id = info.id)
-            if d.exists() == True:
-                money += len(d)*info.si_individual_amount
-                dic.append([info,d])
-            
-        paginator = Paginator(dic,8)  
-
-        try:
-            page = int(request.GET.get('page','1'))
-        except:
-            page=1
+    infoes = Scholar_info.objects.all()
+    IDStudent = check(request.GET['studentID'])   #เลขรหัสนิสิต
+    scholarType = check(request.GET['scholarType'])   #ทุนภายใน/นอก/ผสม
+    scholarName = check(request.GET['scholarName'])   #ชื่อทุน
+    year = check(request.GET['year'])  #ปีของทุน
+    ScholarProvider = check(request.GET['ScholarProvider'])
     
-        try:
-            dataperPage =  paginator.page(page)
-        except(EmptyPage,InvalidPage):
-            dataperPage = paginator.page(paginator.num_pages)
 
-        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'history':dataperPage,"money":money})
-    else:
+       
+    if IDStudent != None:
+        data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
+    if scholarType != None:
+        infoes = Scholar_info.objects.filter(si_source=scholarType)
+        info_id = []
+        for info in infoes:
+            info_id.append(info.id)
+        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+    if scholarName != None:
+        infoes = Scholar_info.objects.filter(si_name=scholarName) 
+        info_id = []
+        for info in infoes:
+            info_id.append(info.id)
+        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+    if year != None:
+        info = Scholar_info.objects.filter(si_year=year) 
+        info_id = []
+        for info in infoes:
+            info_id.append(info.id)
+        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+    if ScholarProvider != None:
+        info = Scholar_info.objects.filter(si_source_name__contains=ScholarProvider) 
+        info_id = []
+        for info in infoes:
+            info_id.append(info.id)
+        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
 
-        return render(request,'historyGetScholar_addmin/historyGetScholar.html')
+    dic = []
+    filds = [IDStudent,scholarType,scholarName,year,ScholarProvider]   
+    money = 0
+    for info in infoes:
+        d = data.filter(sa_si_id = info.id)
+        if d.exists() == True:
+            money += len(d)*info.si_individual_amount
+            dic.append([info,d])
+       
+            
+    paginator = Paginator(dic,1)
 
+    try:
+        page = int(request.GET.get('page','1'))
+    except:
+        page=1
+    
+    try:
+        dataperPage =  paginator.page(page)
+    except(EmptyPage,InvalidPage):
+        dataperPage = paginator.page(paginator.num_pages)
+        
+    return render(request,'historyGetScholar_addmin/historyGetScholarfind.html',{'history':dataperPage,'money':money,'infoes':infoes,'filds':filds})
+
+def historyGetScholar(request):
+    infoes = Scholar_info.objects.all()
+    return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoes})
+
+@login_required (login_url='index')
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
     paginator = Paginator(news,4)  
@@ -1290,7 +1317,8 @@ def firstAppilcationAdmin(request): #หน้าแรกของรายช�
         newsperPage = paginator.page(paginator.num_pages)
 
     return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': newsperPage})
-    
+
+@login_required (login_url='index')
 def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรายชื่อนิสิตแต่ละทุน
     scholars = Scholar_info.objects.filter(id=home_id)
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
@@ -1307,8 +1335,22 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
     json = Scholar_weight_score.objects.filter(sws_si_id=home_id)
     check = True
-    if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists():
-        check = False 
+    if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
+        check = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists():
+        check = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).exists():
+        check = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=30).exists():
+        check = False
+
+    memberGet = Scholar_info.objects.filter(id=home_id)
+    memberGet = memberGet[0]
+    memberGet = memberGet.si_individual_amount
+    # print(memberGet)
+    memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
+    # print(memberGot)
+    memberG = memberGet - memberGot
 
     paginator = Paginator(listApps,10)  
 
@@ -1322,7 +1364,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     except(EmptyPage,InvalidPage):
         listAppsPage = paginator.page(paginator.num_pages)
     
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listAppsPage,'json':json ,'check':check})
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG})
 
 def interviewStudent(request,info_id):
     info_obj = Scholar_info.objects.get(id = info_id)
@@ -1364,6 +1406,7 @@ def interviewStudentTest(request,info_id,user_id):
     json_sws = test_obj[0]
     json = json_sws.sws_info
     data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).get()
+
     if request.method == 'POST':
         name_lst = request.POST.getlist('name[]')
         weight_lst = request.POST.getlist('weight[]')
@@ -1391,6 +1434,8 @@ def interviewStudentTest(request,info_id,user_id):
                     res[key] = value
                     weight_lst.remove(value)
                     list_wieght.append(value)
+                    break
+
         sum_weight = 0
         sum_weightAll = 0
         count_khor = 0
@@ -1399,7 +1444,7 @@ def interviewStudentTest(request,info_id,user_id):
             count_khor = count_khor + 1
         for i in range(len(score_wieght)):
             sum_weight += float(list_wieght[i])/float(score_wieght[i])
-        
+            
         sum_weight = (sum_weight/count_khor)*100
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
         data = data[0]
@@ -1415,16 +1460,17 @@ def interviewStudentTest(request,info_id,user_id):
         student_user = User.objects.get(id = user_id)
         log_data  = Log_score.objects.filter(ls_commit = my_user).filter(ls_student =  student_user).filter(ls_Scholar = info_obj).update(score = res)
 
-        #-----------------------
-        #อัพเดทคะแนนรวม และรายข้อ
+            #-----------------------
+            #อัพเดทคะแนนรวม และรายข้อ
         data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
-                sa_score_info = res,
-                sa_score = cal,
-                sa_person = person+1,
-              sa_json_commit = data_commit
+                    sa_score_info = res,
+                    sa_score = cal,
+                    sa_person = person+1,
+                sa_json_commit = data_commit
         )
-        #--------------------------
+            #--------------------------
         return redirect('/interviewStudent/'+str(info_id))
+
 
 
     my_user = User.objects.get(id = request.user.id)
@@ -1439,6 +1485,7 @@ def interviewStudentTest(request,info_id,user_id):
         
     return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
+@login_required (login_url='index')
 def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบเอกสารของแอดมิน
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -1472,13 +1519,51 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
 
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
+
 def delApp(request,home_id,user_id):  
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
     Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=home_id).delete()
     return redirect('/viewHome/'+str(home_id)+"/"+str(user_id))
 
-def changeStatus(request,home_id,user_id):
-    #ทำไม่เป็นนนนนนนนนนนนนนนนนน
-    # return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
-    return render(request,'appilcationList_addmin/changeStatus.html')
+@login_required (login_url='index')
+def changeStatus(request,home_id,user_id,status):
+    user_obj = User.objects.get(id=user_id)
+    checkin = Scholar_app.objects.filter(sa_userid = user_obj).filter(sa_si_id = home_id)
+    checkin = checkin[0]
+
+    memberGet = Scholar_info.objects.filter(id=home_id)
+    memberGet = memberGet[0]
+    memberGet = memberGet.si_individual_amount
+    memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
+    memberG = memberGet - memberGot
+
+    if checkin.sa_status == 11:
+        if status == 1:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 21)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
+        elif status == 0:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 20)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
+    elif checkin.sa_status == 21:
+        if status == 1:
+            if(memberG==0):
+                messages.success(request, 'สร้างประชาสัมพันธ์แล้ว')
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
+            else:
+                data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                    sa_status = 31)
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
+        elif status == 0:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 30)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
+    elif checkin.sa_status == 31:
+        if status == 1:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 41)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
+
+    return redirect('/secondAppilcationAdmin/'+str(home_id))

@@ -252,6 +252,9 @@ class Scholar_app(models.Model):
 
     sa_json_commit = models.JSONField(null=True,default={})
 
+    class Meta:
+        ordering = ['-sa_score']
+
     def __str__(self):
         return str(self.sa_userid)+" สมัครทุน "+str(self.sa_si_id)
     

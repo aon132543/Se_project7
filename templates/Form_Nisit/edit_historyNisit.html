@@ -358,9 +358,9 @@
             <font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font>
           </b></h2>
 
-          {% if json_obj == None %}
+          {% if json_bro == None %}
           <div class="wraper2">
-            <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
+         
             <div class="select">
               <select name ="title-siblingthai">
                 <option value = "กรุณาเลือก" >กรุณาเลือก</option>
@@ -375,18 +375,10 @@
             <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
             <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
             <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
-            <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้ทุน </i> </button>
+            <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button>
           </div>
           {%endif%}
 
-%endif%
-%endif%
-%endif%
-%endif%
-%endif%
-%endif%
-%endif%
-%endif%
           {% for json_obj in json_bro %}
           
           <div class="wraper2">

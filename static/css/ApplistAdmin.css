@@ -262,12 +262,12 @@
     padding-left: 3px;
   }
   
-  /*.wrapper.collapse .main-container {
+  .wrapper.collapse .main-container {
     width: calc(100% - 70px);
     margin-left: 70px;
-  }*/
+  }
   
-  /*.wrapper .main-container .card {
+  .wrapper .main-container .card {
     padding: 10px;
     margin-top:10px;
     margin-bottom: 10px;
@@ -278,7 +278,7 @@
     display: block;
     margin-right: auto;
     margin-left: auto;
-  }*/
+  }
   
   .card-headstatus {
     list-style: none;
@@ -561,6 +561,20 @@
   overflow-y: auto;
 }
 
+ .wrapper .main-container .card {
+    padding: 10px;
+    margin-top:10px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-family: 'Courier New', Courier, monospace;
+    width: 100%;
+    height: auto;
+    display: block;
+   
+    margin-left: 10px;
+  }
+  
+
 .wrapper .sidebar .sidebar-menu {
   overflow: hidden;
   padding-bottom: 75px;
@@ -604,6 +618,10 @@
   b{
     font-size: 10px;
   }
+
+  p{
+    font-size: 10px;
+  }
   .wrapper .sidebar .sidebar-menu {
     overflow: hidden;
     padding-bottom: 75px;
@@ -631,6 +649,7 @@
     height: 25px;
     border-radius: 22px;
     background-color: #bbb;
+    /*margin-right:150px;*/
   }
 
   .cardbox-weight{
@@ -643,7 +662,7 @@
     font-family: 'Courier New', Courier, monospace;
     display: block;
     text-align: center;
-    margin-left: -100px;
+    margin-left: -150px;
    
     margin-bottom: 20px;
     border-radius:22px;
@@ -653,8 +672,8 @@
  
 
    .conditionStatusOnProgress{
-   width:230px;
-    height: 45px;
+   width:100px;
+    height: 25px;
     background-color:rgb(255, 186, 122);
     padding: 10px;
     font-size: 17px;
@@ -663,7 +682,7 @@
     text-align: center;
     justify-content: space-between;
     border-radius: 22px;
-    margin-left: 10px;
+    margin-left: 1px;
     font-weight: bold;
     
   }

@@ -2,24 +2,58 @@
 {% load static %}
 {% block content %}
 {% csrf_token %}
-<script>
-function call(info_id,userid){
-  
-  Swal.fire({
-    "title":"ท่านยืนยันที่จะทำรายการต่อหรือไม่ ? ",
-    "icon":"question",
-    "showCancelButton":true,
-    "cancelButtonText":"ย้อนกลับ",
-    "confirmButtonText":"ใช่"
-  })
-  .then(function (result){
-    if (result.isConfirmed){
-      window.location.href="/checkStatus/"+info_id +"/"+userid
-    }
-  })
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-}
+{%if messages %}
+{%for m in messages %}
+<script>
+  Swal.fire({
+    "title": "ผิดพลาด!",
+    "text": "{{m}}",
+    "icon": "error"
+  })
 </script>
+{% endfor %}
+{% endif %}
+
+<script>
+
+
+  function call21(info_id,userid,title,name,sirname)
+  {
+    Swal.fire({
+      title: title+name+' '+sirname+'\n ผ่านรอบสัมภาษณ์หรือไม่?',
+      icon:"question",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'ผ่าน',
+      denyButtonText: `ไม่ผาน`,
+      cancelButtonText:"ย้อนกลับ",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+1
+      } else if (result.isDenied) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+0
+      }
+    })
+  }
+
+  function call31(info_id,userid,title,name,sirname)
+  {
+    Swal.fire({
+      "title": title+name+' '+sirname+"\nได้รับทุนเรียบร้อยแล้วหรือไม่ ? ",
+      "icon":"question",
+      "showCancelButton":true,
+      "cancelButtonText":"ย้อนกลับ",
+      "confirmButtonText":"ใช่"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+1
+      }
+    })
+  }
+
+  </script>
 
 {% for scholar in scholars %}
 
@@ -34,7 +68,7 @@ function call(info_id,userid){
     <div class="card">
         <img style="width : 1280px;" src="{{scholar.si_photo_bg.url}}" alt=""/>
     </div>
-    <p style="text-indent: 130px;"><b>รายละเอียด: </b>{{scholar.si_description}}</p>
+    <p style="text-indent: 130px;"><b>รายละเอียด: </b>{{scholar.si_description|safe}}</p>
     <div class="cardbox">
         <ul>
             <li><b>รายชื่อผู้ยื่นสมัครขอทุนทั้งหมด</b></li>
@@ -78,7 +112,7 @@ function call(info_id,userid){
   <!-- หาง -->
     <div class="cardbox-list">
         <ul>
-          <li><b>คงเหลือ {{scholar.si_individual_amount}}/{{scholar.si_individual_amount}}</b></li>
+          <li><b>คงเหลือ {{memberG}}/{{scholar.si_individual_amount}}</b></li>
         </ul>
     </div>
 {%endfor%}   
@@ -149,7 +183,7 @@ function call(info_id,userid){
             {%if listApp.sa_status == 11 %}
               <li>
                 <div class="conditionStatusOnProgress">
-                  <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">ตรวจสอบเอกสาร</a>
+                  <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}"><p>ตรวจสอบเอกสาร</p></a>
                 </div>
               </li>
             {%elif listApp.sa_status == 20 %}
@@ -160,7 +194,9 @@ function call(info_id,userid){
             {%elif listApp.sa_status == 21 %}
               <li>
                 <div class="conditionStatusOnProgress">
-                  <a href="/changeStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">สอบสัมภาษณ์ยังกดไม่ได้</a>
+                  <a onclick='call21({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                    <b>สอบสัมภาษณ์</b>
+                  </a>
                 </div>
               </li>
             {%elif listApp.sa_status == 30 %}
@@ -172,7 +208,9 @@ function call(info_id,userid){
             {%elif listApp.sa_status == 31 %}
               <li>
                 <div class="conditionStatusOnProgress">
-                  <b>ดำเนินการรับทุน</b>
+                  <a onclick='call31({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                    <b>ดำเนินการรับทุน</b>
+                  </a>
                 </div>
               </li>
             {%elif listApp.sa_status == 41 %}

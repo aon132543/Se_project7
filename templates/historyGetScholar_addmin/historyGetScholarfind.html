@@ -27,12 +27,13 @@
     <br>
     </br>
     <li align="left"><b><font face="Arial" class="movehead" >รหัสนิสิต 
-        <input type="text" class="Textbox2" name="studentID"></font></b>
+        <input type="text" class="Textbox2" name="studentID" value="{%if filds != None %}{{filds.0}} {%endif%}" readonly></font></b>
     <b><font face="Arial" class="movehead" >ผู้ให้ทุน 
-        <input type="text" class="Textbox2" name="ScholarProvider"></font></b>
+        <input type="text" class="Textbox2" name="ScholarProvider" value="{{filds.4}}" readonly></font></b>
     <b><font face="Arial" class="movehead" >ประเภททุน</font></b>
     <div class="select" name ="title-thai">
     <select name="scholarType">
+        <option value = "{{filds.1}}" selected="selected" hidden="hidden" >{{filds.1}}</option>
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "ทุนภายใน" >ทุนภายใน</option>
         <option value = "ทุนภายนอก" >ทุนภายนอก</option>
@@ -45,6 +46,7 @@
       <b><font face="Arial" class="movehead" >ชื่อทุน</font></b>
     <div class="select" name ="title-thai">
     <select name="scholarName">
+      <option value="{{filds.3}}" selected="selected" hidden="hidden" >{{filds.3}}</option>
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         {% for info in infoes %}
         <option value = "{{info.si_name}}" >{{info.si_name}}</option>
@@ -56,6 +58,7 @@
     <b><font face="Arial" class="movehead" >ปีการศึกษา</font></b>
     <div class="select" name ="title-thai">
         <select name="year">
+        <option value = "{{filds.3}}" selected="selected" hidden="hidden">{{filds.3}}</option>
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         {% for info in infoes %}
         <option value = "{{info.si_year}}" >{{info.si_year}}</option>
@@ -67,7 +70,7 @@
     <div class = "boxmoney"
           <h2 align="center"><b>ยอดเงินรวมทั้งสิ้น {{money}} บาท</b></h2>
     </div>
-  </form>
+ 
     
     <!-- <form class="example" action="historyGetScholar" method="POST" enctype="multipart/form-data" style="margin:auto;max-width:300px"> -->
     <!-- </form> -->
@@ -143,9 +146,9 @@ $(".wrapper").toggleClass("collapse");
         is-current 
   
         {% endif %}
-  
-  
-        " aria-label="Goto page 1" href="?page={{pagenumber}}">{{pagenumber}}</a>
+
+
+        " aria-label="Goto page 1" href="?studentID={% if filds.0 != None %}{{filds.0}}{% endif %}&ScholarProvider={% if filds.4 != None %}{{filds.4}}{% endif %}&scholarType={% if filds.1 != None %}{{filds.1}}{% endif %}&scholarName={% if filds.2 != None %}{{filds.2}}{% endif %}&year={% if filds.3 != None %}{{filds.3}}{% endif %}&page={{pagenumber}}">{{pagenumber}} </a>
       </li>
       {% endfor %}
       {%endif%}
@@ -153,6 +156,7 @@ $(".wrapper").toggleClass("collapse");
     </ul>
   </nav>
   </div>
+</form>
   <!-- end page -->
 </body>
 {% endblock %}

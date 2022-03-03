@@ -32,6 +32,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -172,3 +173,9 @@ PRIVATE_STORAGE_ROOT = '/path/to/private-media/'
 PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 CSRF_TRUSTED_ORIGINS=['https://*.warinnarat.thddns.net:9920.COM']
+
+JAZZMIN_SETTINGS={
+    "site_title":"Scholarship",
+    "site_header":"Scholarship",
+    "site_brand": "Scholarship",
+}

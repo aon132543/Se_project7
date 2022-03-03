@@ -22,6 +22,7 @@
   </head>
   <body>
     <form action="historyGetScholarFind" method="get" >
+  
         <div class="center2">
             <h2 align="left" class="resizedTextbox" >ประวัติรายชื่อผู้ได้รับทุน</h2>
     <br>
@@ -62,12 +63,10 @@
         {% endfor %}
         </select>
     </div>
-   
     <button type="submit"><i class="fa fa-search"></i></button>
     <div class = "boxmoney"
           <h2 align="center"><b>ยอดเงินรวมทั้งสิ้น {{money}} บาท</b></h2>
     </div>
-  </form>
     
     <!-- <form class="example" action="historyGetScholar" method="POST" enctype="multipart/form-data" style="margin:auto;max-width:300px"> -->
     <!-- </form> -->
@@ -90,16 +89,16 @@
         <div class="bodytable">
         <table>
             <thead>
-                <th >รหัสนิสิต</th>
-                <th >ชื่อ-นามสกุล</th>
-                <th >สถานะ</th>
+                <th valign="middle">รหัสนิสิต</th>
+                <th valign="middle">ชื่อ-นามสกุล</th>
+                <th valign="middle">สถานะ</th>
             </thead>
             <tbody>
         {% for h in his.1 %}
             <tr>
-                  <td >{{h.sa_std_code}}</td>
-                  <td >{{h.sa_title_th}}{{h.sa_firstname_th}}   {{h.sa_lastname_th}}</td>
-                  <td ><b><button >ได้รับทุน</button></b></td>
+                  <td valign="middle">{{h.sa_std_code}}</td>
+                  <td valign="middle">{{h.sa_title_th}}{{h.sa_firstname_th}}   {{h.sa_lastname_th}}</td>
+                  <td valign="middle"><b><button valign="middle">ได้รับทุน</button></b></td>
               </tr>
         {%endfor%}       
         </table>  
@@ -113,6 +112,7 @@
       
           </div>
         </div>
+      </form>
     
      
       </div>

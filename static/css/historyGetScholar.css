@@ -282,7 +282,7 @@ textarea {
   width: 100%;
   border: 2px solid rgba(0, 0, 0, 0);
   outline: none;
-  background-color: rgba(230, 230, 230, 0.6);
+  background-color: rgba(245, 240, 240, 0.6);
   padding: 0.5rem 1rem;
   font-size: 1.1rem;
   margin-bottom: 22px;
@@ -326,7 +326,7 @@ textarea {
 .resizedTextbox {
   width: 35%;
   height: 60px;
-  background-color: rgba(255, 255, 255, 0.89);
+  background-color: rgba(248, 248, 248, 0.89);
   border-radius: 5px;
   border-color: rgb(221, 220, 220);
   margin-right: 1500px;
@@ -346,13 +346,12 @@ textarea {
 
 .resizedTextbox3 {
   width: 100%;
-  height: 750px;
-  background-image: linear-gradient(120deg, #fdfbfb 50%, #ebedee 125%);
+  height: 100%;
   border-radius: 5px;
   border-color: rgb(221, 220, 220);
   margin-right: 1500px;
   margin-left: 0px;
-  box-shadow: 10px 10px 8px #888888;
+  
 }
 
 .resizedTextbox4 {
@@ -401,7 +400,7 @@ textarea {
 }
 
 .movehead2 {
-  font-size: 22px;
+  font-size: 25px;
   /*background-color: rgb(218, 218, 218);*/
   width: 100%;
   padding-left: 100px;
@@ -478,23 +477,38 @@ form.example input[type="text"] {
 }
 
 .bodytable {
-  width: 100%;
+  width: 90%;
   display: flex;
-  justify-content: left;
-  height: 250px;
-  margin-left: 50px;
+  justify-content: center;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  /*margin-left: 50px;*/
+  font-size:23px;
+  font-weight: bold;
+  border-style: solid;
+  margin-bottom: 50px;
+  
+  vertical-align: middle;
 }
 
 table {
-  width: 90%;
+  width: 100%;
   border-collapse: collapse;
+  border: 1px solid black;
+  text-align: center;
 }
-
-th,
+th{
+  background-color: rgba(229, 192, 192, 0.994);
+  height:45px;
+  text-align: center;
+  vertical-align: center;
+}
 td {
-  border-top: 5px solid rgb(255, 255, 255);
-  padding: 20px 20px;
   font-size: 20px;
+  text-align: center;
+  height:50px;
+  vertical-align: middle;
 }
 
 .icon {
@@ -537,21 +551,26 @@ tr:nth-child(even) {
 }
 
 .boxmoney {
-  width: 50%;
+  width: 25%;
   border: none;
   border-radius: 20px;
   background-color: rgb(0, 164, 37);
   color: rgb(255, 255, 255);
   padding: 7px 20px;
-  margin-top: 280px;
+  margin-top: 45px;
   margin-left: auto;
   margin-right: auto;
-  font-size: 15px;
+  font-size: 23px;
+}
+
+.pagination-list{
+  /*background-color: rgb(0, 164, 37);*/
+  font-size:20px;
 }
 
 @media only screen and (max-width: 800px) {
   .wrapper .sidebar {
-  z-index: 1;
+  z-index: 3;
   background: #852b3a;
   position: fixed;
   top: 50px;
@@ -594,6 +613,7 @@ tr:nth-child(even) {
   width: 100%;
   overflow: hidden;font-size: 5px;
   font-size: 15px;
+
 }
 
 
@@ -602,7 +622,6 @@ tr:nth-child(even) {
   margin-top: 70px;
   margin-left: 150px;
   padding: 15px;
-  background: url(background.jpg) no-repeat;
   background-size: cover;
   height: 100vh;
   transition: 0.3s;
@@ -614,7 +633,6 @@ tr:nth-child(even) {
   object-fit: cover;
 }
 .wrapper .main-container .card {
-  background: rgb(140, 140, 140);
   padding: 15px;
   margin-bottom: 10px;
   font-size: 14px;
@@ -633,6 +651,10 @@ tr:nth-child(even) {
   color: #fff;
   
 }
+.select{
+  z-index:0;
+}
+
 .resizedTextbox {
   width: 75%;
   height: 60px;
@@ -677,7 +699,7 @@ tr:nth-child(even) {
 }
 
 .movehead {
-  font-size: 18px;
+  font-size: px; 
   padding-left: 10px;
 }
   
@@ -721,5 +743,16 @@ td {
   padding: 20px 20px;
   font-size: 20px;
 }
-
+.boxmoney {
+  width: 100%;
+  border: none;
+  border-radius: 20px;
+  background-color: rgb(0, 164, 37);
+  color: rgb(255, 255, 255);
+  padding: 7px 20px;
+  margin-top: 45px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 15px;
+}
 }
