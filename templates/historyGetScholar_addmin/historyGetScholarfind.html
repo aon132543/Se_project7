@@ -23,50 +23,24 @@
   <body>
     <form action="historyGetScholarFind" method="get" >
         <div class="center2">
-            <h2 align="left" class="resizedTextbox" >ประวัติรายชื่อผู้ได้รับทุน</h2>
+            <h2 align="left" class="resizedTextbox3" >ผลการค้นหาประวัติรายชื่อผู้ที่ได้รับทุน</h2>
     <br>
     </br>
+    
     <li align="left"><b><font face="Arial" class="movehead" >รหัสนิสิต 
         <input type="text" class="Textbox2" name="studentID" value="{%if filds != None %}{{filds.0}} {%endif%}" readonly></font></b>
     <b><font face="Arial" class="movehead" >ผู้ให้ทุน 
         <input type="text" class="Textbox2" name="ScholarProvider" value="{{filds.4}}" readonly></font></b>
     <b><font face="Arial" class="movehead" >ประเภททุน</font></b>
-    <div class="select" name ="title-thai">
-    <select name="scholarType">
-        <option value = "{{filds.1}}" selected="selected" hidden="hidden" >{{filds.1}}</option>
-        <option value = "กรุณาเลือก" >กรุณาเลือก</option>
-        <option value = "ทุนภายใน" >ทุนภายใน</option>
-        <option value = "ทุนภายนอก" >ทุนภายนอก</option>
-        <option value = "ทุนภายผสม" >ทุนผสม</option>
-    </select>
-    </div>
-
-
+        <input type="text" class="Textbox2" name="scholarType" value="{{filds.1}}" readonly></font></b>
+    
     <li align="left">
       <b><font face="Arial" class="movehead" >ชื่อทุน</font></b>
-    <div class="select" name ="title-thai">
-    <select name="scholarName">
-      <option value="{{filds.3}}" selected="selected" hidden="hidden" >{{filds.3}}</option>
-        <option value = "กรุณาเลือก" >กรุณาเลือก</option>
-        {% for info in infoes %}
-        <option value = "{{info.si_name}}" >{{info.si_name}}</option>
-        {% endfor %}
-    </select>
-    </div>
-    
+        <input type="text" class="Textbox2" name="scholarName" value="{{filds.2}}" readonly></font></b>
 
     <b><font face="Arial" class="movehead" >ปีการศึกษา</font></b>
-    <div class="select" name ="title-thai">
-        <select name="year">
-        <option value = "{{filds.3}}" selected="selected" hidden="hidden">{{filds.3}}</option>
-        <option value = "กรุณาเลือก" >กรุณาเลือก</option>
-        {% for info in infoes %}
-        <option value = "{{info.si_year}}" >{{info.si_year}}</option>
-        {% endfor %}
-        </select>
-    </div>
+        <input type="text" class="Textbox2" name="year" value="{{filds.3}}" readonly></font></b>
    
-    <button type="submit"><i class="fa fa-search"></i></button>
     <div class = "boxmoney"
           <h2 align="center"><b>ยอดเงินรวมทั้งสิ้น {{money}} บาท</b></h2>
     </div>
@@ -88,7 +62,6 @@
         </li>
         </form>
         <br>
-        </br>
 
         <div class="bodytable">
         <table>

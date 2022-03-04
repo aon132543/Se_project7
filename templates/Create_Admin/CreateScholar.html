@@ -94,7 +94,7 @@ $(document).ready(function(){
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <input type="text" class="field" placeholder="ชื่อทุน" name="name_scholar">     
+                    <input type="text" class="field" placeholder="ชื่อทุน" name="name_scholar" required>      
                 </p>
             </div>
         </div>
@@ -165,7 +165,7 @@ $(document).ready(function(){
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <input type="date" class="field" name="date_news">
+                    <input type="date" class="field" name="date_news" required>
                 </p>
             </div>
         </div>
@@ -191,7 +191,7 @@ $(document).ready(function(){
         <div class="field-body">
             <div class="field">
                 <p class="control">
-                    <input class="field" type="text" placeholder="ปีการศึกษา" name="year">
+                    <input class="field" type="text" placeholder="ปีการศึกษา" name="year" required>
                 </p>
             </div>
         </div>
@@ -269,7 +269,7 @@ $(document).ready(function(){
         <div class="field-body file has-name is-fullwidth">
             <div class="field">
                 <label class="file-label">
-                    <input class="file-input" type="file" name="img" id="img" accept="image/jpeg,image/gif,image/png" onchange="javascript:updateList()">
+                    <input class="file-input" type="file" name="img" id="img" accept="image/jpeg,image/gif,image/png" onchange="javascript:updateList()"  required>
                     <span class="file-cta">
                         <span class="file-icon">
                             <i class="fas fa-upload"></i>

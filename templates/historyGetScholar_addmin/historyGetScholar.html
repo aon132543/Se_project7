@@ -57,13 +57,14 @@
     <div class="select" name ="title-thai">
         <select name="year">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
-        {% for info in infoes %}
-        <option value = "{{info.si_year}}" >{{info.si_year}}</option>
+        {% for y in year %}
+        <option value = "{{y}}" >{{y}}</option>
         {% endfor %}
         </select>
     </div>
    
-    <button type="submit"><i class="fa fa-search"></i></button>
+  
+    <button class="button"><i class="fa fa-search"></i></button>
     <div class = "boxmoney"
           <h2 align="center"><b>ยอดเงินรวมทั้งสิ้น {{money}} บาท</b></h2>
     </div>

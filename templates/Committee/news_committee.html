@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 {% for scholar in scholars %}
+{%if scholar.si_status != 2%}
   <article class="message is-success">
     <div class="message-header">
       <p>{{scholar.0.si_name}}</p>
@@ -16,6 +17,7 @@
      
     </div>
   </article>
+{%endif%}
 
     
 

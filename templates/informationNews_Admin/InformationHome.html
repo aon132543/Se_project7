@@ -13,6 +13,7 @@
           {%endif%}
         </h2> -->
         {% for new in info %}
+        {% if new.sn_status == 0 %}
         <div class="list">
           <div class="list-item box">
             <div class="list-item-image">
@@ -50,7 +51,7 @@
             </div>
           </div>
             
-        
+          {%endif%}
         {%endfor%}
         <a href="/information">
         <div class="add-button">

@@ -72,27 +72,24 @@
 
           <article class="message is-link">
             <div class="message-header">
-              <p>เนื้อหา</p>
+              <p >เนื้อหา</p>
             </div>
             
             <div class="message-body">
               <div class="box">
-              {{scholar.si_description|safe }}
+              <p class="subtitle is-4">{{scholar.si_description|safe }} </p>
               </div>
               <div class="box">
-              <p> <b><font  color="red" >หมายเหตุ {{scholar.si_note}}</font> </b></p>
+              <p class="subtitle is-4"> <b><font  color="red" >หมายเหตุ {{scholar.si_note}}</font> </b></p>
               
-              <p> จำนวนทุนที่ได้รับ: {{scholar.si_individual_amount}}  บาท </p>
-              <p> ที่มาของทุน: {{scholar.si_source}}  </p>
-              <p>สิ้นสุดวันรับสมัคร: {{scholar.si_expire_time}} </p>
-              
-          {% for key1,value1 in datajson.items %}
-
-          
-            <p>ผู้มอบทุน {{value1}}</p>
+              <p class="subtitle is-4"> จำนวนทุนที่ได้รับ: {{scholar.si_individual_amount}}  บาท </p>
+              <p class="subtitle is-4"> ที่มาของทุน: {{scholar.si_source}}  </p>
+              <p class="subtitle is-4"> สิ้นสุดวันรับสมัคร: {{scholar.si_expire_time}} </p>
+         
+            <p class="subtitle is-4" >ผู้มอบทุน {{scholar.si_source_name}}</p>
           
           
-          {%endfor%}<br>
+          <br>
         </div>
 
 
@@ -112,15 +109,21 @@
         
   
         </h2>
-        
-
+        {%if user.is_staff == False%}
+        {%if status_homeid == 0 %}
         {% if check %}
-        <button class="button is-info is-medium is-rounded is-fullwidth" onclick="call({{scholar.id}})"> สมัครทุน </i> </button>
+        <button class="button is-success is-medium is-rounded is-fullwidth" onclick="call({{scholar.id}})"> <p>สมัครทุน</p> </i> </button>
         {% else %}
         <a href = "/checkInfo/{{scholar.id}}"><button class="button is-warning is-medium is-rounded is-fullwidth" onclick=""> <p> แก้ไขข้อมูลสมัครทุน </p> </i> </button></a>
         <br>
-        <button class="button is-warning is-medium is-rounded is-fullwidth" onclick="del({{scholar.id}},{{request.user.id}})"> <p> ลบใบสมัครทุน </p> </i> </button>
+        <button class="button is-danger is-medium is-rounded is-fullwidth" onclick="del({{scholar.id}},{{request.user.id}})"> <p> <i class="fa-solid fa-trash"></i> ลบใบสมัครทุน </p> </i> </button>
         {% endif %}
+        {%elif status_homeid == 1%}
+        <button class="button is-info is-medium is-rounded is-fullwidth is-warning"> <p>กำลังดำเนินการรับทุน </p></i> </button>
+        {%endif%}
+        {%else%}
+        <a href="/editScholar/{{scholar.id}}"><button class="button is-info is-medium is-rounded is-fullwidth is-warning"> <p>แก้ไขทุน </p></i> </button></a>
+        {%endif%}
     <h2>
 </div>
 </article>

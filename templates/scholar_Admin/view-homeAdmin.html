@@ -12,9 +12,8 @@
          จำนวนเงินต่อคน: {{scholar.si_individual_amount}}
          จำนวนคน: {{scholar.si_max_scholar}}<br>
         ที่มาของทุน: {{scholar.si_source}}<br>
-        {%for p in datajson.person%} 
-            ผู้มอบทุน {{p}}
-        {%endfor%}
+        ผู้มอบทุน {{p}}
+        
         สิ้นสุดวันรับสมัคร: {{scholar.si_expire_time}}<br>
         <a href="{{scholar.si_path_to_pdf.url}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a>
     <h2>

@@ -63,7 +63,7 @@
     <div class="field-body">
         <div class="field">
             <p class="control">
-                <input type="text" class="field" placeholder="ชื่อข่าวประชาสัมพันธ์" name="head_news" value="{{new.sn_header}}">
+                <input type="text" class="field" placeholder="ชื่อข่าวประชาสัมพันธ์" name="head_news" value="{{new.sn_header}}" required> 
             </p>
         </div>
     </div>
@@ -92,7 +92,7 @@
     <div class="field-body">
         <div class="field">
             <p class="control">
-              <input type="date" class="field" name="date_news"value='{{new.sn_expire_date|date:"Y-m-d"}}'>
+              <input type="date" class="field" name="date_news"value='{{new.sn_expire_date|date:"Y-m-d"}}' required>
             </p>
         </div>
     </div>

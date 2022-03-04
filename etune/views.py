@@ -7,14 +7,15 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .form import * 
 from .models import *
-import datetime
 import math
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
-from datetime import date
+from datetime import date,datetime
+from datetime import timedelta  
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator , EmptyPage ,InvalidPage
 import json as js
+from django.contrib.auth.decorators import user_passes_test
 
 # from allauth.socialaccount.adaptor import DefaultSocialAccountAdapter
 
@@ -30,8 +31,16 @@ import json as js
 
 
 def index(request):         #หน้าข่าวประชาสัมพันธ์หน้าแรกก่อนเข้า login 
-    file_my = None   
-    news = Scholar_news.objects.all()
+    file_my = None 
+    data= Scholar_news.objects.all()
+    time = datetime.now()
+    for i in data:
+        dateNew = datetime.fromisoformat(str(i.sn_expire_date)).timestamp()
+        dateToday = datetime.fromisoformat(str(time)).timestamp()
+        if dateNew <= dateToday:
+            Scholar_news.objects.filter(sn_header=i.sn_header).update(sn_status = 1)   
+
+    news = Scholar_news.objects.exclude(sn_status = 1)
     return render(request, 'index/index2.html',{'files':file_my,'news':news})
 
 def login(request):
@@ -54,8 +63,26 @@ def log_user_out(request):
 
 @login_required (login_url='index')
 def home(request):                  #หน้าหลังจาก login ของทุกคน
-    news = Scholar_info.objects.all()
-    paginator = Paginator(news,4)  
+    user_obj = User.objects.filter(id=request.user.id)
+    user_obj = user_obj[0]
+
+   
+   
+    data= Scholar_info.objects.all()
+    time = datetime.now()
+    for i in data:
+        dateInfo = datetime.fromisoformat(str(i.si_expire_time)).timestamp()
+        dateToday = datetime.fromisoformat(str(time)).timestamp()
+        if dateInfo <= dateToday:
+            Scholar_info.objects.filter(id=i.id).update(si_status = 1) 
+    
+    apps = Scholar_app.objects.filter(sa_status = 41)
+    for app in apps:
+        Scholar_info.objects.filter(id=app.sa_si_id.id).update(si_status = 2) 
+
+    news = Scholar_info.objects.exclude(si_status = 2)
+    paginator = Paginator(news,4)
+    
 
     try:
         page = int(request.GET.get('page','1'))
@@ -66,12 +93,10 @@ def home(request):                  #หน้าหลังจาก login ข
         newsperPage =  paginator.page(page)
     except(EmptyPage,InvalidPage):
         newsperPage = paginator.page(paginator.num_pages)
-
-
-
+    
     return render(request,'home-std.html',{'scholars': newsperPage})
     
-@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_superuser)
 def information(request):           #หน้าสร้างข่าวประชาสัมพันธ์ของ admin
     if request.method == 'POST':  
         head_news = request.POST['head_news']
@@ -102,7 +127,7 @@ def viewpost(request,id_post):              #หน้าดูรายละ�
     news = Scholar_news.objects.filter(id=id_post)
     return render(request,'index/view-post.html',{'news':news})
 
-@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_superuser)
 def CreateScholar (request):                #หน้าสร้างประกาศรับทุน admin
     if request.method == 'POST':
         name_scholar = request.POST['name_scholar']
@@ -116,10 +141,6 @@ def CreateScholar (request):                #หน้าสร้างปร�
         type_scholar=request.POST['type_scholar']
         news = request.POST.get('news',None)  
         year = request.POST['year']
-        keys =[]
-        
-        for i in range(len(namelst)):
-            keys.append(str("ผู้สนับสนุนทุนท่านที่ ")+str(i+1))
 
         file_to = None
         img =None
@@ -128,13 +149,16 @@ def CreateScholar (request):                #หน้าสร้างปร�
         if request.FILES.get('file_t'):
             file_to = request.FILES.get('file_t')
 
-        res = {}
-        for key in keys:
-            for value in namelst:
-                if value != "":
-                    res[key] = value
-                    namelst.remove(value)
-                    break
+        name_db =""
+        
+        for i in range(len(namelst)):
+            if namelst[i] != "" :
+                if i == len(namelst)-2:
+                    name_db += str(namelst[i])
+                else:   
+                    name_db += str(namelst[i]) + ","
+            
+     
         data = Scholar_info.objects.create(
             si_name =name_scholar,
             si_description = detail,
@@ -143,7 +167,7 @@ def CreateScholar (request):                #หน้าสร้างปร�
             si_max_scholar = total,
             si_remain_scholar = total,
             si_source =type_scholar,
-            si_source_name =res,
+            si_source_name =name_db,
             si_photo_bg =  img,
             si_path_to_pdf= file_to,
             si_note =option,
@@ -194,14 +218,14 @@ def editScholar(request,order_id):
             keys.append(str("ผู้สนับสนุนทุนท่านที่ ")+str(i+1))
 
         
-
-        res = {}
-        for key in keys:
-            for value in namelst:
-                if value != "":
-                    res[key] = value
-                    namelst.remove(value)
-                    break
+        name_db =""
+        
+        for i in range(len(namelst)):
+            if namelst[i] != "" :
+                if i == len(namelst)-2:
+                    name_db += str(namelst[i])
+                else:   
+                    name_db += str(namelst[i]) + ","
 
 
         name_scholar_obj = Scholar_info.objects.filter(id=order_id)
@@ -216,7 +240,7 @@ def editScholar(request,order_id):
             si_max_scholar = total,
             si_remain_scholar = total,
             si_source =type_scholar,
-            si_source_name =res,
+            si_source_name =name_db,
             si_note =option,
             si_expire_time =date_e,
            # si_year = datetime.date.today().year,
@@ -263,6 +287,8 @@ def editScholar(request,order_id):
     scholar_info = Scholar_info.objects.filter(id=order_id)  
     scholar_info = scholar_info[0]
     json = scholar_info.si_source_name
+    json = json.split(",")
+    print(json)
     return render(request,'Create_Admin/editScholar.html',{'scholar_info':scholar_info,'json':json})
 
     
@@ -270,7 +296,7 @@ def editScholar(request,order_id):
 
 
 def InformationHome(request):  
-    news = Scholar_news.objects.all()
+    news = Scholar_news.objects.filter(sn_status=0)
 
     paginator = Paginator(news,4)  
 
@@ -288,8 +314,12 @@ def InformationHome(request):
 
 def viewInfomation(request,order_id):       #หน้าดูข่าวสารของ admin
     news = Scholar_news.objects.filter(id=order_id)
+    if news[0].sn_status == 1:
+        return redirect('InformationHome')
+    
     return render(request,'informationNews_Admin/view-Infomation.html',{'news': news})
 
+@user_passes_test(lambda u: u.is_superuser)
 def editInfomation(request,edit_id):       #หน้าแก้ไขข่าวประชาสัมพันธ์ของ admin
     if request.method == 'POST':  
         
@@ -334,15 +364,22 @@ def viewHome(request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
     check = False
-    if Scholar_app.objects.filter(sa_si_id = home_id,sa_userid=user_obj).exists()==False:
-        check = True
-
+    status_homeid = Scholar_info.objects.filter(id=home_id)
+    status_homeid = status_homeid[0].si_status
+    if status_homeid ==2:
+        return redirect('home')
+    if status_homeid == 0:
+        if Scholar_app.objects.filter(sa_si_id = home_id,sa_userid=user_obj).exists()==False:
+            check = True
+            
     scholar = Scholar_info.objects.filter(id=home_id)
     datajson  = Scholar_info.objects.get(id=home_id)
     datajson = datajson.si_source_name
     
-    return render(request,'apply_info/view-home.html',{'scholars': scholar,'datajson':datajson,'check':check})
+    return render(request,'apply_info/view-home.html',{'scholars': scholar,'datajson':datajson,'check':check,'status_homeid':status_homeid})
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def manageCommitteeHome(request):   #หน้าแสดงรายชื่อคณะกรรมการทั้งหมด
     news = User.objects.filter(is_staff=True) #ดึงฐานdatabase
     paginator = Paginator(news,5)  
@@ -359,6 +396,8 @@ def manageCommitteeHome(request):   #หน้าแสดงรายชื่�
 
     return render(request,'manageCommittee_Admin/manageCommitteeHome.html',{'scholars':newsperPage})
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def delmanageCommitteeHome(request,user_id):
     user_obj = User.objects.get(id=user_id)
     user_obj.delete()
@@ -366,10 +405,11 @@ def delmanageCommitteeHome(request,user_id):
     news = User.objects.filter(is_staff=True) #ดึงฐานdatabase
     return redirect('manageCommitteeHome')
 
+
+@user_passes_test(lambda u: u.is_superuser)
 def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อทุนที่คณะกรรมการท่านนั้นทำการสอบสัมภาษณ์
     scholar = Scholar_info.objects.all()    #ชื่อทุนทั้งหมด
     users_obj = User.objects.filter(id=home_id)
-    
     
     if request.method == 'POST':
         lst_idScholar = request.POST.getlist('idScholar')
@@ -387,7 +427,7 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
                 )
                 news_obj.save()
 
-       
+
         users_obj = User.objects.filter(id=home_id)
         users_obj = users_obj[0]
       
@@ -397,7 +437,6 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
             lstDBs = add_scholar_Commit.objects.filter(id_commit__in=users_obj)
 
         
-
         for lstDB in lstDBs:
             users_obj2 = User.objects.get(id=home_id)
             countInDB = 0
@@ -416,18 +455,22 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
     scholar_n = add_scholar_Commit.objects.filter(id_commit=users_obj[0])
     dic = {}
     for i in range(len(scholar)):
-        if(len(scholar_n)>0):
+        # print(scholar[i].si_status)
+        if(len(scholar_n)>0 and (scholar[i].si_status==0)):
             for j in range(len(scholar_n)):
                 if(scholar_n[j].Scholar_name.id==scholar[i].id):
                     dic[str(scholar[i].si_name),int(scholar[i].id)]=True
                     break
                 elif(scholar_n[j].Scholar_name.id!=scholar[i].id):
                     dic[str(scholar[i].si_name),int(scholar[i].id)]=False
-        else:
+        elif(len(scholar_n)==0 and (scholar[i].si_status==0)):
             dic[str(scholar[i].si_name),int(scholar[i].id)]=False
+        # else:
+            
 
     return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'users_obj':users_obj,'user_id':user_obj_id,'json':dic,'scholar':scholar})
 
+@user_passes_test(lambda u: u.is_superuser)
 def addCommittee(request):
     if request.method == 'POST':
         firstname = request.POST['firstName']
@@ -444,9 +487,9 @@ def addCommittee(request):
         news_obj.save()
         messages.success(request, "เพิ่มบัญชีกรรมการแล้ว")
     return render(request,'manageCommittee_Admin/addCommittee.html')
-    
-def viewScore(request):
 
+@user_passes_test(lambda u: u.is_superuser)    
+def viewScore(request):
 
     infoes = Scholar_info.objects.all() #ดึงฐานdatabase
     scholar = Scholar_weight_score.objects.all()
@@ -459,6 +502,7 @@ def viewScore(request):
     
     return render(request,'score/scholar_score.html',{'infoes':infoes,'scholars':scholar,'res':res}) 
 
+@user_passes_test(lambda u: u.is_superuser)
 def viewWightScore(request,id_info):
     info = Scholar_info.objects.filter(id=id_info)
     info_data =info[0]
@@ -476,7 +520,7 @@ def viewWightScore(request,id_info):
                 res[key] = value
                 weight_lst.remove(value)
                 break  
-        now = timezone.now()
+        now = datetime.now()
         data = Scholar_weight_score.objects.filter(sws_si_id=id_info).update(
                 sws_info = res,
                 sws_date = now,
@@ -501,6 +545,15 @@ def profileHistoryNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
 
+    if Scholar_profile.objects.filter(sp_userid =user_obj).exists()==True:
+        dataScholar = Scholar_info.objects.all()
+        time = datetime.now()
+        for i in dataScholar:
+            dateInfo = datetime.fromisoformat(str(i.si_expire_time)).timestamp()
+            dateToday = datetime.fromisoformat(str(time)).timestamp()
+            if dateInfo <= dateToday:
+                i.si_status = 1
+                print(i.si_name)
     if request.user.is_staff == False:
             obj2 = add_commit.objects.filter(ac_email=request.user.email).exists() 
             if obj2 == True:
@@ -516,7 +569,17 @@ def profileHistoryNisit(request):
                         messages.success(request, 'สวัสดีคุณ'+ str(obj2.ac_firstname)+ 'เข้าสู่ระบบ โดยเป็นคณะกรรมการ')
                         return redirect('home')
     if request.user.is_staff == True:
-        return redirect('home')
+        return redirect('interview')
+    
+    a = request.user.email
+    a = a.split("@")
+    a = a[1]
+    if a != "ku.th":
+        messages.error(request, 'กรุณา Login ด้วย @ku.th เท่านั้น')
+        u = User.objects.get(username = request.user.username)
+        u.delete()
+        logout(request)
+        return redirect('index')
 
     if Scholar_profile.objects.filter(sp_userid =user_obj).exists()==False:
         data = Scholar_profile.objects.create(sp_userid = user_obj )
@@ -725,7 +788,8 @@ def profileHistoryNisit(request):
                 # sp_report = details,
             )
             data_user = User.objects.filter(id = request.user.id).update(first_name =firstname_th,last_name=lastname_th)
-    
+        
+      
     return redirect('home')
 
 
@@ -1197,6 +1261,7 @@ def checkInfo(request,info_id):
                         data3 = data3[0]
                         data3.fm_file = request.FILES.get('myPdf')
                         data3.save()
+                        
             checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id=info_id)
             checkin = checkin[0]
             json = checkin.sa_json_scholar
@@ -1208,7 +1273,7 @@ def checkInfo(request,info_id):
         messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
         return redirect('editHistoryNisit')
             
-    
+@user_passes_test(lambda u: u.is_staff)   
 def interview(request):
     user_obj = User.objects.get(id=request.user.id)
     scholars = add_scholar_Commit.objects.filter(id_commit = user_obj)
@@ -1234,6 +1299,7 @@ def interview(request):
 
     return render(request,'Committee/news_committee.html',{'scholars':newsperPage})
 
+@user_passes_test(lambda u: u.is_staff)
 def historyGetScholarFind (request):
     check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
     data = Scholar_app.objects.all()
@@ -1261,13 +1327,13 @@ def historyGetScholarFind (request):
             info_id.append(info.id)
         data = data.filter(sa_si_id__in = info_id,sa_status = 41)
     if year != None:
-        info = Scholar_info.objects.filter(si_year=year) 
+        infoes = Scholar_info.objects.filter(si_year=year) 
         info_id = []
         for info in infoes:
             info_id.append(info.id)
         data = data.filter(sa_si_id__in = info_id,sa_status = 41)
     if ScholarProvider != None:
-        info = Scholar_info.objects.filter(si_source_name__contains=ScholarProvider) 
+        infoes = Scholar_info.objects.filter(si_source_name__contains=ScholarProvider)
         info_id = []
         for info in infoes:
             info_id.append(info.id)
@@ -1283,7 +1349,7 @@ def historyGetScholarFind (request):
             dic.append([info,d])
        
             
-    paginator = Paginator(dic,1)
+    paginator = Paginator(dic,10)
 
     try:
         page = int(request.GET.get('page','1'))
@@ -1295,16 +1361,21 @@ def historyGetScholarFind (request):
     except(EmptyPage,InvalidPage):
         dataperPage = paginator.page(paginator.num_pages)
         
-    return render(request,'historyGetScholar_addmin/historyGetScholarfind.html',{'history':dataperPage,'money':money,'infoes':infoes,'filds':filds})
+    return render(request,'historyGetScholar_addmin/historyGetScholarfind.html',{'history':dataperPage,'money':money,'filds':filds})
 
 def historyGetScholar(request):
     infoes = Scholar_info.objects.all()
-    return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoes})
+    year = []
+    for info in infoes:
+        if info.si_year not in year:
+            year.append(info.si_year)
+    return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoes,'year':year})
 
-@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_superuser)
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
-    paginator = Paginator(news,4)  
+    paginator = Paginator(news,4)
+    today = date.today()
 
     try:
         page = int(request.GET.get('page','1'))
@@ -1316,11 +1387,18 @@ def firstAppilcationAdmin(request): #หน้าแรกของรายช�
     except(EmptyPage,InvalidPage):
         newsperPage = paginator.page(paginator.num_pages)
 
-    return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': newsperPage})
+    return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': newsperPage,'today':today})
 
-@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_superuser)
 def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรายชื่อนิสิตแต่ละทุน
     scholars = Scholar_info.objects.filter(id=home_id)
+    scholarss = scholars[0]
+    scholarss = scholarss.si_status
+    
+    commit = Scholar_weight_score.objects.filter(sws_si_id=home_id)
+    commit = commit[0]
+    commit = commit.status
+    # print(int(datetime.datetime.utcnow().timestamp()))
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
@@ -1346,11 +1424,15 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
     memberGet = Scholar_info.objects.filter(id=home_id)
     memberGet = memberGet[0]
-    memberGet = memberGet.si_individual_amount
+    memberGet = memberGet.si_max_scholar
     # print(memberGet)
     memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
     # print(memberGot)
     memberG = memberGet - memberGot
+    if memberG == 0:
+      enddate = datetime.now() + timedelta(days=2)
+      data = Scholar_info.objects.filter(id=home_id).update(si_endtime=enddate)
+
 
     paginator = Paginator(listApps,10)  
 
@@ -1364,8 +1446,9 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     except(EmptyPage,InvalidPage):
         listAppsPage = paginator.page(paginator.num_pages)
     
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG})
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG,'commit':commit})
 
+@user_passes_test(lambda u: u.is_staff)
 def interviewStudent(request,info_id):
     info_obj = Scholar_info.objects.get(id = info_id)
     obj_info = Scholar_app.objects.filter(sa_si_id = info_id)
@@ -1389,6 +1472,7 @@ def interviewStudent(request,info_id):
     print(dic)
     return render(request,'Committee/interviewStudent.html',{'apps':obj_info,'my_userid':my_userid,'dic':dic,'status':status})
 
+@user_passes_test(lambda u: u.is_staff)
 def interviewStudentTest(request,info_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -1407,69 +1491,80 @@ def interviewStudentTest(request,info_id,user_id):
     json = json_sws.sws_info
     data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).get()
 
-    if request.method == 'POST':
-        name_lst = request.POST.getlist('name[]')
-        weight_lst = request.POST.getlist('weight[]')
-        score_wieght = []
-        list_wieght = []
-        #---------------fetch databases-------------
-        database_score = []
-        for key,value in data.sa_score_info.items():
-            database_score.append(float(value))
-        #-------------------------------------------
-        for key,value in json.items():
-            score_wieght.append(value)
-        if(len(database_score) !=0 ):
-            res = {}  
-            for key in name_lst:
-                for value in range(len(weight_lst)):
-                    res[key] = (float(weight_lst[value])+database_score[value])/2
-                    #weight_lst.remove(weight_lst[value])
-                    list_wieght.append((float(weight_lst[value])+database_score[value])/2)
-                    break  
-        else:
-            res = {}
-            for key in name_lst:
-                for value in weight_lst:
-                    res[key] = value
-                    weight_lst.remove(value)
-                    list_wieght.append(value)
-                    break
+    myidindatabase = []
+    
+    for key,value in data.sa_json_commit.items():
+        myidindatabase.append(int(key))
+    
+  
+    if request.user.id  in myidindatabase:
+        messages.success(request, 'ท่านเคยให้คะแนนสัมภาษณ์บุคคลนี้แล้ว')
+        return redirect('/interviewStudent/'+str(info_id))      
+    else:
+        if request.method == 'POST':
+            name_lst = request.POST.getlist('name[]')
+            weight_lst = request.POST.getlist('weight[]')
+            score_wieght = []
+            list_wieght = []
+            #---------------fetch databases-------------
+            database_score = []
+            for key,value in data.sa_score_info.items():
+                database_score.append(float(value))
+            #-------------------------------------------
+            for key,value in json.items():
+                score_wieght.append(value)
+            if(len(database_score) !=0 ):
+                res = {}  
+                for key in name_lst:
+                    for value in range(len(weight_lst)):
+                        res[key] = (float(weight_lst[value])+database_score[value])/2
+                        #weight_lst.remove(weight_lst[value])
+                        list_wieght.append((float(weight_lst[value])+database_score[value])/2)
+                        break  
+            else:
+                res = {}
+                for key in name_lst:
+                    for value in weight_lst:
+                        res[key] = value
+                        weight_lst.remove(value)
+                        list_wieght.append(value)
+                        break
 
-        sum_weight = 0
-        sum_weightAll = 0
-        count_khor = 0
-        for i in range(len(score_wieght)):
-            sum_weightAll = sum_weightAll + float(score_wieght[i])
-            count_khor = count_khor + 1
-        for i in range(len(score_wieght)):
-            sum_weight += float(list_wieght[i])/float(score_wieght[i])
-            
-        sum_weight = (sum_weight/count_khor)*100
-        data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
-        data = data[0]
-        person = data.sa_person 
-        score_database = data.sa_score
-        cal = (score_database+sum_weight)/person
-        now = timezone.now()
-        #add กรรมการลงในที่เคยสัมภาษณ์
-        data_commit  = data.sa_json_commit
-        data_commit[int(request.user.id)] = "True"
-        #--------------------- add log กรรมการ 
-        my_user = User.objects.get(id = request.user.id)
-        student_user = User.objects.get(id = user_id)
-        log_data  = Log_score.objects.filter(ls_commit = my_user).filter(ls_student =  student_user).filter(ls_Scholar = info_obj).update(score = res)
+            sum_weight = 0
+            sum_weightAll = 0
+            count_khor = 0
+            for i in range(len(score_wieght)):
+                sum_weightAll = sum_weightAll + float(score_wieght[i])
+                count_khor = count_khor + 1
+            for i in range(len(score_wieght)):
+                sum_weight += float(list_wieght[i])/float(score_wieght[i])
+                
+            sum_weight = (sum_weight/count_khor)*100
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
+            data = data[0]
+            person = data.sa_person 
+            score_database = data.sa_score
+            cal = (score_database+sum_weight)/person
+            now = datetime.now()
+            #add กรรมการลงในที่เคยสัมภาษณ์
+            data_commit  = data.sa_json_commit
+            data_commit[int(request.user.id)] = "True"
+            #--------------------- add log กรรมการ 
+            my_user = User.objects.get(id = request.user.id)
+            student_user = User.objects.get(id = user_id)
+            log_data  = Log_score.objects.filter(ls_commit = my_user).filter(ls_student =  student_user).filter(ls_Scholar = info_obj).update(score = res)
 
-            #-----------------------
-            #อัพเดทคะแนนรวม และรายข้อ
-        data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
-                    sa_score_info = res,
-                    sa_score = cal,
-                    sa_person = person+1,
-                sa_json_commit = data_commit
-        )
-            #--------------------------
-        return redirect('/interviewStudent/'+str(info_id))
+                #-----------------------
+                #อัพเดทคะแนนรวม และรายข้อ
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
+                        sa_score_info = res,
+                        sa_score = cal,
+                        sa_person = person+1,
+                    sa_json_commit = data_commit
+            )
+                #--------------------------
+            return redirect('/interviewStudent/'+str(info_id))
+        
 
 
 
@@ -1485,7 +1580,7 @@ def interviewStudentTest(request,info_id,user_id):
         
     return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
-@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_superuser)
 def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบเอกสารของแอดมิน
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]

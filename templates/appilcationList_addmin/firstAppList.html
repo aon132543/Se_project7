@@ -2,10 +2,10 @@
 {% load static %}
 {% block content %}
 {% for scholar in scholars %}
-
+  {%if scholar.si_endtime >= today  or scholar.si_endtime is None %}
   <article class="message is-success">
     <div class="message-header">
-      <p>{{scholar.si_name}}</p>
+      <p>{{scholar.si_endtime}} {{scholar.si_name}}</p>
       <i class="far fa-newspaper"></i>
     </div>
     <div class="message-body">
@@ -19,7 +19,7 @@
 
 
 
-
+{% endif %}
 {%endfor%}
   <!--page-->
 

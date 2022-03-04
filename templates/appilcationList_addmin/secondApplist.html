@@ -3,7 +3,6 @@
 {% block content %}
 {% csrf_token %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 {%if messages %}
 {%for m in messages %}
 <script>
@@ -49,6 +48,47 @@
     }).then((result) => {
       if (result.isConfirmed) {
         window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+1
+      }
+    })
+  }
+
+  function call11()
+  {
+    Swal.fire({
+    icon: 'error',
+    title: 'ไม่สามารถทำรายการได้',
+    text: 'เนื่องจากยังไม่ปิดการรับสมัครทุน',
+    })
+  }
+
+  function call12()
+  {
+    Swal.fire({
+    icon: 'error',
+    title: 'ไม่สามารถทำรายการได้',
+    text: 'เนื่องจากท่านยังไม่ได้ทำแบบฟอร์มคะแนนให้กรรมการ',
+    })
+  }
+
+  function call22(info_id,userid,title,name,sirname)
+  {
+    Swal.fire({
+      title: title+name+' '+sirname+'\n ผ่านรอบสัมภาษณ์หรือไม่?',
+      icon:"question",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: 'ผ่าน',
+      denyButtonText: `ไม่ผ่าน`,
+      cancelButtonText:"ย้อนกลับ",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+        icon: 'error',
+        title: 'ไม่สามารถทำรายการได้',
+        text: 'เนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว',
+        })
+      }else if (result.isDenied) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+0
       }
     })
   }
@@ -112,7 +152,7 @@
   <!-- หาง -->
     <div class="cardbox-list">
         <ul>
-          <li><b>คงเหลือ {{memberG}}/{{scholar.si_individual_amount}}</b></li>
+          <li><b>คงเหลือ {{memberG}}/{{scholar.si_max_scholar}}</b></li>
         </ul>
     </div>
 {%endfor%}   
@@ -182,21 +222,41 @@
           <ul>
             {%if listApp.sa_status == 11 %}
               <li>
+                
                 <div class="conditionStatusOnProgress">
-                  <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}"><p>ตรวจสอบเอกสาร</p></a>
+                  {% if scholarss == 1 and commit == True %}
+                    <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
+                      <p>ตรวจสอบเอกสาร</p>
+                    </a>
+                  {% elif scholarss == 1 and commit == False %}
+                    <a onclick='call12()'>
+                      <p>ตรวจสอบเอกสาร</p>
+                    </a>
+                  {% else %}
+                    <a onclick='call11()'>
+                      <p>ตรวจสอบเอกสาร</p>
+                    </a>
+                  {% endif %}
                 </div>
               </li>
             {%elif listApp.sa_status == 20 %}
               <li>
-                <div class="conditionStatusNotPass"><b>เอกสารไม่ผ่านเงื่อนไข</b>
+                <div class="conditionStatusNotPass">
+                  <b>เอกสารไม่ผ่านเงื่อนไข</b>
                 </div>
               </li>
             {%elif listApp.sa_status == 21 %}
               <li>
                 <div class="conditionStatusOnProgress">
-                  <a onclick='call21({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                  {% if memberG == 0 %}
+                  <a onclick='call22({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
                     <b>สอบสัมภาษณ์</b>
-                  </a>
+                    </a>
+                  {% else %}
+                    <a onclick='call21({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                      <b>สอบสัมภาษณ์</b>
+                    </a>
+                  {% endif %}
                 </div>
               </li>
             {%elif listApp.sa_status == 30 %}

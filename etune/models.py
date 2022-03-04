@@ -22,6 +22,7 @@ class Scholar_news (models.Model):          #Database สำหรับข่�
     sn_photo_bg = ResizedImageField(upload_to='uploads/',size=[1280, 720], crop=['middle', 'center'],quality=100)
     sn_path_to_pdf = models.FileField(upload_to='documents/') #pdf
     sn_create_time = models.DateField(default=timezone.now)
+    sn_status = models.IntegerField(default=0)
     
     class Meta:
         ordering = ['-sn_create_time']
@@ -41,7 +42,7 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
     si_max_scholar	= models.IntegerField() #จำนวนคนที่ได้รับ
     si_remain_scholar = models.IntegerField() #จำนวนเงินทุนที่เหลือปัจจุบัน
     si_source	 = models.CharField(max_length=256) #ภายนอก/ใน
-    si_source_name	= models.JSONField() #ผู้ให้ทุน
+    si_source_name	= models.CharField(null=True,blank=True,max_length=500) #ผู้ให้ทุน
     si_note	= models.TextField()	
     si_grade_require = 	models.FloatField(null=True)
     si_create_time = models.DateField(default=timezone.now)
@@ -50,6 +51,8 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
     si_semester = models.IntegerField()
     si_photo_bg = ResizedImageField(upload_to='uploads/info',size=[1280, 720], crop=['middle', 'center'],quality=100)
     si_path_to_pdf = models.FileField(upload_to='documents/info')
+    si_status = models.IntegerField(default=0) #แสดงสถานะการดำเนินงานทุนนิสิต
+    si_endtime = models.DateField(null=True,blank=True) #วันหมดการแสดงของแอดมิน
     class Meta:
         ordering = ['-si_create_time']
 

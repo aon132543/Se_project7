@@ -3,6 +3,7 @@
 {% block content %}
 {% for scholar in scholars %}
 
+  
   <article class="message is-success">
     <div class="message-header">
       <p>{{scholar.si_name}}</p>
@@ -11,7 +12,9 @@
     <div class="message-body">
       <div class="hover01 column">
         <div>
+          {%if scholar.si_photo_bg%}
           <figure> <a href="/viewHome/{{scholar.id}}/{{request.user.id}}"> <img src="{{scholar.si_photo_bg.url}}" alt="" /> </a> </figure>
+          {%endif%}
         </div>
         <div>
      
@@ -27,12 +30,12 @@
     </a>
 
 
-
-    {%endif%}
+    
+    
   </article>
 
     
-
+{%endif%}
 {%endfor%}
 <a href="/CreateScholar">
 <div class="add-button">

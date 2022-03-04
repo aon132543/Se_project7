@@ -13,8 +13,7 @@
   <title>Home</title>
   <!-- <link rel="stylesheet" href="{% static 'css/Menubar-Template.css' %}?{% now "U" %}" /> -->
   <link rel="stylesheet" href="{% static 'css/Form-Template.css' %}?{% now " U" %}" />
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
+  <script src="https://kit.fontawesome.com/b3383d3f2a.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" charset="utf-8"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
   <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css" rel="stylesheet">
@@ -143,7 +142,7 @@
         </li>
         {%elif user.is_staff%}
         <li class="item">
-          <a href="/home" class="menu-btn">
+          <a href="/interview" class="menu-btn">
             <i class="fas fa-desktop"></i><span>สัมภาษณ์ทุน</span>
           </a>
         </li>
