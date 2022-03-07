@@ -30,6 +30,7 @@ from django.contrib.auth.decorators import user_passes_test
 #             raise ImmediateHttpResponse(render_to_response('error.html'))
 
 
+
 def index(request):         #หน้าข่าวประชาสัมพันธ์หน้าแรกก่อนเข้า login 
     file_my = None 
     data= Scholar_news.objects.all()
@@ -554,32 +555,8 @@ def profileHistoryNisit(request):
             if dateInfo <= dateToday:
                 i.si_status = 1
                 print(i.si_name)
-    if request.user.is_staff == False:
-            obj2 = add_commit.objects.filter(ac_email=request.user.email).exists() 
-            if obj2 == True:
-                obj2 = add_commit.objects.filter(ac_email=request.user.email)
-                if obj2 != None:
-                    user_obj = User.objects.filter(email=request.user.email)
-                    obj2=obj2[0]
-                    for i in user_obj:
-                        i.is_staff = True
-                        i.first_name = obj2.ac_firstname
-                        i.last_name = obj2.ac_lastname
-                        i.save()
-                        messages.success(request, 'สวัสดีคุณ'+ str(obj2.ac_firstname)+ 'เข้าสู่ระบบ โดยเป็นคณะกรรมการ')
-                        return redirect('home')
-    if request.user.is_staff == True:
-        return redirect('interview')
     
-    a = request.user.email
-    a = a.split("@")
-    a = a[1]
-    if a != "ku.th":
-        messages.error(request, 'กรุณา Login ด้วย @ku.th เท่านั้น')
-        u = User.objects.get(username = request.user.username)
-        u.delete()
-        logout(request)
-        return redirect('index')
+    
 
     if Scholar_profile.objects.filter(sp_userid =user_obj).exists()==False:
         data = Scholar_profile.objects.create(sp_userid = user_obj )
@@ -1283,7 +1260,10 @@ def interview(request):
         
     scholars_list_obj =[]
     for i in scholars_list_id:
-        scholars_list_obj.append(Scholar_info.objects.filter(id=i))
+        scholar_obj =Scholar_info.objects.filter(id=i)
+
+        if scholar_obj[0].si_status ==1:
+            scholars_list_obj.append(scholar_obj)
 
     paginator = Paginator(scholars_list_obj,4)  
 
@@ -1662,3 +1642,31 @@ def changeStatus(request,home_id,user_id,status):
             return redirect('/secondAppilcationAdmin/'+str(home_id))
 
     return redirect('/secondAppilcationAdmin/'+str(home_id))
+def limitaccount(request):
+    a = request.user.email
+    a = a.split("@")
+    a = a[1]
+    if request.user.is_staff == False:
+            obj2 = add_commit.objects.filter(ac_email=request.user.email).exists() 
+            if obj2 == True:
+                obj2 = add_commit.objects.filter(ac_email=request.user.email)
+                if obj2 != None:
+                    user_obj = User.objects.filter(email=request.user.email)
+                    obj2=obj2[0]
+                    for i in user_obj:
+                        i.is_staff = True
+                        i.first_name = obj2.ac_firstname
+                        i.last_name = obj2.ac_lastname
+                        i.save()
+                        messages.success(request, 'สวัสดีคุณ'+ str(obj2.ac_firstname)+ 'เข้าสู่ระบบ โดยเป็นคณะกรรมการ')
+                        return redirect('home')
+    if request.user.is_staff == True:
+        return redirect('interview')
+    if a != "ku.th":
+        messages.error(request, 'กรุณา Login ด้วย @ku.th เท่านั้น')
+        u = User.objects.get(username = request.user.username)
+        u.delete()
+        return redirect('logout')
+    else:           
+        return redirect('profileHistoryNisit')
+

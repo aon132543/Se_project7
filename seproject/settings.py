@@ -165,7 +165,7 @@ STATICFILES_DIRS = [
 MEDIA_URL ='/images/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'static/images')
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/limitaccount'
 
 LOGOUT_REDIRECT_URL = '/'
 
@@ -179,3 +179,5 @@ JAZZMIN_SETTINGS={
     "site_header":"Scholarship",
     "site_brand": "Scholarship",
 }
+
+ACCOUNT_ADAPTER = 'seproject.adapters.RestrictEmailAdapter'
