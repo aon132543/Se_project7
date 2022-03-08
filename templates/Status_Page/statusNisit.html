@@ -13,9 +13,16 @@
                {{state.sa_si_id.si_create_time}} 
             </div>
               <div class="progressionInfomantStatus">
-              ผ่านการคัดเลือก
+              
               {% if state.sa_status == 21 %}
+              {%if file.fm_file%}
+              ผ่านการคัดเลือก
+              
                 <a href = "{{file.fm_file.url}}"><button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button></a>
+              {%else%}
+              ผ่านการคัดเลือก รอเจ้าหน้าที่แจ้งเอกสารสอบสัมภาษณ์
+              {%endif%}
+              
               {% endif %}
             </div>
             

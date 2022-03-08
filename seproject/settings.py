@@ -170,7 +170,7 @@ LOGIN_REDIRECT_URL = '/limitaccount'
 LOGOUT_REDIRECT_URL = '/'
 
 PRIVATE_STORAGE_ROOT = '/path/to/private-media/'
-PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_authenticated'
 
 CSRF_TRUSTED_ORIGINS=['https://*.warinnarat.thddns.net:9920.COM']
 

@@ -124,6 +124,7 @@ def information(request):           #หน้าสร้างข่าวป�
         return render(request,'Create_Admin/information.html')
     return render(request,'Create_Admin/information.html')
 
+
 def viewpost(request,id_post):              #หน้าดูรายละเอียดเพิ่มเติมของหน้า index
     news = Scholar_news.objects.filter(id=id_post)
     return render(request,'index/view-post.html',{'news':news})
@@ -294,7 +295,7 @@ def editScholar(request,order_id):
 
     
 
-
+@login_required (login_url='index')
 
 def InformationHome(request):  
     news = Scholar_news.objects.filter(sn_status=0)
@@ -313,6 +314,8 @@ def InformationHome(request):
 
     return render(request,'informationNews_Admin/informationhome.html',{'info':newsperPage})
 
+@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_staff == False)
 def viewInfomation(request,order_id):       #หน้าดูข่าวสารของ admin
     news = Scholar_news.objects.filter(id=order_id)
     if news[0].sn_status == 1:
@@ -361,6 +364,7 @@ def editInfomation(request,edit_id):       #หน้าแก้ไขข่า
 def addEditInfomation(request):
     redirect('InformationHome')
 
+@login_required (login_url='index')
 def viewHome(request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -980,7 +984,8 @@ def editHistoryNisit(request):
             # sp_report = details,
         )    
         data_user = User.objects.filter(id = request.user.id).update(first_name =firstname_th,last_name=lastname_th)
-        return redirect('editHistoryNisit')
+        messages.success(request, 'บันทึกข้อมูลส่วนตัวแล้ว')
+        return redirect('home')
             
     edit = Scholar_profile.objects.filter(sp_userid = request.user.id)
     edit = edit[0]
@@ -991,8 +996,10 @@ def editHistoryNisit(request):
     data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
     data2 = data2[0]
 
-    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro,'pic':data2})    
-    
+    return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro,'pic':data2})  
+
+@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_staff == False)   
 def statusNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
@@ -1005,12 +1012,13 @@ def statusNisit(request):
             if file.exists() == True:
                 lst[state] = file[0]
             else:
-                lst[state] = "None"
+                lst[state] = None
         return render(request,'Status_Page/statusNisit.html',{'states':lst})
     else:
         return render(request,'Status_Page/statusNisit.html')
         
-
+@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_staff == False)  
 def checkInfo(request,info_id):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
@@ -1249,8 +1257,9 @@ def checkInfo(request,info_id):
     except : 
         messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
         return redirect('editHistoryNisit')
-            
-@user_passes_test(lambda u: u.is_staff)   
+
+@login_required (login_url='index')            
+@user_passes_test(lambda u: u.is_staff) 
 def interview(request):
     user_obj = User.objects.get(id=request.user.id)
     scholars = add_scholar_Commit.objects.filter(id_commit = user_obj)
@@ -1279,7 +1288,6 @@ def interview(request):
 
     return render(request,'Committee/news_committee.html',{'scholars':newsperPage})
 
-@user_passes_test(lambda u: u.is_staff)
 def historyGetScholarFind (request):
     check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
     data = Scholar_app.objects.all()
@@ -1351,6 +1359,7 @@ def historyGetScholar(request):
             year.append(info.si_year)
     return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoes,'year':year})
 
+@login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_superuser)
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
@@ -1369,6 +1378,7 @@ def firstAppilcationAdmin(request): #หน้าแรกของรายช�
 
     return render(request,'appilcationList_addmin/firstAppList.html',{'scholars': newsperPage,'today':today})
 
+@login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_superuser)
 def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรายชื่อนิสิตแต่ละทุน
     scholars = Scholar_info.objects.filter(id=home_id)
@@ -1383,13 +1393,28 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
     if request.method == "POST":
-        if len(request.FILES)!=0:
-            if request.FILES.get('myPdf',False):
-                data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
-                data3 = data3[0]
-                data3.fm_file = request.FILES.get('myPdf')
-                data3.fm_state = 1
-                data3.save()
+        print("0000000000000")
+        print("555555555555",request.FILES.get('myPdf'))
+        if File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).exists():
+            data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0])
+            data3 = data3[0]
+            data3.fm_file = request.FILES.get('myPdf')
+            data3.fm_state = 1
+            data3.save()
+            print("HELLOWORLD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        else:
+            print("กูสร้างแล้วนะไอสัส")
+            data3 = File_Models.objects.create(
+                    fm_upload_by=user_obj,
+                    fm_Scholar=scholars[0],
+                    fm_file = request.FILES.get('myPdf'),
+                    fm_state = 1
+
+                )
+            data3.save()
+
+
+
 
     json = Scholar_weight_score.objects.filter(sws_si_id=home_id)
     check = True
@@ -1428,6 +1453,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     
     return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG,'commit':commit})
 
+@login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_staff)
 def interviewStudent(request,info_id):
     info_obj = Scholar_info.objects.get(id = info_id)
@@ -1452,6 +1478,7 @@ def interviewStudent(request,info_id):
     print(dic)
     return render(request,'Committee/interviewStudent.html',{'apps':obj_info,'my_userid':my_userid,'dic':dic,'status':status})
 
+@login_required (login_url='index')             
 @user_passes_test(lambda u: u.is_staff)
 def interviewStudentTest(request,info_id,user_id):
     user_obj = User.objects.filter(id=user_id)
@@ -1560,6 +1587,7 @@ def interviewStudentTest(request,info_id,user_id):
         
     return render(request,'Committee/interviewStudentTest.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
+@login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_superuser)
 def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบเอกสารของแอดมิน
     user_obj = User.objects.filter(id=user_id)
@@ -1594,7 +1622,7 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
 
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
-
+@login_required (login_url='index')            
 def delApp(request,home_id,user_id):  
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -1642,10 +1670,16 @@ def changeStatus(request,home_id,user_id,status):
             return redirect('/secondAppilcationAdmin/'+str(home_id))
 
     return redirect('/secondAppilcationAdmin/'+str(home_id))
+
+@login_required (login_url='index')            
 def limitaccount(request):
+    if request.user.is_superuser == True:
+        return redirect('home')
+
     a = request.user.email
     a = a.split("@")
     a = a[1]
+    
     if request.user.is_staff == False:
             obj2 = add_commit.objects.filter(ac_email=request.user.email).exists() 
             if obj2 == True:

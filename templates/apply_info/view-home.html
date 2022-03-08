@@ -73,12 +73,11 @@
           <article class="message is-link">
             <div class="message-header">
               <p >เนื้อหา</p>
+              
             </div>
-            
-            <div class="message-body">
-              <div class="box">
-              <p class="subtitle is-4">{{scholar.si_description|safe }} </p>
-              </div>
+            <div class ="message-detail">
+            {{scholar.si_description|safe }}
+            </div>
               <div class="box">
               <p class="subtitle is-4"> <b><font  color="red" >หมายเหตุ {{scholar.si_note}}</font> </b></p>
               
@@ -96,7 +95,7 @@
         {%if scholar.si_path_to_pdf%}
         <div class="box">
           
-        <br><a href="{{scholar.si_path_to_pdf.url}}"> <button class="button is-danger is-medium is-rounded is-fullwidth "><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a><br>
+        <br><a href="{{scholar.si_path_to_pdf.url}}"> <button class="button is-danger is-medium is-rounded is-fullwidth "><i class="fas fa-file-pdf"> <p> เอกสารทางการ </p> </i> </button></a><br>
         
         </div>
         {%endif%}
@@ -109,7 +108,7 @@
         
   
         </h2>
-        {%if user.is_staff == False%}
+        {%if user.is_superuser == False%}
         {%if status_homeid == 0 %}
         {% if check %}
         <button class="button is-success is-medium is-rounded is-fullwidth" onclick="call({{scholar.id}})"> <p>สมัครทุน</p> </i> </button>

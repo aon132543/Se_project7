@@ -71,8 +71,13 @@
           </li>
         </div>
         <center class="profile">
-
+          {% if user.is_superuser %}
+          <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="" />
+          {% elif user.is_staff %}
+          <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}" alt="" />
+          {%else%}
           <img src="{{ request.user.avatar_profile.sp_path_to_avatar.url }}" alt="" />
+          {%endif%}
           <p>{{ user.first_name }} {{ user.last_name }}</p>
           {% if user.is_superuser %}
           <p>ผู้ดูแลระบบ</p>
@@ -82,7 +87,7 @@
           {%else%}
           <p>นิสิต
           <p>
-          <h2>3.00</h2>
+         
 
           {%endif%}
         </center>
@@ -117,7 +122,7 @@
         </li>
         <li class="item">
           <a href="/firstAppilcationAdmin" class="menu-btn">
-            <i class="far fa-address-book"></i><span>รายชื่อนิสิตของแต่ละทุน</span>
+            <i class="far fa-address-book"></i><span>รายชื่อนิสิตขอแต่ละทุน</span>
           </a>
         </li>
         <li class="item" id="settings">
@@ -155,7 +160,7 @@
         </li>
         <li class="item">
           <a href="/statusNisit" class="menu-btn">
-            <i class="fas fa-desktop"></i><span>ประวัติการยื่นเอกสารคำร้อง</span>
+            <i class="fas fa-desktop"></i><span>ประวัติการยื่นทุน</span>
           </a>
         </li>
 
@@ -171,13 +176,6 @@
             <i class="fas fa-power-off"></i><span>ออกจากระบบ</span>
           </a>
         </li>
-
-        <li class="item">
-          <a href="/interview" class="menu-btn">
-            <i class="fas fa-desktop"></i><span>สัมภาษณ์ทุน</span>
-          </a>
-        </li>
-
 
 
 

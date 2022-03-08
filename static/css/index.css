@@ -165,9 +165,9 @@ button:hover {
 
 .wrapper .sidebar .loginWrapper .anotherLogin .textLogin {
   color: #000;
-  margin-left: 50%;
-  margin-top: 5px;
   font-size: 18px;
+  margin-left: 50%;
+  margin-top:-15%;
 }
 
 
@@ -190,7 +190,7 @@ button:hover {
 }
 
 .wrapper .main-container .card {
-  background: rgba(172, 172, 172, 0.686);
+  background: rgba(231, 231, 231, 0.686);
   padding: 15px;
   margin-bottom: 10px;
   font-size: 14px;
@@ -256,11 +256,11 @@ button:hover {
     left: 149px;
   }
 
-  .wrapper .sidebar .loginWrapper .anotherLogin .textName {
+  .wrapper .sidebar .loginWrapper .anotherLogin .textLogin {
     color: #000;
-    margin-left: 100px;
-    margin-top: -50px;
-    font-size: 15px;
+    font-size: 18px;
+    margin-left: 50%;
+    margin-top:-30%;
   }
 
   .wrapper .sidebar .loginWrapper .anotherLogin .imgHolderInside {

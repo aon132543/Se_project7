@@ -31,7 +31,9 @@
          
         </div>
       </div>
+
       <!--จบส่วนของ Header-->
+
       <!--เมนูด้านข้างเริ่มที่นี่-->
       <div class="sidebar">
        <div class="loginWrapper">
@@ -43,23 +45,20 @@
          
 
          {% if user.is_authenticated %}
-         <a href="/profileHistoryNisit">
+         <a href="/limitaccount">
          <div class="anotherLogin">
 
           <div class="imgHolderInside">
             <img src="{{ user.socialaccount_set.all.0.get_avatar_url }}">
           </div>
-         
-            <div class="textName">
-               <h2> {{ user.socialaccount_set.all.0.extra_data.name }} </h2>
-            </div>
 
 
-            <div class="textLogin">
+          <div class="textLogin">
               <h2>เข้าสู่ระบบ </h2>
            </div>
 
-         </div>
+        </div>
+
         </a>
          
          {%else%}
@@ -69,7 +68,7 @@
           </button></a>
          {%endif%}
 
-
+      
        </div>
       </div>
       <!--จบส่วนเมนูข้าง-->
@@ -83,22 +82,35 @@
           {% if new.sn_photo_bg %}
               <img src="{{new.sn_photo_bg.url}}">
           {% endif %}
-        <div class="description"> 
-          <p> {{new.sn_description | safe}} </p>
+        
+          <div class="description"> 
+            <p> {{new.sn_description | safe}} </p>
+          </div>
+          <div class="level-item has-text-centered"><span class="tag is-primary is-large">{{new.sn_expire_date}}</span>
+          <br>
+          </div>
+
+          {% if new.sn_path_to_pdf %} 
+          <a href="/viewpost/{{new.id}}"><button class="button is-link"><p>รายละเอียดเพิ่มเติม</p></button> </a>
+          {%endif%}
+        
         </div>
-        <div class="level-item has-text-centered">
-        <span class="tag is-primary is-large">{{new.sn_expire_date}}</span> 
-        </div>
-      {% if new.sn_path_to_pdf %} 
-       <a href="/viewpost/{{new.id}}"> <button class="button is-link is-fullwidth">รายละเอียดเพิ่มเติม</button> </a>
-      
+
+     
+    
       {%endif%}
-      </div>
-      {%endif%}
+
+
       {%endfor%}
       </div>
       <!--จบเนื้อหาส่วนใน-->
       
+
+
+
+
+
+
     </div>
     <!--จบทั้งหมด-->
 
@@ -120,4 +132,7 @@
          </script>
          {% endfor %}
          {% endif %}
+
+
+         
 </html>

@@ -95,6 +95,20 @@
 
   </script>
 
+<script>
+  updateList = function () {
+      var input = document.getElementById('myPdf');
+      var output = document.getElementById('fileList2');
+
+      output.innerHTML = '<ul>';
+      for (var i = 0; i < input.files.length; ++i) {
+          output.innerHTML += '<li>' + input.files.item(i).name + '</li>';
+      }
+      output.innerHTML += '</ul>';
+  }
+</script>
+
+
 {% for scholar in scholars %}
 
 
@@ -122,30 +136,30 @@
       {% if check %}
       <div class="uploadBoxContainer">
        <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
-         <div class="uploadBox">
-    <form action="/secondAppilcationAdmin/{{scholars.id}}" method="POST">
+         
+    <form action="/secondAppilcationAdmin/{{scholar.id}}" method="POST" enctype="multipart/form-data"  >
       {% csrf_token %}
+    <div class="uploadBox">
     <div class="file has-name is-boxed">
       <label class="file-label">
-        <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList2()" onchange="previewFile()">
+        <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList()">
           <span class="file-cta">
           <span class="file-icon">
             <i class="fas fa-upload"></i>
           </span>
-            <span class="file-label">
-              Choose a file…
-            </span>
+          <span class="file-label">
+            Choose a file…
+          </span>
           </span>
           <span class="file-name">
             <div id="fileList2">None.pdf </div>
           </span>
-        </div>
-      </label>
+        </label>
+      </div>
     </div>
       <div class="documentCoufirm">
         <input type="submit" value="ยืนยัน" class="button is-primary">
-    
-    </div>
+      </div>
     </form>
   </div>
   {%endif%}
@@ -156,6 +170,7 @@
         </ul>
     </div>
 {%endfor%}   
+
     <div class="card-headstatus">
         <p><b>สถานะการดำเนินการ</b></p>
     </div>
