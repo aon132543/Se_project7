@@ -1,6 +1,7 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8" />
@@ -21,19 +22,23 @@
     ></script>
   </head>
   <body>
-    <form action="historyGetScholarFind" method="get" >
+    
+    <form action="historyGetScholar" method="POST" >
+      {% csrf_token %}
+      <!-- <form action="historyGetScholarFind" method="get" > -->
         <div class="center2">
             <h2 align="left" class="resizedTextbox" >ประวัติรายชื่อผู้ได้รับทุน</h2>
     <br>
     </br>
     <li align="left"><b><font face="Arial" class="movehead" >รหัสนิสิต 
-        <input type="text" class="Textbox2" name="studentID"></font></b>
+        <input type="text" class="Textbox2" name="studentID" value="{{studentID}}"></font></b>
     <b><font face="Arial" class="movehead" >ผู้ให้ทุน 
-        <input type="text" class="Textbox2" name="ScholarProvider"></font></b>
+        <input type="text" class="Textbox2" name="ScholarProvider" value="{{ScholarProvider}}"></font></b>
     <b><font face="Arial" class="movehead" >ประเภททุน</font></b>
     <div class="select" name ="title-thai">
     <select name="scholarType">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
+        <option value="{{scholarType}}" selected="selected" hidden="hidden">{{scholarType}}</option>
         <option value = "ทุนภายใน" >ทุนภายใน</option>
         <option value = "ทุนภายนอก" >ทุนภายนอก</option>
         <option value = "ทุนภายผสม" >ทุนผสม</option>
@@ -46,6 +51,7 @@
     <div class="select" name ="title-thai">
     <select name="scholarName">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
+        <option value="{{yearGet}}" selected="selected" hidden="hidden">{{yearGet}}</option>
         {% for info in infoes %}
         <option value = "{{info.si_name}}" >{{info.si_name}}</option>
         {% endfor %}
@@ -57,6 +63,7 @@
     <div class="select" name ="title-thai">
         <select name="year">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
+        <option value="{{yearGet}}" selected="selected" hidden="hidden">{{yearGet}}</option>
         {% for y in year %}
         <option value = "{{y}}" >{{y}}</option>
         {% endfor %}

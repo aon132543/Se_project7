@@ -20,43 +20,130 @@
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
-  *{
+@media only screen and (min-width: 800px) {
+  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
+
+  * {
     font-family: 'Prompt', sans-serif;
   }
-  body{
+
+  body {
     background-color: rgb(82, 1, 1);
   }
-  .box{
+
+  .box {
     background-color: rgb(228, 228, 224);
   }
-  ::placeholder {
-  color: rgb(158, 79, 50);
-  font-weight: bolder;
-  }
 
-  .resizedTextbox{
+  ::placeholder {
+    color: rgb(158, 79, 50);
+    font-weight: bolder;
+  }
+  .select{
+    margin-top: 5px;
+    margin-left: 5px;
+  }
+  
+  .texthead{
+    font-size: 30px;
+    text-align: center;
+    color:white;
+  }
+  .image{
+    width:250px ;
+    height:250px;
+    padding:10px;
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .resizedTextbox {
     width: 250px;
     height: 40px;
-    background-color: rgba(216, 206, 206, 0.89);
-    border-radius:5px;
+    background-color: white;
+    border-radius: 5px;
     border-color: rgb(221, 220, 220);
+    margin-top: 7px;
+    margin-left: 10px;
   }
 
-  .resizedTextbox2{
-    width: 400px;
+  .resizedTextbox2 {
+    width: 350px;
     height: 40px;
-    background-color: rgba(216, 206, 206, 0.89);
-    border-radius:5px;
+    background-color: white;
+    border-radius: 5px;
     border-color: rgb(221, 220, 220);
-  }
-  hr {
-    border-top: 5px solid rgb(82, 1, 1);
+    margin-top: 7px;
+    margin-left: 10px;
   }
   .upload{
     margin-top: 20px;
   }
+  hr {
+    border-top: 5px solid rgb(82, 1, 1);
+  }
+  }
+  @media only screen and (max-width: 800px) {
+  *  {
+    font-family: 'Prompt', sans-serif;
+  }
 
+  body {
+    background-color: rgb(82, 1, 1);
+  }
+
+  .box {
+    background-color: rgb(228, 228, 224);
+  }
+  
+  ::placeholder {
+    color: rgb(158, 79, 50);
+    font-weight: bolder;
+  }
+  .image{
+    width:150px ;
+    height:150px;
+    padding:10px;
+    display: block;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  .texthead{
+    font-size: 16px;
+    text-align: center;
+    color:white;
+  }
+  .resizedTextbox {
+    width: 300px;
+    height: 40px;
+    background-color: white;
+    border-radius: 5px;
+    border-color: rgb(221, 220, 220);
+    font-size:16px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
+
+  .resizedTextbox2 {
+    width: 300px;
+    height: 40px;
+    background-color: white;
+    border-radius: 5px;
+    border-color: rgb(221, 220, 220);
+    font-size:16px;
+  }
+  hr {
+    border-top: 5px solid rgb(82, 1, 1);
+  }
+
+  .upload{
+    margin-top: 20px;
+  }
+  }
 </style>
 <script type="text/JavaScript">
   var myform;

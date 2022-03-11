@@ -26,7 +26,7 @@
       showDenyButton: true,
       showCancelButton: true,
       confirmButtonText: 'ผ่าน',
-      denyButtonText: `ไม่ผาน`,
+      denyButtonText: `ไม่ผ่าน`,
       cancelButtonText:"ย้อนกลับ",
     }).then((result) => {
       if (result.isConfirmed) {
@@ -93,6 +93,36 @@
     })
   }
 
+  function edit20(info_id,userid,title,name,sirname)
+  {
+    Swal.fire({
+      "title": "ท่านต้องการเปลี่ยนสถานะ\n"+title+name+' '+sirname+"\nให้นิสิตมีสิทธิ์เข้าร่วมสอบสัมภาษณ์ใช่หรือไม่ ? ",
+      "icon":"question",
+      "showCancelButton":true,
+      "cancelButtonText":"ไม่ใช่",
+      "confirmButtonText":"ใช่"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+1
+      }
+    })
+  }
+
+  function edit30(info_id,userid,title,name,sirname)
+  {
+    Swal.fire({
+      "title": "ท่านต้องการเปลี่ยนสถานะ\n"+title+name+' '+sirname+"\nให้นิสิตมีสิทธิ์รับทุนใช่หรือไม่ ? ",
+      "icon":"question",
+      "showCancelButton":true,
+      "cancelButtonText":"ไม่ใช่",
+      "confirmButtonText":"ใช่"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href="/changeStatus/"+info_id +"/"+userid+"/"+1
+      }
+    })
+  }
+
   </script>
 
 <script>
@@ -109,197 +139,276 @@
 </script>
 
 
-{% for scholar in scholars %}
+
 
 
 <link rel="stylesheet" href="{% static 'css/ApplistAdmin.css' %}?{% now " U" %}" />
+ 
 
-    <div class="cardbox">
-        <ul>
-        <li><b>{{scholar.si_name}}</b></li> 
-        </ul>
+{% for scholar in scholars %}
+  <div class="card">
+    <div class="poster">
+      <img src="{{scholar.si_photo_bg.url}}" alt="" />
     </div>
-    <div class="card">
-        <img style="width : 1280px;" src="{{scholar.si_photo_bg.url}}" alt=""/>
+    <div class="title">
+      <h1>{{scholar.si_name}}</h1>
     </div>
-    <p style="text-indent: 130px;"><b>รายละเอียด: </b>{{scholar.si_description|safe}}</p>
-    <div class="cardbox">
-        <ul>
-            <li><b>รายชื่อผู้ยื่นสมัครขอทุนทั้งหมด</b></li>
-        </ul>
+    <div class="description">
+      <p>รายละเอียด:{{scholar.si_description|safe}}</p>
     </div>
+  </div>
 
-    <div class ="upload">
-       
-      <div class="box">
-        <!-- หัว -->
-      {% if check %}
-      <div class="uploadBoxContainer">
-       <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
-         
+  <!-- เริ่มจำนวนคงเหลือผู้ได้รับทุน -->
+  <!-- <div class="cardbox-list">
+    <ul>
+      <li><b>คงเหลือ {{memberG}}/{{scholar.si_max_scholar}}</b></li>
+    </ul>
+  </div> -->
+  <!-- จบจำนวนคงเหลือผู้ได้รับทุน -->
+
+
+
+<!-- เริ่มไฟล์ pdf ที่จะให้อัพโหลด -->
+<!-- {% if check %}
+  {% if file_upload.fm_file %}
+
+    <a href="{{file_upload.fm_file.url}}">
+      <button class="button is-info">
+        <p>แสดงไฟล์ปัจจุบัน</p>
+      </button>
+    </a>
+  {% endif %}
+  <div class="uploadBoxContainer">
+    <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
+
     <form action="/secondAppilcationAdmin/{{scholar.id}}" method="POST" enctype="multipart/form-data"  >
       {% csrf_token %}
-    <div class="uploadBox">
-    <div class="file has-name is-boxed">
-      <label class="file-label">
-        <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList()">
-          <span class="file-cta">
-          <span class="file-icon">
-            <i class="fas fa-upload"></i>
-          </span>
-          <span class="file-label">
-            Choose a file…
-          </span>
-          </span>
-          <span class="file-name">
-            <div id="fileList2">None.pdf </div>
-          </span>
-        </label>
+      <div class="uploadBox">
+        <div class="file has-name is-boxed">
+          <label class="file-label">
+            <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList()">
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="file-name">
+                <div id="fileList2">None.pdf </div>
+              </span>
+          </label>
+        </div>
       </div>
-    </div>
       <div class="documentCoufirm">
         <input type="submit" value="ยืนยัน" class="button is-primary">
       </div>
     </form>
   </div>
-  {%endif%}
-  <!-- หาง -->
-    <div class="cardbox-list">
-        <ul>
-          <li><b>คงเหลือ {{memberG}}/{{scholar.si_max_scholar}}</b></li>
-        </ul>
-    </div>
-{%endfor%}   
+  {%endif%} -->
+<!-- จบไฟล์ pdf ที่จะให้อัพโหลด -->
 
-    <div class="card-headstatus">
-        <p><b>สถานะการดำเนินการ</b></p>
-    </div>
-    {% for listApp in listApps %}
-        <div class="dropdown">
-        {%if listApp.sa_status == 11 or listApp.sa_status == 20 or listApp.sa_status == 10%}
-        <div class="dropdown is-not-hoverable" >
-          <!--if 2 ผ่าน 
-          <div class="dropdown is-hoverable" >-->
-          <div class="dropdown-trigger" >
-            <button class="button" style="background-color: #c2bcbcec; border-radius: 22px; font-size: 18px"  aria-haspopup="true" aria-controls="dropdown-menu5" width="100px">
-              <span><b>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}</b></span>
-            </button>
+  <div class="uploadfile">
             
-          </div>
-         
-        </div>
-        {%elif listApp.sa_status == 21 or listApp.sa_status == 30 or listApp.sa_status == 31 or listApp.sa_status == 41%}
-        <div class="dropdown is-hoverable" >
-          <!--if 2 ผ่าน 
-          <div class="dropdown is-not-hoverable" >-->
-          <div class="dropdown-trigger" >
-            <button class="button" style="background-color: #c2bcbcec; border-radius: 22px; font-size: 18px"  aria-haspopup="true" aria-controls="dropdown-menu5" width="100px">
-              <span><b>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}</b></span>
-            </button>
-          </div>
-          <div class="dropdown-menu" id="dropdown-menu5" role="menu">
-            <div class="dropdown-content">
-            
-                 <table>
-                  <thead class="threadd">
-                      <tr>
-                          
-                          <th align="center" width="100px" height="20px" valign="middle">หัวข้อ</th>
-                          <th align="center" width="100px" height="20px" valign="middle">คะแนน</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                    {% for key,value in listApp.sa_score_info.items %}
-                    <tr>
-                        <td align="center"><p>{{key}}</p></td>
-                        <td align="center"><p>{{value}}</p></b></td>
-                    </tr>
-                    {% endfor %}
-                  </tbody>
-                </table>
+            <div class="uploadfilewrapper">
+              <p>อัพโหลดเอกสารสอบสัมภาษณ์</p>
+              <div class="file has-name">
+                <label class="file-label">
+                  
+                  <input class="file-input" type="file" name="resume">
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label">
+                      Choose a file…
+                    </span>
+                  </span>
+                  <span class="file-name">
+                    Screen Shot 2017-07-29 at 15.54.25.png
+                  </span>
+                </label>
+              </div>
+              <div class="uploadconfirm">
+            <p>ตกลง</p>
+              </div>
             </div>
           </div>
-        </div>
-        {% endif %}
-        {% if listApp.sa_status == 10 or listApp.sa_status == 11 or listApp.sa_status == 20%}
-        <span class="cardbox-weight">
+          
+          <div class="remainingWrapper">
+            <div class="remaining">
+              <p>คงเหลือ : {{memberG}}/{{scholar.si_max_scholar}}</p>
+            </div>
+          </div>
+{%endfor%}
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>ชื่อ - สกุล</th>
+        {% if check %}
+          <th>คะแนน</th>  
+        {% endif %}    
+        <th>สถานะ</th>
+      </tr>
+    </thead>
+{% for listApp in listApps %}
+    <tr>
+      <td>
+        <li class="item" id="{{listApp.id}}">
+          {% if check %}
+            <a href="#{{listApp.id}}" class="menu-btn">
+              <span>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}<i class="fas fa-chevron-down drop-down"></i></span>
+            </a>
+            <a href="/checkInfoAdmin/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
+              <i class="fas fa-id-badge"></i>
+              
+            </a>
+                <a href="#">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+            </a>
+
+            {% if listApp.sa_status == 20 and check21 == True %}
+              <a onclick='edit20({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                <i class="fa-solid fa-square-pen"></i>
+              </a>
+            {% elif listApp.sa_status == 30 %}
+              <a onclick='edit30({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                <i class="fa-solid fa-square-pen"></i>
+              </a>
+            {% endif %}
+            
+          {% else %}
+            <a class="menu-btn">
+              <span>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}</span>
+            </a>
+          {% endif %}
+          {%if listApp.sa_status == 21 or listApp.sa_status == 30 or listApp.sa_status == 31 or listApp.sa_status == 32 or listApp.sa_status == 33 or listApp.sa_status == 41%}
+            <div class="sub-menu">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>ชื่อหัวข้อ</th>
+                    <th>คะแนน</th>
+                  </tr>
+                </thead>
+                {% for key,value in listApp.sa_score_info.items %}
+                  <tbody>
+                      <tr>
+                        <th>{{key}}</th>
+                        <td>{{value}}</td>
+                      </tr>
+                  </tbody>
+                {% endfor %}
+              </table>
+            </div>
+          {%endif%}
+          </li>
+      </td>
+      
+      {% if check %}
+      <td>{{listApp.sa_score|floatformat:2}}</td>
+      {% endif %}
+      
+      <td> 
+
+        {%if listApp.sa_status == 11 %}
+        <div class="cardbox-pass">
           <ul>
-            <li><b>-</b></li>
+          {% if scholarss == 1 and commit == True %}
+              <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
+                <b>ตรวจสอบเอกสาร</b>
+              </a>
+          {% elif scholarss == 1 and commit == False %}
+              <li onclick='call12()'>
+                <b>ตรวจสอบเอกสาร</b>
+              </li>
+          {% else %}
+              <li onclick='call11()'>
+                <b>ตรวจสอบเอกสาร</b>
+              </li>
+          {% endif %}
           </ul>
-        </span>
-        {% elif listApp.sa_status == 21 or listApp.sa_status == 30 or listApp.sa_status == 31 or listApp.sa_status == 41%}
-            <span class="cardbox-weight">
-              <ul>
-                <li><b>{{listApp.sa_score|floatformat:2}}</b></li>
-              </ul>
-            </span>
-        {% endif %}
+        </div>
+
+        {%elif listApp.sa_status == 20 %}
+        <div class="cardbox-notpass">
           <ul>
-            {%if listApp.sa_status == 11 %}
-              <li>
-                
-                <div class="conditionStatusOnProgress">
-                  {% if scholarss == 1 and commit == True %}
-                    <a href="/checkStatus/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
-                      <p>ตรวจสอบเอกสาร</p>
-                    </a>
-                  {% elif scholarss == 1 and commit == False %}
-                    <a onclick='call12()'>
-                      <p>ตรวจสอบเอกสาร</p>
-                    </a>
-                  {% else %}
-                    <a onclick='call11()'>
-                      <p>ตรวจสอบเอกสาร</p>
-                    </a>
-                  {% endif %}
-                </div>
+            <li>
+              <b>เอกสารไม่ผ่านเงื่อนไข</b>
+            </li>
+          </ul>
+        </div>
+
+        {%elif listApp.sa_status == 21 %}
+        <div class="cardbox-pass">
+          <ul>
+            {% if memberG == 0 %}
+              <li onclick='call22({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                <b>สอบสัมภาษณ์</b>
               </li>
-            {%elif listApp.sa_status == 20 %}
-              <li>
-                <div class="conditionStatusNotPass">
-                  <b>เอกสารไม่ผ่านเงื่อนไข</b>
-                </div>
-              </li>
-            {%elif listApp.sa_status == 21 %}
-              <li>
-                <div class="conditionStatusOnProgress">
-                  {% if memberG == 0 %}
-                  <a onclick='call22({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
-                    <b>สอบสัมภาษณ์</b>
-                    </a>
-                  {% else %}
-                    <a onclick='call21({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
-                      <b>สอบสัมภาษณ์</b>
-                    </a>
-                  {% endif %}
-                </div>
-              </li>
-            {%elif listApp.sa_status == 30 %}
-              <li>
-                <div class="conditionStatusNotPass">
-                  <b>ไม่ผ่านรอบสัมภาษณ์</b>
-                </div>
-              </li>
-            {%elif listApp.sa_status == 31 %}
-              <li>
-                <div class="conditionStatusOnProgress">
-                  <a onclick='call31({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
-                    <b>ดำเนินการรับทุน</b>
-                  </a>
-                </div>
-              </li>
-            {%elif listApp.sa_status == 41 %}
-              <li>
-                <div class="conditionStatusPass">
-                  <b>รับทุนเรียบร้อย</b>
-                </div>
+            {% else %}
+              <li onclick='call21({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                <b>สอบสัมภาษณ์</b>
               </li>
             {% endif %}
           </ul>
-          <!---</span>-->
-      </div>
-      
-    {% endfor %}
+        </div>
+        
+
+        {%elif listApp.sa_status == 30 %}
+        <div class="cardbox-notpass">
+          <ul>
+            <li>
+              <b>ไม่ผ่านรอบสัมภาษณ์</b>
+            </li>
+          </ul>
+        </div>
+
+        {%elif listApp.sa_status == 31 %}
+        <div class="cardbox-pass">
+          <ul>
+              <li>
+                <b>รอนิสิตยืนยันการรับทุน</b>
+              </li>
+          </ul>
+        </div>
+
+        {%elif listApp.sa_status == 32 %}
+        <div class="cardbox-notpass">
+          <ul>
+            <li>
+              <b>นิสิตขอสละสิทธิ์</b>
+            </li>
+          </ul>
+        </div>
+
+        {%elif listApp.sa_status == 33 %}
+        <div class="cardbox-pass">
+          <ul>
+              <li onclick='call31({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
+                <b>นิสิตยืนยันดำเนินการรับทุน</b>
+              </li>
+          </ul>
+        </div>
+
+        {%elif listApp.sa_status == 41 %}
+        <div class="cardbox-pass">
+          <ul>
+              <li>
+                <b>รับทุนเรียบร้อย</b>
+              </li>
+          </ul>
+        </div>
+        {% endif %}
+      </td>
+    </tr>
+  {%endfor%}
+  </table>
+
+
+<!-- /////////////////////////////////////////////////////////////// -->
 
       <!--page-->
 

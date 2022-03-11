@@ -1,579 +1,108 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
 
 * {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    text-decoration: none;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+}
 
-  }
-  
+body {
+  background: #fff;
+}
 
-  
-  .wrapper .header {
-    z-index: 1;
-    background: #6b0d1d;
-    position: fixed;
-    width: calc(100% - 0%);
-    height: 50px;
-    display: flex;
-    top: 0;
-  }
-  
-  .wrapper .header .header-menu {
-    width: calc(100% - 0%);
-    height: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
-  }
-  
-  .wrapper .header li {
-    font-size: 20px; 
-    color: rgb(255, 255, 255);
-    font-style: none; 
-  }
-  
-  .wrapper .header .header-menu .title {
-    color: #fff;
-    font-size: 25px;
-    text-transform: uppercase;
-    font-weight: 900;
-  }
-  
-  .wrapper .header .header-menu .title img {
-    width: 5%;
-  }
-  
-  .wrapper .header .header-menu .title span {
-    color: #37ab00;
-    padding: 20px;
-  }
-  
-  .wrapper .header .header-menu .sidebar-btn {
-    color: #fff;
-    position: absolute;
-    margin-left: 240px;
-    font-size: 22px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: 0.3s;
-    transition-property: color;
-  }
-  
-  .wrapper .header .header-menu .sidebar-btn:hover {
-    color: #cd0000;
-  }
-  
-  .wrapper .header .header-menu ul {
-    display: flex;
-  }
-  
-  .wrapper .header .header-menu ul li a {
-    background: #fff;
-    color: #000;
-    display: block;
-    margin: 0 10px;
-    font-size: 18px;
-    font-family: 'Times New Roman', Times, serif;
-    width: 34px;
-    height: 34px;
-    line-height: 35px;
-    text-align: center;
-    border-radius: 50%;
-    transition: 0.3s;
-    transition-property: background, color;
-  }
-  
-  .wrapper .header .header-menu ul li a:hover {
-    background: #cd0000;
-    color: #fff;
-  }
-  
-  .wrapper .sidebar {
-    z-index: 1;
-    background: #852b3a;
-    position: fixed;
-    top: 50px;
-    width: 250px;
-    height: 100%;
-    transition: 0.3s;
-    transition-property: width;
-    overflow-y: auto;
-  }
-  
-  .wrapper .sidebar .sidebar-menu {
-    overflow: hidden;
-    padding-bottom: 75px;
-    cursor: pointer;
-  }
-  .cardgrade {
-    width:180px;
-    height: 23px;
-    border-radius: 12px;
-    background-color:rgb(212, 223, 68);
-    padding: 1px;
-    margin-bottom: 0px;
-    color: rgb(14, 13, 13);
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-    overflow: hidden;
-  }
-  .cardgrade ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    font-family: 'Times New Roman', Times, serif;
-    padding: 1px 1px;
-    overflow: hidden;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .profile img {
-    margin: 20px 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .profile p {
-    color: #bbb;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .profile h2 {
-    color: yellow;
-    font-size: 18px;
-    font-family: 'Times New Roman', Times, serif;
-    margin-bottom: 10px;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item {
-    width: 250px;
-    overflow: hidden;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .menu-btn {
-    display: block;
-    color: #fff;
-    position: relative;
-    padding: 20px 20px;
-    transition: 0.3s;
-    transition-property: color;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
-    background-color: #cd0000;
-    transition: 0.3s;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .menu-btn i {
-    margin-right: 20px;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
-    float: right;
-    font-size: 12px;
-    margin-top: 3px;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .sub-menu {
-    background: #5c1818b6;
-    overflow: hidden;
-    max-height: 0;
-    transition: 0.3s;
-    transition-property: background, max-height;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .sub-menu a {
-    display: block;
-    position: relative;
-    color: #fff;
-    white-space: nowrap;
-    font-size: 15px;
-    padding: 15px;
-    transition: 0.3s;
-    transition-property: background;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .sub-menu a:hover {
-    background: #cd0000;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .sub-menu a:not(last-child) {
-    border-bottom: 5px solid #000000cb;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item .sub-menu i {
-    padding-right: 20px;
-    font-size: 10px;
-  }
-  
-  .wrapper .sidebar .sidebar-menu .item:target .sub-menu {
-    max-height: 500px;
-  }
-  
-  .wrapper .main-container {
-    width: (100% - 250px);
-    height: auto;
-    margin-top: 50px;
-    margin-bottom:0px;
-    margin-left: 250px;
-    padding: 2px;
-    transition: 0.3s;
-  }
-  
-  .wrapper .main-container img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .wrapper.collapse .sidebar {
-    width: 70px;
-  }
-  
-  .wrapper.collapse .sidebar .profile img,
-  .wrapper.collapse .sidebar .profile p,
-  .wrapper.collapse .sidebar .profile h2,
-  .wrapper.collapse .sidebar .cardgrade,
-  .wrapper.collapse .sidebar span,
-  .wrapper.collapse .sidebar a span {
-    display: none;
-  }
-  
-  .wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
-    font-size: 23px;
-  }
-  
-  .wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
-    font-size: 23px;
-  }
-  
-  .wrapper.collapse .sidebar .sidebar-menu .item .sub-menu i {
-    font-size: 18px;
-    padding-left: 3px;
-  }
-  
-  .wrapper.collapse .main-container {
-    width: calc(100% - 70px);
-    margin-left: 70px;
-  }
-  
-  .wrapper .main-container .card {
-    padding: 10px;
-    margin-top:10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-family: 'Courier New', Courier, monospace;
-    width: 80%;
-    height: auto;
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
-  .card-headstatus {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    padding: 10px 20px;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    margin-left: 930px;
-  }
-  
-  .cardbox {
-    width:96%;
-    height: 45px;
-    background-color:rgb(196, 194, 194);
-    padding: 10px;
-    margin-bottom: 0px;
-    margin-top:10px;
-    font-size: 18px;
-    font-family: 'Courier New', Courier, monospace;
-    color: rgb(255, 255, 255);
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  
-  .cardbox ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    font-family: Georgia;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-  }
-  
-  .card-status {
-    padding: 10px;
-    margin-bottom: 0px;
-    font-size: 15px;
-    font-family: 'Courier New', Courier, monospace;
-    align-items: center;
-    justify-content: space-between;
-    margin-left: 900px;
-  }
-  
-  .card-status ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-    text-align: center;
-  }
-  .cardbox-status {
-    width:230px;
-    height: 45px;
-    background-color:rgb(233, 110, 110);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 22px;
-    margin-left: 90px;
-  }
-  .cardbox-status ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    text-align: center;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-  }
-  .card-name {
-    width:300px;
-    height: 45px;
-    background-color:rgb(207, 204, 204);
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    margin-left: 20%;
-    margin-top: -65px;
-    margin-bottom: 20px;
-    justify-content: space-between;
-    
-  }
-  .card-name ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-  }
-  .button-th{
-    font-size:15px;
-    font-family: "Mitr";
-    color:rgb(255, 250, 250);
-    background-color: rgb(224, 26, 76);
-    width:80%;
-    height:25px;
-    border-radius: 5px;
-    padding:1px;
-    text-align: center;
-    justify-content: space-between;
-    display: block;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .file {
-    margin-left:900px;
-    margin-top:-50px;
-  }
-  
-  .threadd {
-    text-align: center;
-    margin-bottom: 0px; 
-  }
-  
-  th,td {
-    border-bottom: 1px solid #dddddd;
-    border-left: 1px solid #dddddd;
-    border-right: 1px solid #dddddd;
-    padding:10px 15px;
-    font-size: 15px;
-    width: 300px;
-    
-  }
-  .threadd th {
-    font-size: 15px;
-    margin-top:0px;
-    background-color:  rgb(226, 226, 226);
-  }
-  .button{
-    width:300px;
-    height: 45px;
-    border-radius: 22px;
-    background-color: #bbb;
-  }
-  
-  .dropdown {
-    margin-left: 85px;
-    margin-bottom: 60px;
-    margin-right: 150px;
-   
-  }
-  .cardbox-list{
-    width:190px;
-    height: 45px;
-    background-color:rgb(61, 199, 233);
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    margin-left: 900px;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    border-radius:22px;
-    justify-content: space-between;
-  }
+.wrapper .header {
+  z-index: 1;
+  background: #6b0d1d;
+  position: fixed;
+  width: calc(100% - 0%);
+  height: 50px;
+  display: flex;
+  top: 0;
+}
 
-.cardbox-status form{
-    width:230px;
-    height: 2000px;
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 22px;
-    margin-left: 90px;
-  }
+.wrapper .header .header-menu {
+  width: calc(100% - 0%);
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
 
-  .cardbox-list ul li {
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-  }
-  .cardbox-weight{
-    width:150px;
-    height: 45px;
-    background-color:rgb(235, 223, 61);
-    padding: 10px;
-    margin-bottom: 20px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    margin-left: 15px;
-    margin-bottom: 20px;
-    border-radius:22px;
-    justify-content: space-between;
-  }
-  .cardbox-weight ul li{
-    list-style: none;
-    margin: 0 5px;
-    text-decoration: none;
-    color: rgb(8, 8, 8);
-    padding: 1px 20px;
-  }
-  
-  .pageChangerWrapper{
-     position: relative;
-     bottom:20px;
-     margin-bottom:100px ;
-  }
+.wrapper .header li {
+  font-size: 20px;
+  color: rgb(255, 255, 255);
+}
 
-  .conditionStatusOnProgress{
-   width:230px;
-    height: 45px;
-    background-color:rgb(255, 186, 122);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 22px;
-    margin-left: 90px;
-    font-weight: bold;
-    
-  }
+.wrapper .header .header-menu .title {
+  color: #fff;
+  font-size: 25px;
+  text-transform: uppercase;
+  font-weight: 900;
+}
 
-  .conditionStatusNotPass{
-   width:230px;
-    height: 45px;
-    background-color:rgb(233, 110, 110);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 22px;
-    margin-left: 90px;
-    font-weight: bold;
-  }
+.wrapper .header .header-menu .title img {
+  width: 5%;
+}
 
-  .conditionStatusPass{
-     width:230px;
-    height: 45px;
-    background-color:rgb(179, 255, 207);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
-    border-radius: 22px;
-    margin-left: 90px;
-    font-weight: bold;
-  }
+.wrapper .header .header-menu .title span {
+  color: #37ab00;
+  padding: 20px;
+}
 
-  .uploadBox{
-    position:relative;
-    right:225px;
+.wrapper .header .header-menu .sidebar-btn {
+  color: #fff;
+  position: absolute;
+  margin-left: 240px;
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  transition: 0.3s;
+  transition-property: color;
+}
 
-  }
-@media only screen and (max-width: 800px) {
-  .wrapper .sidebar {
+.wrapper .header .header-menu .sidebar-btn:hover {
+  color: #cd0000;
+}
+
+.wrapper .header .header-menu ul {
+  display: flex;
+}
+
+.wrapper .header .header-menu ul li a {
+  background: #fff;
+  color: #000;
+  display: block;
+  margin: 0 10px;
+  font-size: 18px;
+  width: 34px;
+  height: 34px;
+  line-height: 35px;
+  text-align: center;
+  border-radius: 50%;
+  transition: 0.3s;
+  transition-property: background, color;
+}
+
+.wrapper .header .header-menu ul li a:hover {
+  background: #cd0000;
+  color: #fff;
+}
+
+.wrapper .sidebar {
   z-index: 1;
   background: #852b3a;
   position: fixed;
   top: 50px;
-  width: 30%;
+  width: 250px;
   height: 100%;
   transition: 0.3s;
   transition-property: width;
   overflow-y: auto;
 }
-
- .wrapper .main-container .card {
-    padding: 10px;
-    margin-top:10px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    font-family: 'Courier New', Courier, monospace;
-    width: 100%;
-    height: auto;
-    display: block;
-   
-    margin-left: 10px;
-  }
-  
 
 .wrapper .sidebar .sidebar-menu {
   overflow: hidden;
@@ -588,134 +117,664 @@
   border-radius: 50%;
   object-fit: cover;
 }
+
+.wrapper .sidebar .sidebar-menu .profile p {
+  color: #bbb;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.wrapper .sidebar .sidebar-menu .profile h2 {
+  color: yellow;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.wrapper .sidebar .sidebar-menu .item {
+  width: 250px;
+  overflow: hidden;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn {
+  display: block;
+  color: #fff;
+  position: relative;
+  padding: 20px 20px;
+  transition: 0.3s;
+  transition-property: color;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
+  background-color: #cd0000;
+  transition: 0.3s;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn i {
+  margin-right: 20px;
+}
+
+.wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
+  float: right;
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu {
+  background: #5c1818b6;
+  overflow: hidden;
+  max-height: 0;
+  transition: 0.3s;
+  transition-property: background, max-height;
+}
+
 .wrapper .sidebar .sidebar-menu .item .sub-menu a {
   display: block;
   position: relative;
   color: #fff;
   white-space: nowrap;
   font-size: 15px;
-  padding: 10px;
+  padding: 15px;
   transition: 0.3s;
   transition-property: background;
 }
-.wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
-  float: right;
-  font-size: 5px;
-  margin-top: 3px;
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu a:hover {
+  background: #cd0000;
 }
-.wrapper .sidebar .sidebar-menu .item {
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu a:not(last-child) {
+  border-bottom: 5px solid #000000cb;
+}
+
+.wrapper .sidebar .sidebar-menu .item .sub-menu i {
+  padding-right: 20px;
+  font-size: 10px;
+}
+
+.wrapper .sidebar .sidebar-menu .item:target .sub-menu {
+  max-height: 500px;
+}
+
+.wrapper .main-container {
+  width: (100% - 250px);
+  margin-top: 70px;
+  margin-left: 250px;
+  padding: 15px;
+  background: url(background.jpg) no-repeat;
+  background-size: cover;
+  height: 100vh;
+  transition: 0.3s;
+}
+
+.wrapper .main-container img {
   width: 100%;
-  overflow: hidden;font-size: 5px;
-  font-size: 15px;
+  height: 100%;
+  object-fit: cover;
 }
 
-   .dropdown {
-    margin-left: 1px;
-    margin-bottom: 20px;
-    
+.wrapper.collapse .sidebar {
+  width: 70px;
+}
+
+.wrapper.collapse .sidebar .profile img,
+.wrapper.collapse .sidebar .profile p,
+.wrapper.collapse .sidebar .profile h2,
+.wrapper.collapse .sidebar span,
+.wrapper.collapse .sidebar a span {
+  display: none;
+}
+
+.wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
+  font-size: 23px;
+}
+
+.wrapper.collapse .sidebar .sidebar-menu .item .menu-btn {
+  font-size: 23px;
+}
+
+.wrapper.collapse .sidebar .sidebar-menu .item .sub-menu i {
+  font-size: 23px;
+}
+
+.wrapper.collapse .main-container {
+  width: calc(100% - 70px);
+  margin-left: 70px;
+}
+
+.wrapper .main-container .card {
+  padding: 15px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  width: 100%;
+  height: auto;
+}
+
+.wrapper .main-container .card .poster {
+  width: 80%;
+  height: 75%;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(255, 0, 0);
+}
+
+.wrapper .main-container .card .title {
+  width: 50%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  text-align: center;
+  margin-top: 10px;
+  border: 1px solid #000000cb;
+  padding: 5px 0px;
+}
+
+.wrapper .main-container .card .description {
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  text-align: left;
+  margin-top: 10px;
+  border: 1px solid #000000cb;
+  font-size: 15px;
+  line-height: 30px;
+  padding: 5px 15px;
+}
+
+
+.wrapper .main-container .card .uploadfile {
+  width: 80%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  text-align: center;
+  margin-top: 10px;
+  /*border: 1px solid #000000cb;*/
+  font-size: 15px;
+  line-height: 30px;
+  padding: 5px 15px;
+}
+
+.wrapper .main-container .card .uploadfilewrapper {
+  width: 50%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: white;
+  text-align: center;
+  margin-top: 10px;
+  
+  font-size: 15px;
+  padding: 5px 160px;
+  float: left;
+}
+
+.wrapper .main-container .card .uploadconfirm {
+  width: 30%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(150, 255, 202);
+  text-align: center;
+  margin-top: 10px;
+  /*border: 1px solid #000000cb;*/
+  font-size: 20px;
+  line-height: 30px;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+.wrapper .main-container .card .uploadconfirm:hover {
+  background-color: rgb(43, 242, 142);
+}
+
+.wrapper .main-container .card .downloadwrapper {
+  width: 50%;
+  height: auto;
+  background-color: white;
+  /*text-align: left;*/
+  margin-top: 10px;
+  /*border: 1px solid #000000cb;
+  font-size: 15px;
+  line-height: 30px;*/
+  padding: 5px 15px;
+}
+
+.wrapper .main-container .card .download {
+  width: 30%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(255, 255, 255);
+  text-align: center;
+
+  font-size: 15px;
+  line-height: 30px;
+  padding: 5px 15px;
+  font-weight: bold;
+}
+
+.wrapper .main-container .card .remainingWrapper {
+  width: 50%;
+  height: auto;
+  background-color: white;
+  /*text-align: left;*/
+  margin-top: 75px;
+  /*border: 1px solid #000000cb;
+  font-size: 15px;
+  line-height: 30px;*/
+  padding: 5px 15px;
+  float: right;
+}
+
+.wrapper .main-container .card .remaining {
+  width: 40%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: rgb(143, 220, 255);
+  text-align: center;
+  border: 1px solid #000000cb;
+  font-size: 25px;
+  line-height: 30px;
+  padding: 5px 15px;
+  font-weight: bold;
+}
+
+.wrapper .main-container .card .table {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 30px;
+  width: 80%;
+  margin-top: 40px;
+  /*border: 1px solid #000000cb;*/
+}
+
+.wrapper .main-container .card .table th,
+tr {
+  text-align: center;
+}
+
+.wrapper .main-container .card .item .sub-menu {
+  background: #ffffffb6;
+  overflow: hidden;
+  max-height: 0;
+  transition: 0.3s;
+  transition-property: background, max-height;
+}
+
+.wrapper .main-container .card .item a span {
+  text-align: left;
+}
+
+.wrapper .main-container .card .item .sub-menu span {
+  display: block;
+  position: relative;
+  color: rgb(0, 0, 0);
+  white-space: nowrap;
+  font-size: 15px;
+  padding: 15px;
+  transition: 0.3s;
+  transition-property: background;
+}
+
+/*.wrapper .main-container .card.item .sub-menu i:hover {
+  background: #000000;
+}
+
+.wrapper .main-container .card .item .sub-menu i:not(last-child) {
+  border-bottom: 5px solid #000000cb;
+}
+
+.wrapper .main-container .card .item .sub-menu i {
+  padding-right: 20px;
+  font-size: 10px;
+}*/
+
+.wrapper .main-container .card .item:target .sub-menu {
+  max-height: 500px;
+}
+
+.wrapper .main-container .card .cardbox-pass {
+  background-color: rgb(152, 255, 175);
+  padding: 5px;
+  font-size: 20px;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 22px;
+  cursor: pointer;
+}
+
+.wrapper .main-container .card .cardbox-inprogress {
+  background-color: rgb(255, 203, 148);
+  padding: 5px;
+  font-size: 20px;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 22px;
+}
+
+.wrapper .main-container .card .cardbox-notpass {
+  background-color: rgb(255, 177, 177);
+  padding: 5px;
+  font-size: 20px;
+  display: block;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 22px;
+}
+
+.wrapper .main-container .card .sub-menu .table {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 20px;
+  width: 80%;
+  margin-top: 40px;
+  border: 1px solid #000000cb;
+}
+
+@media only screen and (max-width: 800px) {
+  .wrapper .sidebar {
+    z-index: 1;
+    background: #852b3a;
+    position: fixed;
+    top: 50px;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    transition-property: width;
+    overflow-y: auto;
   }
 
-  b{
-    font-size: 10px;
-  }
-
-  p{
-    font-size: 10px;
-  }
   .wrapper .sidebar .sidebar-menu {
     overflow: hidden;
     padding-bottom: 75px;
     cursor: pointer;
   }
-  .cardbox {
-    width:100%;
-    height: 45px;
-    background-color:rgb(196, 194, 194);
-    padding: 10px;
-    margin-bottom: 0px;
-    margin-top:10px;
-    font-size: 10px;
-    font-family: 'Courier New', Courier, monospace;
-    color: rgb(255, 255, 255);
+
+  .wrapper .sidebar .sidebar-menu .profile img {
+    margin: 20px 0;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  .wrapper .sidebar .sidebar-menu .item .sub-menu a {
     display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
+    position: relative;
+    color: #fff;
+    white-space: nowrap;
+    font-size: 15px;
+    padding: 10px;
+    transition: 0.3s;
+    transition-property: background;
+  }
+  .wrapper .sidebar .sidebar-menu .item .menu-btn .drop-down {
+    float: right;
+    font-size: 5px;
+    margin-top: 3px;
+  }
+  .wrapper .sidebar .sidebar-menu .item {
+    width: 100%;
+    overflow: hidden;
+    font-size: 5px;
+    font-size: 15px;
+  }
+
+  .wrapper .main-container {
+    width: (100% - 250px);
+    margin-top: 70px;
+    margin-left: 150px;
+    padding: 15px;
+    background: url(background.jpg) no-repeat;
+    background-size: cover;
+    height: 100vh;
+    transition: 0.3s;
+  }
+
+  .wrapper .main-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wrapper .main-container .card {
+    /*background: rgb(225, 225, 225);*/
+    padding: 15px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    width: 100%;
+    height: auto;
+  }
+
+  .wrapper .sidebar .sidebar-menu .item .menu-btn:hover {
+    background-color: #cd0000;
+    transition: 0.3s;
+    /*width: 100;*/
+  }
+
+  .wrapper .header .header-menu ul li a:hover {
+    background: #cd0000;
+    color: #fff;
+  }
+
+  .wrapper .main-container .card .poster {
+    width: 80%;
+    height: 75%;
     margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(255, 0, 0);
   }
 
-   .button{
-    width:100px;
-    height: 25px;
-    border-radius: 22px;
-    background-color: #bbb;
-    /*margin-right:150px;*/
+  .wrapper .main-container .card .title {
+    width: 50%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: center;
+    margin-top: 10px;
+    border: 1px solid #000000cb;
+    padding: 5px 0px;
   }
 
-  .cardbox-weight{
-    width:100px;
-    height: 25px;
-    background-color:rgb(235, 223, 61);
+  .wrapper .main-container .card .description {
+    width: 80%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: left;
+    margin-top: 10px;
+    border: 1px solid #000000cb;
+    font-size: 15px;
+    line-height: 30px;
+    padding: 5px 15px;
+  }
+
+  .wrapper .main-container .card .uploadfile {
+    width: 80%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: center;
+    margin-top: 10px;
+    border: 1px solid #000000cb;
+    font-size: 15px;
+    line-height: 30px;
+    padding: 5px 15px;
+  }
+
+  .wrapper .main-container .card .uploadfilewrapper {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: center;
+    margin-top: 10px;
+    border: 1px solid #000000cb;
+    font-size: 15px;
+    padding: 5px 15px;
+  }
+
+  .wrapper .main-container .card .uploadconfirm {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(150, 255, 202);
+    text-align: center;
+    margin-top: 10px;
+    /*border: 1px solid #000000cb;*/
+    font-size: 15px;
+    line-height: 30px;
+    padding: 5px 15px;
+    cursor: pointer;
+  }
+
+  .wrapper .main-container .card .uploadconfirm:hover {
+    background-color: rgb(43, 242, 142);
+  }
+
+  .wrapper .main-container .card .remainingWrapper {
+    width: 70%;
+    height: auto;
+    background-color: white;
+    /*text-align: left;*/
+    margin-top: 10px;
+    /*border: 1px solid #000000cb;
+  font-size: 15px;
+  line-height: 30px;*/
+    padding: 5px 15px;
+    float: right;
+  }
+
+  .wrapper .main-container .card .remaining {
+    width: 100%;
+    height: auto;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: rgb(143, 220, 255);
+    text-align: center;
+    border: 1px solid #000000cb;
+    font-size: 15px;
+    line-height: 30px;
+    padding: 5px 15px;
+    font-weight: bold;
+  }
+
+  .wrapper .main-container .card .table {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 15px;
+    width: 80%;
+    margin-top: 40px;
+    /*border: 1px solid #000000cb;*/
+  }
+
+  .wrapper .main-container .card .table th {
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .wrapper .main-container .card .table tr {
+    text-align: center;
+    font-size: 10px;
+  }
+  .wrapper .main-container .card .item .sub-menu {
+    background: #ffffffb6;
+    overflow: hidden;
+    max-height: 0;
+    transition: 0.3s;
+    transition-property: background, max-height;
+  }
+
+  .wrapper .main-container .card .item a span {
+    text-align: left;
+  }
+
+  .wrapper .main-container .card .item .sub-menu span {
+    display: block;
+    position: relative;
+    color: rgb(0, 0, 0);
+    white-space: nowrap;
+    font-size: 5px;
+    padding: 5px 5px;
+    transition: 0.3s;
+    transition-property: background;
+  }
+
+  .wrapper .main-container .card .item:target .sub-menu {
+    max-height: 500px;
+  }
+
+  .wrapper .main-container .card button {
+    font-size: 8px;
+  }
+
+  .wrapper .main-container .card .cardbox-pass {
+    width: 70px;
+    background-color: rgb(152, 255, 175);
     padding: 1px;
-    margin-bottom: 20px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
+    font-size: 10px;
     display: block;
     text-align: center;
-    margin-left: -150px;
-   
-    margin-bottom: 20px;
-    border-radius:22px;
-    justify-content: space-between;
-  }
-
- 
-
-   .conditionStatusOnProgress{
-   width:100px;
-    height: 25px;
-    background-color:rgb(255, 186, 122);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
-    display: block;
-    text-align: center;
-    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 22px;
-    margin-left: 1px;
-    font-weight: bold;
-    
   }
 
-  .conditionStatusNotPass{
-   width:230px;
-    height: 45px;
-    background-color:rgb(233, 110, 110);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
+  .wrapper .main-container .card .cardbox-inprogress {
+    width: 70px;
+    background-color: rgb(255, 203, 148);
+    padding: 1px;
+    font-size: 10px;
     display: block;
     text-align: center;
-    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 22px;
-    margin-left: 10px;
-    font-weight: bold;
   }
 
-  .conditionStatusPass{
-     width:230px;
-    height: 45px;
-    background-color:rgb(179, 255, 207);
-    padding: 10px;
-    font-size: 17px;
-    font-family: 'Courier New', Courier, monospace;
+  .wrapper .main-container .card .cardbox-notpass {
+    width: 70px;
+    background-color: rgb(255, 177, 177);
+    padding: 1px;
+    font-size: 10px;
     display: block;
     text-align: center;
-    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
     border-radius: 22px;
-    margin-left: 10px;
-    font-weight: bold;
   }
 
- 
+  .wrapper .main-container .card .sub-menu .table {
+    position: relative;
+    margin-top: 10px;
+    font-size: 10px;
+    width: 100%;
+
+    border: 1px solid #000000cb;
+  }
+  .wrapper .main-container .card .sub-menu .table th {
+    text-align: center;
+    font-size: 10px;
+  }
+
+  .wrapper .main-container .card .sub-menu .table tr {
+    text-align: center;
+    font-size: 10px;
+  }
 }

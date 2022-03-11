@@ -178,6 +178,7 @@ class Scholar_app(models.Model):
     sa_userid = models.ForeignKey(User,on_delete=models.CASCADE) 
     sa_si_id = models.ForeignKey(Scholar_info,on_delete=models.CASCADE) #id ทุน
     sa_status =	models.IntegerField(default=11)	#สถานะการยื่นทุน 11=ผ่านรอบยื่นเอกสาร 20=เจ้าหน้าที่ตรวจสอบเอกสารไม่ผ่าน 21=เจ้าหน้าที่ตรวจสอบเอกสารผ่าน 30=ไม่ผ่านการคัดเลือกสอบสัมภาษณ์ 31=ผ่านการคัดเลือกสอบสัมภาษณ์ 41=รับเงินทุนสนับสนุนการศึกษา
+    sa_statusExDate = models.DateField(default=timezone.now)
     sa_score = models.FloatField(default=0) #คะแนนเฉลี่ยรวม(คะเเนนสอบสัมภาษณ์)
     sa_person = models.IntegerField(default=1)
     sa_score_info =	models.JSONField()  #คะแนนรายข้อ(คะเเนนสอบสัมภาษณ์)

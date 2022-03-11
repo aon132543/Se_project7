@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-{% for state,file in states.items %}
+{% for state,data in states.items %}
 
         <div class="cardforStatus">
           <div class = "progessConatainer">
@@ -15,14 +15,33 @@
               <div class="progressionInfomantStatus">
               
               {% if state.sa_status == 21 %}
-              {%if file.fm_file%}
+              {%if data.0.fm_file%}
               ผ่านการคัดเลือก
               
                 <a href = "{{file.fm_file.url}}"><button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button></a>
               {%else%}
               ผ่านการคัดเลือก รอเจ้าหน้าที่แจ้งเอกสารสอบสัมภาษณ์
-              {%endif%}
-              
+              {% endif %}
+              {% elif state.sa_status == 31 %}
+              กรุณายืนยันรับสิทธิ์ได้ไม่เกิน {{state.sa_statusExDate}}
+              <form action ="/statusNisit" method="POST">
+                {% csrf_token %}
+                <input type="submit" value="ยืนยันรับทุน">
+                <input type="hidden" id="custId" name="custId" value="1">
+                <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
+              </form>
+
+              <form action ="/statusNisit" method="POST" >
+                {% csrf_token %}
+                <input type="submit" value="สละสิทธิ์รับทุน">
+                <input type="hidden" id="custId" name="custId" value="0">
+                <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
+              </form>
+              {% elif state.sa_status == 33  %}
+              {% if data.1 %}
+              แก้ไขข้อมูลบัญชีได้ไม่เกิน {{state.sa_statusExDate}}
+                <a href="/payment/{{state.sa_si_id.id}}"><input type="submit" value="แก้ไขบัญชีธนาคาร"></a>
+              {% endif %}
               {% endif %}
             </div>
             
@@ -52,6 +71,16 @@
               <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
               <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
               <li class="active" >ผ่านการคัดเลือกสอบสัมภาษณ์</li>
+              <li class="inprogess" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 32 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="inactive" >สละสิทธิ์รับทุน</li>
+              <li class="inactive" >รับเงินทุนสนับสนุนการศึกษา</li>
+          {% elif state.sa_status == 33 %}
+              <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
+              <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
+              <li class="active" >ยืนยันรับทุน</li>
               <li class="inprogess" >รับเงินทุนสนับสนุนการศึกษา</li>
           {% elif state.sa_status == 41 %}
               <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>

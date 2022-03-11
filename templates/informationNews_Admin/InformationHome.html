@@ -44,9 +44,22 @@
                     </span>
                     <span>Edit</span>
                   </button>
-                  </a>
-                </div>
+                </a>
+                  
+                  <button class="button is-danger is-light" onclick="del({{new.id}})">
+                    <span class="icon is-small">
+                      <i class="fa-solid fa-trash"></i>
+                    </span>
+                    <span>ลบประกาศนี้</span>
+                  </button>
+                
+
+                 
+                
               </div>
+
+
+
               {%endif%}
             </div>
           </div>
@@ -84,4 +97,24 @@
   </nav>
   </div>
   <!-- end page -->
+
+  <script>
+    function del(info_id){
+      
+      Swal.fire({
+        "title":"ต้องการที่จะลบข่าวสารใช่หรือไม่ ?  ",
+        "icon":"question",
+        "showCancelButton":true,
+        "cancelButtonText":"ย้อนกลับ",
+        "confirmButtonText":"ใช่,ลบช่าวสาร"
+      })
+      .then(function (result){
+        if (result.isConfirmed){
+          window.location.href="/removeInformation/"+info_id
+        }
+      })
+    
+    }
+    </script>
+    
 {% endblock %}

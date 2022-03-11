@@ -28,6 +28,13 @@
       <span>แก้ไข</span>
     </button>
     </a>
+
+      <button class="button is-danger" onclick="del({{scholar.id}})">
+        <span class="icon is-small">
+          <i class="fa-solid fa-trash"></i>
+        </span>
+        <span>ลบทุน</span>
+      </button>
     {%endif%}
 
 
@@ -70,4 +77,26 @@
 </nav>
 </div>
 <!-- end page -->
+
+
+<script>
+function del(info_id){
+  
+  Swal.fire({
+    "title":"ต้องการที่จะลบทุนใช่หรือไม่ ?  ",
+    "icon":"question",
+    "showCancelButton":true,
+    "cancelButtonText":"ย้อนกลับ",
+    "confirmButtonText":"ใช่,ลบทุน"
+  })
+  .then(function (result){
+    if (result.isConfirmed){
+      window.location.href="/removeScholar/"+info_id
+    }
+  })
+
+}
+</script>
+
+
 {% endblock %}

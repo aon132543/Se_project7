@@ -6,19 +6,18 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>CheckInfo</title>
+    <title>CheckInfoAdmin</title>
     <script
     src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"
     charset="utf-8"
   ></script>
-  <link rel="stylesheet" href="{% static 'css/image2.css' %}?{% now " U" %}" />
-  <script src="https://kit.fontawesome.com/b3383d3f2a.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="{% static 'css/image.css' %}?{% now " U" %}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
   <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css" rel="stylesheet">
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
 <style>
 @media only screen and (min-width: 800px) {
@@ -145,7 +144,6 @@
     margin-top: 20px;
   }
   }
-
 </style>
 <script type="text/JavaScript">
   var myform;
@@ -266,10 +264,11 @@
   <img src="{% static 'images/11.gif' %}" width="150px" height="150px" vspace="15">
   </div>
     <div class="container">
+      <form action ="/checkInfo/{{info_id}}" method="POST"  enctype="multipart/form-data" >
     
     
     {% csrf_token %}
-    <h1 align = 'center'><b><font size="5px" color="white"> กรอกคะแนนการสัมภาษณ์ทุน </font></b></h1> 
+    <h1 align = 'center'><b><font size="5px" color="white"> ตรวจสอบการกรอกประวัติสำหรับใช้สมัครทุนการศึกษา </font></b></h1> 
         
     <div class="box">       
 
@@ -277,12 +276,12 @@
         <h6 class="title is-6 has-text-centered">รูปประจำตัว </h6>
         <div class="avatar-wrapper">
           
-          <img class="profile-pic" src="{{checkin.sa_userid.avatar_profile.sp_path_to_avatar.url}}" />
+          <img class="profile-pic" src="{{pic.sp_path_to_avatar.url}}" />
           <div class="upload-button">
             <i class="fa fa-arrow-circle-up" aria-hidden="true"></i>
           </div>
         </div>
-        <span class="tag is-warning"><h6 class="title is-6 has-text-centered"><i>ภาพประจำตัว</i></h6></span>
+        <span class="tag is-warning"><h6 class="title is-6 has-text-centered"><i>กรุณาอัพโหลดภาพประจำตัว</i></h6></span>
 
       </div>
 
@@ -411,7 +410,7 @@
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
       
        <div class="wraper">
-        {% for json_obj in json_scholar %}
+        {% for json_obj in json %}
 
           <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}" readonly>
           <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}" readonly>
@@ -426,74 +425,57 @@
        </div>
        <div class ="upload">
        <div class="box">
-        <h6 class="title is-6"> ไฟล์ที่แนบมา </h6>
-        {% if file_obj.fm_file %}
-        <a href="{{file_obj.fm_file.url}}" class = ""><button class="button is-danger"><i class="fa-solid fa-file-pdf"></i> เปิดไฟล์ที่แนบมา </button></a>
-        {%else%}
-        <p>ไม่ได้แนบไฟล์</p>
-        {% endif %}
+        <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
+        
+       <div class="file has-name is-boxed">
+        <label class="file-label">
+          <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList2()" onchange="previewFile()">
+          <span class="file-cta">
+            <span class="file-icon">
+              <i class="fas fa-upload"></i>
+            </span>
+            <span class="file-label">
+              Choose a file…
+            </span>
+          </span>
+          <span class="file-name">
+            <div id="fileList2">None.pdf </div>
+          </span>
+        </label>
+      </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h6 class="title is-6 has-text-centered"> ตัวอย่างไฟล์ </h6>
+    <canvas id="pdfViewer"></canvas>
+    </div>
 
 
 
-
-
-
+     </div>
 
      
-     </div>
-     <div class ="box">
-      <div class="level-item has-text-centered">
-      <h6 class="title is-4"> แบบฟอร์มกรอกคะแนนการสัมภาษณ์ทุน </h6>
-      </div>
-
-      <br>
-      <form  action="/interviewStudentTest/{{checkin.sa_si_id.id}}/{{checkin.sa_userid.id}}" method="POST">
-      {% csrf_token %}
-      {% for key1,value1 in json.items %}
-      
-      <div class="columns is-centered fieldGroup">
-        
-        <div class="columns">
-          
-          <div class="column"> 
-            <label class="label">หัวข้อ</label>
-            <p>{{ key1 }}</p>
-            <input type="text" name="name[]" class="input" value="{{ key1 }}"/ readonly hidden>  
-          </div> 
-          
-          <div class="column"> 
-            <label class="label">คะแนนเต็มข้อนี้ {{ value1 }}</label>
-            <input type="number" step="0.01" name="weight[]" class="input" id ="{{ key1 }}" onblur="getVal( '{{ key1 }}','{{ value1 }}'  ) "required/>
-          </div> 
-      
-
-        </div>
-        </div>
-        
-        
-      
-      {%endfor%}
-      
-      
-      
-
-      <h6 class="title is-6 has-text-centered"><i>*ท่านไม่สามารถแก้ไขข้อมูลหลังจากยืนยันแล้ว</i>
-     </div>
-
  
-<br>
+    </form>
+    <script>
+    function preview() {
+        frame.src=URL.createObjectURL(event.target.files[0]);
+    }
+    
+    </script>
           <div class="level-item has-text-centered">
             <div class="columns" > 
-              <div class="column">
-                <input type="submit" value="ยืนยัน" class="button is-primary">
+              <div class = "column">
+                <a href="/secondAppilcationAdmin"><input value="ยกเลิก" class="button is-warning"></a>
               </div>
           </div>
-        </form>
+
 
           <script>
 
 var pdfjsLib = window['pdfjs-dist/build/pdf'];
-// The workerSrc property shall be saecified.
+// The workerSrc property shall be specified.
 pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://mozilla.github.io/pdf.js/build/pdf.worker.js';
 
 $("#myPdf").on("change", function(e){
@@ -540,49 +522,6 @@ $("#myPdf").on("change", function(e){
 	}
 });
 
-
-
 </script>
-
-<script>
-function noti(val)
-{
-  if(val)
-  {
-    Swal.fire({
-  icon: 'error',
-  title: 'Oops...',
-  text: 'ท่านกรอกคะแนนเกินจากคะแนนเต็ม',
-})
-  }else{
-    Swal.fire({
-  icon: 'error',
-  title: 'Oops...',
-  text: 'ท่านกรอกเป็นจำนวนติดลบ',
-})
-
-  }
-
-}
-
-
-function getVal(id,max) {
-  let val = document.getElementById(id).value;
-  val = parseInt(val)
-  max = parseInt(max)
-  if(val < 0)
-  {
-    document.getElementById(id).value = 0;
-    noti(0);
-  }else if(val > max){
-    document.getElementById(id).value = max;
-    noti(1);
-    
-  }
-    
-}
-  </script>
-
-
 </body>
 </html>

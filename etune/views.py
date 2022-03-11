@@ -16,6 +16,13 @@ from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator , EmptyPage ,InvalidPage
 import json as js
 from django.contrib.auth.decorators import user_passes_test
+#gen pdf
+from io import BytesIO
+from django.http import HttpResponse
+from django.template.loader import get_template
+
+
+
 
 # from allauth.socialaccount.adaptor import DefaultSocialAccountAdapter
 
@@ -121,7 +128,7 @@ def information(request):           #หน้าสร้างข่าวป�
         )
         data.save()
         messages.success(request, 'สร้างประชาสัมพันธ์แล้ว')
-        return render(request,'Create_Admin/information.html')
+        return redirect('InformationHome')
     return render(request,'Create_Admin/information.html')
 
 
@@ -453,6 +460,7 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
                 
             if countInDB != 1:
                 add_scholar_Commit.objects.filter(id_commit=users_obj2).filter(Scholar_name=lstDB.Scholar_name.id).delete()
+                
         messages.success(request, "เพิ่มการเข้าถึงทุนของกรรมการแล้ว")
         return redirect("/viewManageCommitteeHome/"+str(home_id))
     
@@ -461,16 +469,17 @@ def viewManageCommitteeHome(request,home_id): #หน้ารายชื่อ
     dic = {}
     for i in range(len(scholar)):
         # print(scholar[i].si_status)
-        if(len(scholar_n)>0 and (scholar[i].si_status==0)):
+        if(len(scholar_n)>0 and (scholar[i].si_status<=1)):
             for j in range(len(scholar_n)):
                 if(scholar_n[j].Scholar_name.id==scholar[i].id):
                     dic[str(scholar[i].si_name),int(scholar[i].id)]=True
                     break
                 elif(scholar_n[j].Scholar_name.id!=scholar[i].id):
                     dic[str(scholar[i].si_name),int(scholar[i].id)]=False
-        elif(len(scholar_n)==0 and (scholar[i].si_status==0)):
+        elif(len(scholar_n)==0 and (scholar[i].si_status<=1)):
             dic[str(scholar[i].si_name),int(scholar[i].id)]=False
         # else:
+    # print(dic)
             
 
     return render(request,'manageCommittee_Admin/view-manageCommitteeHome.html',{'users_obj':users_obj,'user_id':user_obj_id,'json':dic,'scholar':scholar})
@@ -998,21 +1007,37 @@ def editHistoryNisit(request):
 
     return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro,'pic':data2})  
 
-@login_required (login_url='index')
-@user_passes_test(lambda u: u.is_staff == False)   
+# @login_required (login_url='index')
+# @user_passes_test(lambda u: u.is_staff == False)   
 def statusNisit(request):
+    time = datetime.now()
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
     lst = {} 
     states = Scholar_app.objects.filter(sa_userid = user_obj)
+    if request.method == 'POST':
+        status = request.POST['custId']
+        info_id = request.POST['infoId']
+        if status == "1":
+            Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = info_id).update(sa_status = 33)
+            return redirect('/payment/'+str(info_id))
+        if status == "0":
+            Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = info_id).update(sa_status = 32)
     if states.exists() == True:
         states.select_related('sa_si_id','sa_userid')
         for state in states:
             file = File_Models.objects.filter(fm_state=1,fm_Scholar=state.sa_si_id)
             if file.exists() == True:
-                lst[state] = file[0]
+                lst[state] = [file[0]]
             else:
-                lst[state] = None
+                lst[state] = [None]
+
+            dateApp = datetime.fromisoformat(str(state.sa_statusExDate)).timestamp()
+            dateToday = datetime.fromisoformat(str(time)).timestamp()
+            if dateToday <= dateApp:
+                lst[state].append(True)
+            else:
+                lst[state].append(False)
         return render(request,'Status_Page/statusNisit.html',{'states':lst})
     else:
         return render(request,'Status_Page/statusNisit.html')
@@ -1288,76 +1313,73 @@ def interview(request):
 
     return render(request,'Committee/news_committee.html',{'scholars':newsperPage})
 
-def historyGetScholarFind (request):
-    check = lambda x : None if ( x == "" or x == "กรุณาเลือก" )  else x
-    data = Scholar_app.objects.all()
-    infoes = Scholar_info.objects.all()
-    IDStudent = check(request.GET['studentID'])   #เลขรหัสนิสิต
-    scholarType = check(request.GET['scholarType'])   #ทุนภายใน/นอก/ผสม
-    scholarName = check(request.GET['scholarName'])   #ชื่อทุน
-    year = check(request.GET['year'])  #ปีของทุน
-    ScholarProvider = check(request.GET['ScholarProvider'])
-    
-
-       
-    if IDStudent != None:
-        data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
-    if scholarType != None:
-        infoes = Scholar_info.objects.filter(si_source=scholarType)
-        info_id = []
-        for info in infoes:
-            info_id.append(info.id)
-        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-    if scholarName != None:
-        infoes = Scholar_info.objects.filter(si_name=scholarName) 
-        info_id = []
-        for info in infoes:
-            info_id.append(info.id)
-        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-    if year != None:
-        infoes = Scholar_info.objects.filter(si_year=year) 
-        info_id = []
-        for info in infoes:
-            info_id.append(info.id)
-        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-    if ScholarProvider != None:
-        infoes = Scholar_info.objects.filter(si_source_name__contains=ScholarProvider)
-        info_id = []
-        for info in infoes:
-            info_id.append(info.id)
-        data = data.filter(sa_si_id__in = info_id,sa_status = 41)
-
-    dic = []
-    filds = [IDStudent,scholarType,scholarName,year,ScholarProvider]   
-    money = 0
-    for info in infoes:
-        d = data.filter(sa_si_id = info.id)
-        if d.exists() == True:
-            money += len(d)*info.si_individual_amount
-            dic.append([info,d])
-       
-            
-    paginator = Paginator(dic,10)
-
-    try:
-        page = int(request.GET.get('page','1'))
-    except:
-        page=1
-    
-    try:
-        dataperPage =  paginator.page(page)
-    except(EmptyPage,InvalidPage):
-        dataperPage = paginator.page(paginator.num_pages)
-        
-    return render(request,'historyGetScholar_addmin/historyGetScholarfind.html',{'history':dataperPage,'money':money,'filds':filds})
 
 def historyGetScholar(request):
-    infoes = Scholar_info.objects.all()
+    infoAll = Scholar_info.objects.all()
+    data = Scholar_app.objects.all()
     year = []
-    for info in infoes:
+    for info in infoAll:
         if info.si_year not in year:
             year.append(info.si_year)
-    return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoes,'year':year})
+    scholarName = "กรุณาเลือก"   #ชื่อทุน
+    yearGet = "กรุณาเลือก"  #ปีของทุน
+    scholarType = "กรุณาเลือก"
+    if request.method == "POST":
+        IDStudent = request.POST['studentID']   #เลขรหัสนิสิต
+        scholarType = request.POST['scholarType']   #ทุนภายใน/นอก/ผสม
+        scholarName = request.POST['scholarName']   #ชื่อทุน
+        yearGet = request.POST['year']  #ปีของทุน
+        ScholarProvider = request.POST['ScholarProvider']
+        if IDStudent != "":
+            data = data.filter(sa_std_code__contains = IDStudent,sa_status = 41)
+        if scholarType != "กรุณาเลือก":
+            infoes = Scholar_info.objects.filter(si_source=scholarType)
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        if scholarName != "กรุณาเลือก":
+            infoes = Scholar_info.objects.filter(si_name=scholarName) 
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        if yearGet != "กรุณาเลือก":
+            infoes = Scholar_info.objects.filter(si_year=year) 
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+        if ScholarProvider != "":
+            infoes = Scholar_info.objects.filter(si_source_name__contains=ScholarProvider)
+            info_id = []
+            for info in infoes:
+                info_id.append(info.id)
+            data = data.filter(sa_si_id__in = info_id,sa_status = 41)
+
+        dic = []  
+        money = 0
+        for info in infoes:
+            d = data.filter(sa_si_id = info.id)
+            if d.exists() == True:
+                money += len(d)*info.si_individual_amount
+                dic.append([info,d])
+
+        paginator = Paginator(dic,10)
+
+        try:
+            page = int(request.GET.get('page','1'))
+        except:
+            page=1
+        
+        try:
+            dataperPage =  paginator.page(page)
+        except(EmptyPage,InvalidPage):
+            dataperPage = paginator.page(paginator.num_pages)
+
+
+        return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoAll,'year':year,'studentID' :IDStudent,'scholarType':scholarType,'scholarName':scholarName,'yearGet':yearGet,'ScholarProvider':ScholarProvider,'money':money,'history':dataperPage})
+    return render(request,'historyGetScholar_addmin/historyGetScholar.html',{'infoes':infoAll,'year':year,'scholarType':scholarType,'scholarName':scholarName,'yearGet':yearGet})
 
 @login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_superuser)
@@ -1392,18 +1414,19 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
+
+    
     if request.method == "POST":
-        print("0000000000000")
-        print("555555555555",request.FILES.get('myPdf'))
+  
         if File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).exists():
-            data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0])
+            data3 = File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1)
             data3 = data3[0]
             data3.fm_file = request.FILES.get('myPdf')
             data3.fm_state = 1
             data3.save()
-            print("HELLOWORLD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+
         else:
-            print("กูสร้างแล้วนะไอสัส")
+     
             data3 = File_Models.objects.create(
                     fm_upload_by=user_obj,
                     fm_Scholar=scholars[0],
@@ -1420,18 +1443,28 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     check = True
     if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
         check = False
-    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists():
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
         check = False
-    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).exists():
-        check = False
-    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=30).exists():
-        check = False
+
+    check21 = True
+    if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
+        check21 = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).exists() == True:
+        check21 = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).exists() == True:
+        check21 = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).exists() == True:
+        check21 = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).exists() == True:
+        check21 = False
 
     memberGet = Scholar_info.objects.filter(id=home_id)
     memberGet = memberGet[0]
     memberGet = memberGet.si_max_scholar
     # print(memberGet)
-    memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
+    memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count() + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
+    memberGot = memberGot + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).count()
+    memberGot = memberGot - Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).count()
     # print(memberGot)
     memberG = memberGet - memberGot
     if memberG == 0:
@@ -1439,8 +1472,13 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
       data = Scholar_info.objects.filter(id=home_id).update(si_endtime=enddate)
 
 
-    paginator = Paginator(listApps,10)  
+    
+    file_upload = None
+    if File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1).exists():
+        file_upload = File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1)
+        file_upload = file_upload[0]
 
+    paginator = Paginator(listApps,10)  
     try:
         page = int(request.GET.get('page','1'))
     except:
@@ -1450,8 +1488,10 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
         listAppsPage =  paginator.page(page)
     except(EmptyPage,InvalidPage):
         listAppsPage = paginator.page(paginator.num_pages)
+
+
     
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG,'commit':commit})
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG,'commit':commit,'file_upload':file_upload,'check21':check21})
 
 @login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_staff)
@@ -1639,6 +1679,8 @@ def changeStatus(request,home_id,user_id,status):
     memberGet = memberGet[0]
     memberGet = memberGet.si_individual_amount
     memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
+    memberGot = memberGot + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).count()
+    memberGot = memberGot - Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).count()
     memberG = memberGet - memberGot
 
     if checkin.sa_status == 11:
@@ -1650,20 +1692,31 @@ def changeStatus(request,home_id,user_id,status):
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = 20)
             return redirect('/secondAppilcationAdmin/'+str(home_id))
+    elif checkin.sa_status == 20:
+        if status == 1:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 21)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
     elif checkin.sa_status == 21:
         if status == 1:
             if(memberG==0):
                 messages.success(request, 'สร้างประชาสัมพันธ์แล้ว')
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
             else:
+                enddate = datetime.now() + timedelta(days=7)
                 data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                    sa_status = 31)
+                    sa_status = 31 ,sa_statusExDate = enddate)
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
         elif status == 0:
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = 30)
             return redirect('/secondAppilcationAdmin/'+str(home_id))
-    elif checkin.sa_status == 31:
+    elif checkin.sa_status == 30:
+        if status == 1:
+            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                sa_status = 31)
+            return redirect('/secondAppilcationAdmin/'+str(home_id))
+    elif checkin.sa_status == 33:
         if status == 1:
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = 41)
@@ -1704,3 +1757,79 @@ def limitaccount(request):
     else:           
         return redirect('profileHistoryNisit')
 
+def payment(request,info_id):
+    scholars = Scholar_info.objects.filter(id=info_id)
+    scholarss = scholars[0]
+    scholarss = scholarss.si_status
+
+    # print(int(dastatusNisittetime.datetime.utcnow().timestamp()))
+    user_obj = User.objects.filter(id=request.user.id)
+    user_obj = user_obj[0]
+
+    
+    check = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id =scholars[0])
+    check = check[0].sa_status
+
+    if check == 33:
+        if request.method == "POST":
+    
+            if len(File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2)) != 0 :
+                print(File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2))
+                data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2)
+                data3 = data3[0]
+                data3.fm_file = request.FILES.get('myPdf')
+                data3.save()
+
+            else:
+        
+                data3 = File_Models.objects.create(
+                        fm_upload_by=user_obj,
+                        fm_Scholar=scholars[0],
+                        fm_file = request.FILES.get('myPdf'),
+                        fm_state = 2
+
+                    )
+                data3.save()
+            return redirect('statusNisit')
+    else:
+        messages.success(request, 'ท่านสละสิทธิ์ไปแล้ว หรือ หมดเวลาการอัพโหลดไฟล์')
+        return redirect('statusNisit')
+        
+
+        
+
+    file_upload = None
+    if len(File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2)) != 0:
+        data3 = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2)
+        file_upload = data3[0]
+    
+    return render(request,'payment/payment.html',{'file_upload':file_upload,'info_id':info_id})
+
+
+def removeScholar(request,info_id):
+    data = Scholar_info.objects.filter(id=info_id).delete()
+    messages.success(request, 'ลบทุนเรียบร้อยแล้ว')  
+    return redirect('home')
+
+def removeInformation(request,news_id):
+    data = Scholar_news.objects.filter(id=news_id).delete()
+    messages.success(request,'ลบข่าวสารเรียบร้อยแล้ว')
+    return redirect('InformationHome')
+
+def pdf_genScholar(request,info_id):
+    
+
+    pass
+
+
+
+def checkInfoAdmin(request,home_id,user_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = home_id)
+    checkin = checkin[0]
+    json = checkin.sa_json_scholar
+    json_bro = checkin.sa_bro_n_sis
+    data2  = avatar_profile.objects.filter(sa_userid=user_obj)
+    data2 = data2[0]
+    return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'info_id':home_id,'pic':data2})

@@ -58,8 +58,13 @@ urlpatterns = [
     path('checkStatus/<int:home_id>/<int:user_id>',views.checkStatus,name="checkStatus"), #เช็คสถานะนิสิต
     path('delApp/<int:home_id>/<int:user_id>',views.delApp,name="delApp"), #ลบใบสมัคร
     path('changeStatus/<int:home_id>/<int:user_id>/<int:status>',views.changeStatus,name="changeStatus"), #สำหรับเปลี่ยนสถานะ 21 20 31 30 41
-    path('historyGetScholarFind',views.historyGetScholarFind,name="historyGetScholarFind"),
-    path('limitaccount',views.limitaccount,name="limitaccount")
+    #path('historyGetScholarFind',views.historyGetScholarFind,name="historyGetScholarFind"),
+    path('limitaccount',views.limitaccount,name="limitaccount"),
+    path('payment/<int:info_id>',views.payment,name = "payment"),
+    path('removeScholar/<int:info_id>',views.removeScholar,name="removeScholar"),
+    path('removeInformation/<int:news_id>',views.removeInformation,name="removeInformation"),
+    path('pdf_genScholar/<int:info_id>',views.pdf_genScholar,name="pdf_genScholar"),
+    path('checkInfoAdmin/<int:home_id>/<int:user_id>',views.checkInfoAdmin,name="checkInfoAdmin")
     ]
 
 urlpatterns += [
