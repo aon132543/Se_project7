@@ -1,4 +1,5 @@
 @import "https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css";
+@import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
 
 * {
   margin: 0;
@@ -6,7 +7,7 @@
   list-style: none;
   text-decoration: none;
   box-sizing: border-box;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Prompt', sans-serif;
 }
 
 body {
@@ -285,7 +286,7 @@ body {
 
 
 .wrapper .main-container .card .uploadfile {
-  width: 80%;
+  width: 50%;
   height: auto;
   margin-left: auto;
   margin-right: auto;
@@ -294,8 +295,9 @@ body {
   margin-top: 10px;
   /*border: 1px solid #000000cb;*/
   font-size: 15px;
-  line-height: 30px;
+  line-height: 0px;
   padding: 5px 15px;
+  float: left;
 }
 
 .wrapper .main-container .card .uploadfilewrapper {
@@ -306,11 +308,14 @@ body {
   background-color: white;
   text-align: center;
   margin-top: 10px;
-  
+  border: 1px solid #000000cb;
   font-size: 15px;
-  padding: 5px 160px;
-  float: left;
+  padding: 20px 80px;
+  align-items: center;
+  
 }
+
+
 
 .wrapper .main-container .card .uploadconfirm {
   width: 30%;
@@ -609,7 +614,7 @@ tr {
     background-color: white;
     text-align: center;
     margin-top: 10px;
-    border: 1px solid #000000cb;
+    /*border: 1px solid #000000cb;*/
     font-size: 15px;
     line-height: 30px;
     padding: 5px 15px;
@@ -638,7 +643,7 @@ tr {
     margin-top: 10px;
     /*border: 1px solid #000000cb;*/
     font-size: 15px;
-    line-height: 30px;
+    line-height: 1px;
     padding: 5px 15px;
     cursor: pointer;
   }
@@ -777,4 +782,9 @@ tr {
     text-align: center;
     font-size: 10px;
   }
+}
+.list{
+  margin-left: 30%;
+  margin-right:30%;
+  margin-bottom: 3%;
 }

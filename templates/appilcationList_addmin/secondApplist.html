@@ -178,6 +178,7 @@
       </button>
     </a>
   {% endif %}
+
   <div class="uploadBoxContainer">
     <h6 class="title is-6"> อัพโหลดไฟล์ *pdf </h6>
 
@@ -207,16 +208,20 @@
     </form>
   </div>
   {%endif%} -->
-<!-- จบไฟล์ pdf ที่จะให้อัพโหลด -->
 
-  <div class="uploadfile">
-            
-            <div class="uploadfilewrapper">
-              <p>อัพโหลดเอกสารสอบสัมภาษณ์</p>
-              <div class="file has-name">
-                <label class="file-label">
-                  
-                  <input class="file-input" type="file" name="resume">
+<!-- จบไฟล์ pdf ที่จะให้อัพโหลด -->
+  {% if check31 %}
+    <form action="/secondAppilcationAdmin/{{scholar.id}}" method="POST" enctype="multipart/form-data"  >
+      {% csrf_token %}
+
+        <div class="uploadfile">
+          <!--div class="uploadfilewrappers">
+          </div>      -->  
+          <div class="uploadfilewrapper">
+            <p>อัพโหลดเอกสารสอบสัมภาษณ์</p>
+            <div class="file has-name">
+              <label class="file-label">
+                <input class="file-input" name="myPdf" id="myPdf" type="file" accept="application/pdf" onchange="javascript:updateList()">
                   <span class="file-cta">
                     <span class="file-icon">
                       <i class="fas fa-upload"></i>
@@ -226,21 +231,34 @@
                     </span>
                   </span>
                   <span class="file-name">
-                    Screen Shot 2017-07-29 at 15.54.25.png
+                    <div id="fileList2">None.pdf </div>
                   </span>
-                </label>
-              </div>
-              <div class="uploadconfirm">
-            <p>ตกลง</p>
-              </div>
+              </label>
             </div>
-          </div>
+            <br>
+            {% if file_upload.fm_file %}
+        
+            <a href="{{file_upload.fm_file.url}}">
+            
+                <h2><span class="tag is-danger">แสดงไฟล์ปัจจุบัน</span></h3>
+      
+            </a>
+        
+          {% endif %}
+            <button type="submit" value="ตกลง" class="button is-primary"><p>ตกลง<p></button>
           
-          <div class="remainingWrapper">
-            <div class="remaining">
-              <p>คงเหลือ : {{memberG}}/{{scholar.si_max_scholar}}</p>
-            </div>
+
           </div>
+        </div>
+    </form>
+  {%endif%}
+
+    <div class="remainingWrapper">
+      <div class="remaining">
+        <p>คงเหลือ : {{memberG}}/{{scholar.si_max_scholar}}</p>
+      </div>
+    </div>
+
 {%endfor%}
 
 <table class="table">
@@ -258,16 +276,20 @@
       <td>
         <li class="item" id="{{listApp.id}}">
           {% if check %}
-            <a href="#{{listApp.id}}" class="menu-btn">
+            
+            <a href="#{{listApp.id}}" class="menu-btn" >
               <span>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}<i class="fas fa-chevron-down drop-down"></i></span>
             </a>
-            <a href="/checkInfoAdmin/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
+
+            <a href="/checkInfoAdmin/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}" target="_blank">
               <i class="fas fa-id-badge"></i>
-              
             </a>
-                <a href="#">
+
+            {% if listApp.sa_status == 33 or listApp.sa_status == 41 %}
+            <a href="/payment_admin/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}" target="_blank">
                 <i class="fa-solid fa-file-invoice-dollar"></i>
             </a>
+            {% endif %}
 
             {% if listApp.sa_status == 20 and check21 == True %}
               <a onclick='edit20({{info_id}},{{listApp.sa_userid.id}},"{{listApp.sa_title_th}}","{{listApp.sa_firstname_th}}","{{listApp.sa_lastname_th}}")'>
@@ -297,7 +319,7 @@
                   <tbody>
                       <tr>
                         <th>{{key}}</th>
-                        <td>{{value}}</td>
+                        <td>{{value|floatformat:2}}</td>
                       </tr>
                   </tbody>
                 {% endfor %}
@@ -406,8 +428,9 @@
     </tr>
   {%endfor%}
   </table>
-
-
+  <div class ="list">
+  <a href="/pdf_genScholar/{{info_id}}"><button class="button is-warning is-fullwidth"><p><i class="fa-solid fa-file-signature"></i>ดาวน์โหลดรายชื่อนิสิตทั้งหมด</p></button></a>
+  </div>
 <!-- /////////////////////////////////////////////////////////////// -->
 
       <!--page-->

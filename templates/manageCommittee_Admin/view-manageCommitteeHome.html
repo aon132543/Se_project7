@@ -10,12 +10,12 @@
 <link rel="stylesheet" href="{% static 'css/viewmanageCommitteeHome.css' %}?{% now "U" %}" />
 
 {% for user_obj in users_obj %}
-    <font size="5">
+    <font size="4.5">
         <p align='left' >&nbsp;&nbsp;<b>ชื่อ:</b> {{user_obj.first_name}} {{user_obj.last_name}} <b>email:</b> {{user_obj.email}}<br></p>
     </font>
 {% endfor %}
 
-<font size="5">
+<font size="4">
     <p align='left'>&nbsp;&nbsp;<b>รายชื่อทุน:</b></p>
 </font>
 

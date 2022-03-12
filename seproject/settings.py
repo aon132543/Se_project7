@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'tinymce',
+    'easy_pdf',
+
     
     
 ]

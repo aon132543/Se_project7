@@ -82,9 +82,12 @@ class Scholar_weight_score(models.Model): #สร้างแบบฟอร์�
     sws_date = models.DateField(default=timezone.now)
     status = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['-sws_date']
 
     def __str__(self):
         return str(self.sws_si_id)
+
 
 
 class Scholar_profile(models.Model): #กรอกแบบฟอร์มนิสิต

@@ -51,7 +51,7 @@
     <div class="select" name ="title-thai">
     <select name="scholarName">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
-        <option value="{{yearGet}}" selected="selected" hidden="hidden">{{yearGet}}</option>
+        <option value="{{scholarName}}" selected="selected" hidden="hidden">{{scholarName}}</option>
         {% for info in infoes %}
         <option value = "{{info.si_name}}" >{{info.si_name}}</option>
         {% endfor %}
@@ -105,10 +105,10 @@
             <tbody>
         {% for h in his.1 %}
             <tr>
-                  <td >{{h.sa_std_code}}</td>
-                  <td >{{h.sa_title_th}}{{h.sa_firstname_th}}   {{h.sa_lastname_th}}</td>
-                  <td ><b><button >ได้รับทุน</button></b></td>
-              </tr>
+              <td >{{h.sa_std_code}}</td>
+              <td >{{h.sa_title_th}}{{h.sa_firstname_th}}   {{h.sa_lastname_th}}</td>
+              <td ><b><button >ได้รับทุน</button></b></td>
+            </tr>
         {%endfor%}       
         </table>  
         <br>

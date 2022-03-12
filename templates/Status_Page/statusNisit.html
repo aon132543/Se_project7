@@ -23,24 +23,24 @@
               ผ่านการคัดเลือก รอเจ้าหน้าที่แจ้งเอกสารสอบสัมภาษณ์
               {% endif %}
               {% elif state.sa_status == 31 %}
-              กรุณายืนยันรับสิทธิ์ได้ไม่เกิน {{state.sa_statusExDate}}
+              กรุณายืนยันรับสิทธิ์ได้ไม่เกิน {{state.sa_statusExDate}}<br>
               <form action ="/statusNisit" method="POST">
                 {% csrf_token %}
-                <input type="submit" value="ยืนยันรับทุน">
+                <input type="submit" value="ยืนยันรับทุน" class="button is-success">
                 <input type="hidden" id="custId" name="custId" value="1">
                 <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
               </form>
 
               <form action ="/statusNisit" method="POST" >
                 {% csrf_token %}
-                <input type="submit" value="สละสิทธิ์รับทุน">
+                <input type="submit" value="สละสิทธิ์รับทุน" class="button is-danger>
                 <input type="hidden" id="custId" name="custId" value="0">
                 <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
               </form>
               {% elif state.sa_status == 33  %}
               {% if data.1 %}
-              แก้ไขข้อมูลบัญชีได้ไม่เกิน {{state.sa_statusExDate}}
-                <a href="/payment/{{state.sa_si_id.id}}"><input type="submit" value="แก้ไขบัญชีธนาคาร"></a>
+              แก้ไขข้อมูลบัญชีได้ไม่เกิน {{state.sa_statusExDate}}<br>
+                <a href="/payment/{{state.sa_si_id.id}}"><input type="submit" value="แก้ไขบัญชีธนาคาร" class="button is-warning"></a>
               {% endif %}
               {% endif %}
             </div>

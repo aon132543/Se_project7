@@ -1,4 +1,5 @@
 from django.http import request
+import requests
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate,logout
 from django.contrib.auth.models import User
@@ -10,16 +11,18 @@ from .models import *
 import math
 from django.core.files.storage import FileSystemStorage
 from django.utils import timezone
+
 from datetime import date,datetime
 from datetime import timedelta  
 from django.utils.datastructures import MultiValueDictKeyError
 from django.core.paginator import Paginator , EmptyPage ,InvalidPage
 import json as js
 from django.contrib.auth.decorators import user_passes_test
-#gen pdf
-from io import BytesIO
-from django.http import HttpResponse
-from django.template.loader import get_template
+
+
+
+
+
 
 
 
@@ -150,6 +153,10 @@ def CreateScholar (request):                #หน้าสร้างปร�
         type_scholar=request.POST['type_scholar']
         news = request.POST.get('news',None)  
         year = request.POST['year']
+        year = int(year)
+        if year<2500:
+            year = year +543
+            year = str(year)
 
         file_to = None
         img =None
@@ -221,6 +228,10 @@ def editScholar(request,order_id):
         type_scholar=request.POST['type_scholar']
         news = request.POST.get('news',None)  
         year = request.POST['year']
+        year = int(year)
+        if year<2500:
+            year = year +543
+            year = str(year)
         keys =[]
         
         for i in range(len(namelst)):
@@ -412,7 +423,11 @@ def manageCommitteeHome(request):   #หน้าแสดงรายชื่�
 @user_passes_test(lambda u: u.is_superuser)
 def delmanageCommitteeHome(request,user_id):
     user_obj = User.objects.get(id=user_id)
+    tempdata = user_obj.email
     user_obj.delete()
+    ad = add_commit.objects.filter(ac_email= tempdata)
+    ad = ad[0]
+    ad.delete()
     messages.success(request, "ลบบัญชี Admin แล้ว")
     news = User.objects.filter(is_staff=True) #ดึงฐานdatabase
     return redirect('manageCommitteeHome')
@@ -1026,9 +1041,9 @@ def statusNisit(request):
     if states.exists() == True:
         states.select_related('sa_si_id','sa_userid')
         for state in states:
-            file = File_Models.objects.filter(fm_state=1,fm_Scholar=state.sa_si_id)
-            if file.exists() == True:
-                lst[state] = [file[0]]
+            file_obj = File_Models.objects.filter(fm_state=1,fm_Scholar=state.sa_si_id)
+            if file_obj.exists() == True:
+                lst[state] = [file_obj[0]]
             else:
                 lst[state] = [None]
 
@@ -1315,9 +1330,10 @@ def interview(request):
 
 
 def historyGetScholar(request):
-    infoAll = Scholar_info.objects.all()
+    # infoAll = Scholar_info.objects.all()
+    infoAll = Scholar_info.objects.filter(si_status=2)
     data = Scholar_app.objects.all()
-    year = []
+    year = [] 
     for info in infoAll:
         if info.si_year not in year:
             year.append(info.si_year)
@@ -1339,13 +1355,13 @@ def historyGetScholar(request):
                 info_id.append(info.id)
             data = data.filter(sa_si_id__in = info_id,sa_status = 41)
         if scholarName != "กรุณาเลือก":
-            infoes = Scholar_info.objects.filter(si_name=scholarName) 
+            infoes = Scholar_info.objects.filter(si_name=scholarName)
             info_id = []
             for info in infoes:
                 info_id.append(info.id)
             data = data.filter(sa_si_id__in = info_id,sa_status = 41)
         if yearGet != "กรุณาเลือก":
-            infoes = Scholar_info.objects.filter(si_year=year) 
+            infoes = Scholar_info.objects.filter(si_year=yearGet) 
             info_id = []
             for info in infoes:
                 info_id.append(info.id)
@@ -1357,13 +1373,14 @@ def historyGetScholar(request):
                 info_id.append(info.id)
             data = data.filter(sa_si_id__in = info_id,sa_status = 41)
 
-        dic = []  
+        dic = []
         money = 0
-        for info in infoes:
+        for info in infoAll:
             d = data.filter(sa_si_id = info.id)
             if d.exists() == True:
                 money += len(d)*info.si_individual_amount
                 dic.append([info,d])
+
 
         paginator = Paginator(dic,10)
 
@@ -1417,8 +1434,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
     
     if request.method == "POST":
-  
-        if File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).exists():
+        if len(File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1)) != 0 :
             data3 = File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1)
             data3 = data3[0]
             data3.fm_file = request.FILES.get('myPdf')
@@ -1440,11 +1456,11 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
 
     json = Scholar_weight_score.objects.filter(sws_si_id=home_id)
-    check = True
+    check11 = True
     if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
-        check = False
+        check11 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
-        check = False
+        check11 = False
 
     check21 = True
     if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
@@ -1457,6 +1473,11 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
         check21 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).exists() == True:
         check21 = False
+   
+    
+    check31 = False
+    if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=21).exists() == True:
+        check31 = True
 
     memberGet = Scholar_info.objects.filter(id=home_id)
     memberGet = memberGet[0]
@@ -1491,7 +1512,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
 
     
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check,'info_id':home_id,'memberG':memberG,'commit':commit,'file_upload':file_upload,'check21':check21})
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check11,'info_id':home_id,'memberG':memberG,'commit':commit,'file_upload':file_upload,'check21':check21,'check31':check31})
 
 @login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_staff)
@@ -1529,7 +1550,7 @@ def interviewStudentTest(request,info_id,user_id):
     checkin = checkin[0]
     json_scholar = checkin.sa_json_scholar
     json_bro = checkin.sa_bro_n_sis
-    data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+    data2  = avatar_profile.objects.filter(sa_userid=user_obj)
     data2 = data2[0]
     file_obj = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=info_obj)
     file_obj = file_obj[0]
@@ -1560,13 +1581,18 @@ def interviewStudentTest(request,info_id,user_id):
             #-------------------------------------------
             for key,value in json.items():
                 score_wieght.append(value)
+            #--------นับรายชื่อกรรมการที่กรอกคะแนนมาแล้ว------
+            countCommit = len(data.sa_json_commit.items()) + 1
+
             if(len(database_score) !=0 ):
                 res = {}  
                 for key in name_lst:
                     for value in range(len(weight_lst)):
-                        res[key] = (float(weight_lst[value])+database_score[value])/2
+                        sigmaScore = database_score[value]*(countCommit-1)
+                        sumSigScore = sigmaScore+float(weight_lst[value])
+                        res[key] = sumSigScore/countCommit
                         #weight_lst.remove(weight_lst[value])
-                        list_wieght.append((float(weight_lst[value])+database_score[value])/2)
+                        list_wieght.append(sumSigScore/countCommit)
                         break  
             else:
                 res = {}
@@ -1577,21 +1603,19 @@ def interviewStudentTest(request,info_id,user_id):
                         list_wieght.append(value)
                         break
 
-            sum_weight = 0
+            sum_weightCom = 0
             sum_weightAll = 0
-            count_khor = 0
             for i in range(len(score_wieght)):
                 sum_weightAll = sum_weightAll + float(score_wieght[i])
-                count_khor = count_khor + 1
             for i in range(len(score_wieght)):
-                sum_weight += float(list_wieght[i])/float(score_wieght[i])
+                sum_weightCom = sum_weightCom + float(list_wieght[i])
                 
-            sum_weight = (sum_weight/count_khor)*100
+            sum_weight = (sum_weightCom/sum_weightAll)*100
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj)
             data = data[0]
             person = data.sa_person 
             score_database = data.sa_score
-            cal = (score_database+sum_weight)/person
+            # cal = (score_database+sum_weight)/person
             now = datetime.now()
             #add กรรมการลงในที่เคยสัมภาษณ์
             data_commit  = data.sa_json_commit
@@ -1605,7 +1629,7 @@ def interviewStudentTest(request,info_id,user_id):
                 #อัพเดทคะแนนรวม และรายข้อ
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=info_obj).update(
                         sa_score_info = res,
-                        sa_score = cal,
+                        sa_score = sum_weight,
                         sa_person = person+1,
                     sa_json_commit = data_commit
             )
@@ -1817,19 +1841,51 @@ def removeInformation(request,news_id):
     return redirect('InformationHome')
 
 def pdf_genScholar(request,info_id):
-    
-
-    pass
-
+    name = Scholar_info.objects.filter(id = info_id)
+    name = name[0].si_name
+    datas = Scholar_app.objects.filter(sa_si_id=info_id)
+    return render(request,'appilcationList_addmin/printlist.html',{'datas':datas,'name':name})
 
 
 def checkInfoAdmin(request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
+    
+
+    file_obj = None
+    if(len(File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = home_id,fm_state=0)) != 0):
+        file_obj = File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = home_id,fm_state=0)
+        file_obj= file_obj[0]
+
     checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = home_id)
     checkin = checkin[0]
     json = checkin.sa_json_scholar
     json_bro = checkin.sa_bro_n_sis
     data2  = avatar_profile.objects.filter(sa_userid=user_obj)
     data2 = data2[0]
-    return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'info_id':home_id,'pic':data2})
+    return render(request,'appilcationList_addmin/checkInfoAdmin.html',{'checkin':checkin,'info_id':home_id,'pic':data2,'file':file_obj,'json':json,'json_bro':json_bro})
+
+def payment_admin (request,home_id,user_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    info_obj = Scholar_info.objects.filter(id =home_id).get()
+    if len(File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)) != 0:
+
+        file_obj = File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)
+        
+        file_obj = file_obj[0]
+        return render(request,'payment/payment_admin.html',{'file_upload':file_obj,'home_id':home_id,'user_id':user_id})
+    else:
+        messages.success(request,'นิสิตยังไม่ได้อัพโหลดไฟล์เอกสาร')
+        return redirect("/secondAppilcationAdmin/"+str(home_id))
+
+def editPayment(request,info_id,user_id):
+    user_obj = User.objects.filter(id=user_id)
+    user_obj = user_obj[0]
+    info_obj = Scholar_info.objects.filter(id =info_id).get()
+    today = datetime.now()+timedelta(days=3)
+    Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=info_obj).update(sa_statusExDate = today)
+    return redirect("/changeStatus/"+str(info_id) +"/"+str(user_id)+"/1")
+
+
+    
