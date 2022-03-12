@@ -22,6 +22,7 @@
               {%else%}
               ผ่านการคัดเลือก รอเจ้าหน้าที่แจ้งเอกสารสอบสัมภาษณ์
               {% endif %}
+
               {% elif state.sa_status == 31 %}
               กรุณายืนยันรับสิทธิ์ได้ไม่เกิน {{state.sa_statusExDate}}<br>
               <form action ="/statusNisit" method="POST">
@@ -37,11 +38,13 @@
                 <input type="hidden" id="custId" name="custId" value="0">
                 <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
               </form>
-              {% elif state.sa_status == 33  %}
+
+              {% elif state.sa_status == 33 or state.sa_status == 34 %}
               {% if data.1 %}
-              แก้ไขข้อมูลบัญชีได้ไม่เกิน {{state.sa_statusExDate}}<br>
-                <a href="/payment/{{state.sa_si_id.id}}"><input type="submit" value="แก้ไขบัญชีธนาคาร" class="button is-warning"></a>
+              <p>แก้ไขข้อมูลบัญชีได้ไม่เกิน </p> {{state.sa_statusExDate}}<br>
+              <a href="/payment/{{state.sa_si_id.id}}"><input type="submit" value="แก้ไขบัญชีธนาคาร" class="button is-warning"></a>
               {% endif %}
+
               {% endif %}
             </div>
             
@@ -77,7 +80,7 @@
               <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
               <li class="inactive" >สละสิทธิ์รับทุน</li>
               <li class="inactive" >รับเงินทุนสนับสนุนการศึกษา</li>
-          {% elif state.sa_status == 33 %}
+          {% elif state.sa_status == 33 or state.sa_status == 34 %}
               <li class="active" >ยื่นเอกสารให้เจ้าหน้าที่</li>
               <li class="active" >เจ้าหน้าที่ตรวจสอบเอกสาร</li>
               <li class="active" >ยืนยันรับทุน</li>
@@ -101,7 +104,7 @@
         });
       });
         if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)){
-   $(".wrapper").toggleClass("collapse", true);
+   $(".wrapper").toggleClass("collapse ", true);
 }else{
    
      $(".wrapper").toggleClass("collapse", false);

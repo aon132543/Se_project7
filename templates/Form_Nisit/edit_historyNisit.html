@@ -12,128 +12,8 @@
   <link rel="stylesheet" href="{% static 'css/image.css' %}?{% now " U" %}" />
   <link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-bulma/bulma.css" rel="stylesheet">
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <link rel="stylesheet" href="{% static 'css/forminfo.css' %}?{% now " U" %}" />
 </head>
-<style>
-  @media only screen and (min-width: 800px) {
-  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
-
-  * {
-    font-family: 'Prompt', sans-serif;
-  }
-
-  body {
-    background-color: rgb(82, 1, 1);
-  }
-
-  .box {
-    background-color: rgb(228, 228, 224);
-  }
-
-  ::placeholder {
-    color: rgb(158, 79, 50);
-    font-weight: bolder;
-  }
-  .select{
-    margin-top: 5px;
-    margin-left: 5px;
-  }
-  
-  .texthead{
-    font-size: 30px;
-    text-align: center;
-    color:white;
-  }
-  .image{
-    width:250px ;
-    height:250px;
-    padding:10px;
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .resizedTextbox {
-    width: 250px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    margin-top: 7px;
-    margin-left: 10px;
-  }
-
-  .resizedTextbox2 {
-    width: 350px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    margin-top: 7px;
-    margin-left: 10px;
-  }
-
-  hr {
-    border-top: 5px solid rgb(82, 1, 1);
-  }
-  }
-  @media only screen and (max-width: 800px) {
-  *  {
-    font-family: 'Prompt', sans-serif;
-  }
-
-  body {
-    background-color: rgb(82, 1, 1);
-  }
-
-  .box {
-    background-color: rgb(228, 228, 224);
-  }
-  
-  ::placeholder {
-    color: rgb(158, 79, 50);
-    font-weight: bolder;
-  }
-  .image{
-    width:150px ;
-    height:150px;
-    padding:10px;
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .texthead{
-    font-size: 16px;
-    text-align: center;
-    color:white;
-  }
-  .resizedTextbox {
-    width: 300px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    font-size:16px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-  }
-
-  .resizedTextbox2 {
-    width: 300px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    font-size:16px;
-  }
-  hr {
-    border-top: 5px solid rgb(82, 1, 1);
-  }
-  }
-</style>
-
 
 <script type="text/JavaScript">
 
@@ -262,7 +142,7 @@
         <h2><b>
             <font face="Arial">ประวัติส่วนตัว</font>
           </b></h2>
-        <div class="select">
+          คำนำหน้า:<div class="select">
           <select name="title-thai">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_title_th}}" selected="selected" hidden="hidden">{{edit.sp_title_th}}</option>
@@ -274,16 +154,17 @@
 
 
 
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-th"
+        ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-th"
           value="{{edit.sp_firstname_th}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th"
+        ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th"
           value="{{edit.sp_middlename_th}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th"
+        นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th"
           value="{{edit.sp_lastname_th}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name="std"
+          <br>
+        รหัสนิสิต:<input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name="std"
           value="{{edit.sp_std_code}}"><br>
         <br>
-        <div class="select">
+        Prefix:<div class="select">
           <select name="title-eng">
             <option value="" disabled selected>กรุณาเลือก</option>
 
@@ -293,29 +174,31 @@
             <option value="Miss">Miss</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng"
+        Firstname:<input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng"
           value="{{edit.sp_firstname_en}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng"
+        Middlename:<input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng"
           value="{{edit.sp_middlename_en}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="lastname" name="lastname-eng"
+        Surname:<input class="resizedTextbox" class="input" type="text" placeholder="lastname" name="lastname-eng"
           value="{{edit.sp_lastname_en}}">
-        <input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name="birthday"
+          <br>
+        วัน/เดือน/ปีเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name="birthday"
           value="{{edit.sp_date_of_birth|date:'Y-m-d'}}"><br>
         <br>
-        <input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name="major"
+        สาขา:<input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name="major"
           value="{{edit.sp_major}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name="grade"
+        เกรด:<input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name="grade"
           value="{{edit.sp_grade}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address"
+        ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address"
           value="{{edit.sp_std_address}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="phone"
+          <br>
+        เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="phone"
           value="{{edit.sp_std_tel_no}}">
         <hr>
 
         <h2><b>
             <font face="Arial">ประวัติครอบครัว - บิดา</font>
           </b></h2>
-        <div class="select">
+          คำนำหน้า:<div class="select">
           <select name="title-dadthai">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_father_title}}" selected="selected" hidden="hidden">{{edit.sp_father_title}}
@@ -325,16 +208,16 @@
             <option value="นาง">นาง</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad"
+        ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad"
           value="{{edit.sp_father_firstname}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad"
+        ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad"
           value="{{edit.sp_father_middlename}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad"
+        นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad"
           value="{{edit.sp_father_lastname}}"><br>
         <h2><b>
             <font face="Arial">สถานะ</font>
           </b></h2>
-        <div class="select">
+          สถานะ:<div class="select">
           <select name="statuslife-dad">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_father_statuslife}}" selected="selected" hidden="hidden">
@@ -343,18 +226,18 @@
             <option value="เสียชีวิต">เสียชีวิต</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad"
+        วัน/เดือน/ปีเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad"
           value="{{edit.sp_father_date_of_birth|date:'Y-m-d'}}">
-        <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad"
-          value="{{edit.sp_father_age}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad"
+        อายุ:<input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad"
+          value="{{edit.sp_father_age}}">ปี
+        ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad"
           value="{{edit.sp_father_address}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad"
+        เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad"
           value="{{edit.sp_father_tel_no}}"><br>
         <h2><b>
             <font face="Arial">สถานะสมรส</font>
           </b></h2>
-        <div class="select">
+          สถานะ:<div class="select">
           <select name="status-married-dad">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_father_status_married}}" selected="selected" hidden="hidden">
@@ -364,18 +247,18 @@
             <option value="หย่าร้าง">หย่าร้าง</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-dad"
-          value="{{edit.sp_father_income}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad"
+        รายได้:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-dad"
+          value="{{edit.sp_father_income}}">บาท
+        อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad"
           value="{{edit.sp_father_career}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad"
+        สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad"
           value="{{edit.sp_father_workplace}}">
         <hr>
 
         <h2><b>
             <font face="Arial">ประวัติครอบครัว-มารดา</font>
           </b></h2>
-        <div class="select">
+          คำนำหน้า:<div class="select">
           <select name="title-momthai">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_mother_title}}" selected="selected" hidden="hidden">{{edit.sp_mother_title}}
@@ -385,16 +268,16 @@
             <option value="นาง">นาง</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom"
+        ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom"
           value="{{edit.sp_mother_firstname}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom"
+        ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom"
           value="{{edit.sp_mother_middlename}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom"
+        นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom"
           value="{{edit.sp_mother_lastname}}"><br>
         <h2><b>
             <font face="Arial">สถานะ</font>
           </b></h2>
-        <div class="select">
+          สถานะ:<div class="select">
           <select name="statuslife-mom">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_mother_statuslife}}" selected="selected" hidden="hidden">
@@ -403,19 +286,19 @@
             <option value="เสียชีวิต">เสียชีวิต</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom"
+        วัน/เดือน/ปีเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom"
           value="{{edit.sp_mother_date_of_birth|date:'Y-m-d'}}">
-          <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom"
-          value="{{edit.sp_mother_age}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom"
+          อายุ:<input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom"
+          value="{{edit.sp_mother_age}}">ปี
+        ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom"
           value="{{edit.sp_mother_address}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-mom"
+        เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-mom"
           value="{{edit.sp_mother_tel_no}}">
         <br>
         <h2><b>
             <font face="Arial">สถานะสมรส</font>
           </b></h2>
-        <div class="select">
+          สถานะ:<div class="select">
           <select name="status-married-mom">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_mother_status_married}}" selected="selected" hidden="hidden">
@@ -425,11 +308,11 @@
             <option value="หย่าร้าง">หย่าร้าง</option>
           </select>
         </div>
-        <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-mom"
-          value="{{edit.sp_mother_income}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom"
+        รายได้:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-mom"
+          value="{{edit.sp_mother_income}}">บาท
+        อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom"
           value="{{edit.sp_mother_career}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom"
+        สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom"
           value="{{edit.sp_mother_workplace}}">
         <hr>
 
@@ -440,7 +323,7 @@
           {% if json_bro == None %}
           <div class="wraper2">
          
-            <div class="select">
+            คำนำหน้า:<div class="select">
               <select name ="title-siblingthai">
                 <option value = "กรุณาเลือก" >กรุณาเลือก</option>
                 <option value = "นาย" >นาย</option>
@@ -448,14 +331,14 @@
                 <option value = "นาง" >นาง</option>
               </select>
              </div> 
-            <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
-            <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
-            <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling">
+            ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
+            ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
+            นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling">
             <br>
             </br>
-            <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
-            <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
-            <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+            การศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
+            อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
+            สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
             <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อพี่น้อง </i> </button>
             <br>
             </br>
@@ -465,7 +348,7 @@
           {% for json_obj in json_bro %}
           
           <div class="wraper2">
-          <div class="select">
+            คำนำหน้า:<div class="select">
             <select name="title-siblingthai">
               <option value="" disabled selected>กรุณาเลือก</option>
               <option value="{{json_obj.title_sibling}}" selected="selected" hidden="hidden">{{json_obj.title_sibling}}
@@ -475,17 +358,17 @@
               <option value="นาง">นาง</option>
             </select>
           </div>
-          <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling"
+          ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling"
             value={{json_obj.firstname_sibling}}>
-          <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง"
+          ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง"
             name="middlename-sibling" value={{json_obj.middle_sibling}}>
-          <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"
+          นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"
             value={{json_obj.lastname_sibling}}><br>
-          <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling"
+          การศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling"
             value={{json_obj.education_sibling}}>
-          <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling"
+          อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling"
             value={{json_obj.career_sibling}}>
-          <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ"
+          สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ"
             name="workplace-sibling" value={{json_obj.workplace_sibling}}>
 
           {% if forloop.first %}
@@ -508,8 +391,8 @@
             <font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font>
           </b></h2>
 
-        <input class="resizedTextbox" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต"
-          name="moneyPerMonth" value="{{edit.sp_income}}">
+          รายได้ต่อเดือน:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต"
+          name="moneyPerMonth" value="{{edit.sp_income}}">บาท
 
         <p>ได้รับค่าใช้จ่ายจาก</p>
         <div class="select">
@@ -525,19 +408,19 @@
           </select>
         </div>
         
-        <input class="resizedTextbox2" class="input" type="text"
+        ผู้อุปการะเกี่ยวข้องเป็น:<input class="resizedTextbox2" class="input" type="text"
           placeholder="ในกรณีที่ได้รับค่าใช้จ่ายผู้อุปการะ ผู้อุปการะนั้นเกี่ยวข้องเป็น" name="status-patron"
           value="{{edit.sp_patron_relation}}">
-        <input class="resizedTextbox" class="input" type="number" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน"
-          name="NumOfChild-patron" value="{{edit.sp_child_in_the_patron}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron"
+          จำนวนบุตรของผู้อุปการะ:<input class="resizedTextbox" class="input" type="number" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน"
+          name="NumOfChild-patron" value="{{edit.sp_child_in_the_patron}}">คน
+          อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron"
           value="{{edit.sp_patron_career}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ"
+          สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ"
           name="workplace-patron" value="{{edit.sp_patron_workplace}}">
-        <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron"
+          เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron"
           value="{{edit.sp_patron_tel_no}}"><br>
         <p>ทุนกู้ยืมปัจจุบันของนิสิต</p>
-        <div class="select">
+        ประเภททุน:<div class="select">
           <select name="studenloan">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_loan}}" selected="selected" hidden="hidden">{{edit.sp_loan}}</option>
@@ -554,7 +437,7 @@
         <label><b>
             <font face="Arial">เคยทำงานพิเศษไหม</font>
           </b></label>
-        <div class="select">
+          งานพิเศษ:<div class="select">
           <select name="pastime">
             <option value="" disabled selected>กรุณาเลือก</option>
             <option value="{{edit.sp_parttime}}" selected="selected" hidden="hidden">{{edit.sp_parttime}}
@@ -562,10 +445,10 @@
             <option value="ไม่เคย">ไม่เคย</option>
           </select>
         </div>
-        <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน"
+        ประเภทงาน:<input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน"
           name="Type-pastime" value="{{edit.sp_parttime_type}}">
-        <input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน"
-          name="career-income" value="{{edit.sp_parttime_income}}">
+          ถ้าเคย ได้รับเงินเฉลี่ยต่อเดือน:<input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน"
+          name="career-income" value="{{edit.sp_parttime_income}}">บาท
         <br><br>
 
 
@@ -577,9 +460,9 @@
 
         <div class="wraper">
           <div>
-            <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
-            <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
-            <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+            ทุนที่เคยได้รับ:<input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
+            ปีการศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
+            มูลค่า:<input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">บาท
             <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้มอบทุน </i> </button>
          </div>
        </div>
@@ -591,23 +474,23 @@
 
           {% if forloop.first %}
           <div>
-            <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว"
+            ทุนที่เคยได้รับ:<input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว"
               name="received-scholar" value="{{json_obj.name}}">
-            <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ"
+              ปีการศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ"
               name="received-year-scholar" value="{{json_obj.year}}">
-            <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"
-              value="{{json_obj.prize}}">
+              มูลค่า:<input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"
+              value="{{json_obj.prize}}">บาท
             <button id="temp" class="button is-info is-rounded"> <i class="fas fa-plus"> เพิ่มรายชื่อทุน </i> </button>
           </div>
           {%else%}
 
           <div>
-            <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว"
+            ทุนที่เคยได้รับ:<input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว"
               name="received-scholar" value="{{json_obj.name}}">
-            <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ"
+              ปีการศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ"
               name="received-year-scholar" value="{{json_obj.year}}">
-            <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"
-              value="{{json_obj.prize}}">
+              มูลค่า:<input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize"
+              value="{{json_obj.prize}}">บาท
             <a href="#" class="delete">delete</a>
           </div>
           {%endif%}

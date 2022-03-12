@@ -1286,16 +1286,22 @@ def checkInfo(request,info_id):
                         data3 = data3[0]
                         data3.fm_file = request.FILES.get('myPdf')
                         data3.save()
+                        return redirect("/home")
+                else:
+                    return redirect("/home")
                         
-            checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id=info_id)
+            checkin = Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id=info_obj)
             checkin = checkin[0]
             json = checkin.sa_json_scholar
             json_bro = checkin.sa_bro_n_sis
             data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
             data2 = data2[0]
-            return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2})
+            file_obj = File_Models.objects.filter(fm_upload_by=user_obj,fm_Scholar=info_obj,fm_state=0)
+            file_obj = file_obj[0]
+            return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj})
     except : 
         messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
+        messages.error(request, 'เว็บไซต์กำลังนำพาท่านไปยัง หน้า "แก้ไขประวัติส่วนตัว"')
         return redirect('editHistoryNisit')
 
 @login_required (login_url='index')            
@@ -1431,7 +1437,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
-
+    dateToday = date.today()
     
     if request.method == "POST":
         if len(File_Models.objects.filter(fm_Scholar=scholars[0]).filter(fm_state=1)) != 0 :
@@ -1512,7 +1518,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
 
     
-    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check11,'info_id':home_id,'memberG':memberG,'commit':commit,'file_upload':file_upload,'check21':check21,'check31':check31})
+    return render(request,'appilcationList_addmin/secondAppList.html',{'scholars': scholars,'scholarss':scholarss,'listApps':listAppsPage,'json':json ,'check':check11,'info_id':home_id,'memberG':memberG,'commit':commit,'file_upload':file_upload,'check21':check21,'check31':check31,'dateToday':dateToday})
 
 @login_required (login_url='index')            
 @user_passes_test(lambda u: u.is_staff)
@@ -1794,7 +1800,7 @@ def payment(request,info_id):
     check = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id =scholars[0])
     check = check[0].sa_status
 
-    if check == 33:
+    if check == 33 or check == 34:
         if request.method == "POST":
     
             if len(File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=scholars[0]).filter(fm_state=2)) != 0 :
@@ -1814,6 +1820,15 @@ def payment(request,info_id):
 
                     )
                 data3.save()
+            
+            if check == 34:
+                
+                today = date.today()
+                data = Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=scholars[0]).update(
+                    sa_status = 33 , sa_statusExDate = today)
+                print(Scholar_app.objects.filter(sa_userid=user_obj))
+
+            messages.success(request, 'อัพโหลดเอกสารเรียบร้อย')
             return redirect('statusNisit')
     else:
         messages.success(request, 'ท่านสละสิทธิ์ไปแล้ว หรือ หมดเวลาการอัพโหลดไฟล์')
@@ -1869,7 +1884,7 @@ def payment_admin (request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
     info_obj = Scholar_info.objects.filter(id =home_id).get()
-    if len(File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)) != 0:
+    if len(File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)) != 0 or File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)[0].fm_file != None:
 
         file_obj = File_Models.objects.filter(fm_upload_by = user_obj,fm_Scholar = info_obj,fm_state=2)
         
@@ -1884,7 +1899,8 @@ def editPayment(request,info_id,user_id):
     user_obj = user_obj[0]
     info_obj = Scholar_info.objects.filter(id =info_id).get()
     today = datetime.now()+timedelta(days=3)
-    Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=info_obj).update(sa_statusExDate = today)
+    Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=info_obj).update(
+        sa_status = 34 , sa_statusExDate = today)
     return redirect("/changeStatus/"+str(info_id) +"/"+str(user_id)+"/1")
 
 

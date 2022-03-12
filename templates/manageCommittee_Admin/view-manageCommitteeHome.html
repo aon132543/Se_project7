@@ -9,15 +9,18 @@
 <link rel="stylesheet" href="{% static 'css/card.css' %}?{% now "U" %}" />
 <link rel="stylesheet" href="{% static 'css/viewmanageCommitteeHome.css' %}?{% now "U" %}" />
 
+<div class="head-name">
 {% for user_obj in users_obj %}
     <font size="4.5">
         <p align='left' >&nbsp;&nbsp;<b>ชื่อ:</b> {{user_obj.first_name}} {{user_obj.last_name}} <b>email:</b> {{user_obj.email}}<br></p>
     </font>
 {% endfor %}
+</div>
 
 <font size="4">
     <p align='left'>&nbsp;&nbsp;<b>รายชื่อทุน:</b></p>
 </font>
+
 
     
     <form action="/viewManageCommitteeHome/{{user_id}}" method="POST" align='left'>

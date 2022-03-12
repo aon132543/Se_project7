@@ -12,127 +12,9 @@
     charset="utf-8"
     ></script>
     <link rel="stylesheet" href="{% static 'css/image.css' %}?{% now " U" %}" />
-</head>
-<style>
-@media only screen and (min-width: 800px) {
-  @import url('https://fonts.googleapis.com/css2?family=Prompt:wght@200&display=swap');
+    <link rel="stylesheet" href="{% static 'css/forminfo.css' %}?{% now " U" %}" />
+  </head>
 
-  * {
-    font-family: 'Prompt', sans-serif;
-  }
-
-  body {
-    background-color: rgb(82, 1, 1);
-  }
-
-  .box {
-    background-color: rgb(228, 228, 224);
-  }
-
-  ::placeholder {
-    color: rgb(158, 79, 50);
-    font-weight: bolder;
-  }
-  .select{
-    margin-top: 5px;
-    margin-left: 5px;
-  }
-  
-  .texthead{
-    font-size: 30px;
-    text-align: center;
-    color:white;
-  }
-  .image{
-    width:250px ;
-    height:250px;
-    padding:10px;
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .resizedTextbox {
-    width: 250px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    margin-top: 7px;
-    margin-left: 10px;
-  }
-
-  .resizedTextbox2 {
-    width: 350px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    margin-top: 7px;
-    margin-left: 10px;
-  }
-
-  hr {
-    border-top: 5px solid rgb(82, 1, 1);
-  }
-  }
-  @media only screen and (max-width: 800px) {
-  *  {
-    font-family: 'Prompt', sans-serif;
-  }
-
-  body {
-    background-color: rgb(82, 1, 1);
-  }
-
-  .box {
-    background-color: rgb(228, 228, 224);
-  }
-  
-  ::placeholder {
-    color: rgb(158, 79, 50);
-    font-weight: bolder;
-  }
-  .image{
-    width:150px ;
-    height:150px;
-    padding:10px;
-    display: block;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: auto;
-    margin-left: auto;
-  }
-  .texthead{
-    font-size: 16px;
-    text-align: center;
-    color:white;
-  }
-  .resizedTextbox {
-    width: 300px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    font-size:16px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-  }
-
-  .resizedTextbox2 {
-    width: 300px;
-    height: 40px;
-    background-color: white;
-    border-radius: 5px;
-    border-color: rgb(221, 220, 220);
-    font-size:16px;
-  }
-  hr {
-    border-top: 5px solid rgb(82, 1, 1);
-  }
-  }
-  </style>
 
   <script type="text/JavaScript">
 
@@ -248,7 +130,7 @@
 
     <br>
     <h2><b><font face="Arial">ประวัติส่วนตัว</font></b></h2>
-    <div class="select">
+    คำนำหน้า:<div class="select">
         <select name ="title-thai" >
           <option value = "กรุณาเลือก" >กรุณาเลือก</option>
           <option value = "นาย" >นาย</option>
@@ -259,33 +141,32 @@
 
       
       
-      <input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th">
-      <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th">
-      <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th">
-      <input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name ="std" ><br>
+      ชื่อ:<input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th">
+      ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th">
+      นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th">
+      รหัสนิสิต:<input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name ="std" ><br>
       <br>
-    <div class="select" >
+    Prefix:<div class="select" >
         <select name ="title-eng">
           <option value = "กรุณาเลือก" >กรุณาเลือก</option>
           <option value = "Mr" >Mr</option>
           <option value = "Miss" >Miss</option>
         </select>
       </div>
-    <input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng">
-    <input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng">
-    <input class="resizedTextbox" class="input" type="text" placeholder="lastname" name = "lastname-eng">
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name = "birthday"><br>
+    Firstname:<input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng">
+    Middlename:<input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng">
+    Surname:<input class="resizedTextbox" class="input" type="text" placeholder="lastname" name = "lastname-eng">
+    วันเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name = "birthday"><br>
     <br>
-    <input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name = "major">
-    <input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name = "grade">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name = "address">
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name = "phone">
-    <input class="resizedTextbox" class="input" type="text" placeholder="อีเมล" name = "email">
+    สาขา:<input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name = "major">
+    เกรด:<input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name = "grade">
+    ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name = "address">
+    เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name = "phone">
+    Email:<input class="resizedTextbox" class="input" type="text" placeholder="อีเมล" name = "email">
     <hr>
 
     <h2><b><font face="Arial">ประวัติครอบครัว - บิดา</font></b></h2>
-    <div class="select">
-      <h>คำนำหน้า</h>
+    คำนำหน้า:<div class="select">
       <select name ="title-dadthai">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "นาย" >นาย</option>
@@ -293,24 +174,24 @@
         <option value = "นาง" >นาง</option>
       </select>
      </div>  
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ระดับการศึกษา" name="study-dad"><br>
+    ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad">
+    ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad">
+    นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad">
+    การศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ระดับการศึกษา" name="study-dad"><br>
     <h2><b><font face="Arial">สถานะ</font></b></h2>
-    <div class="select">
+    สถานะ:<div class="select">
       <select name ="statuslife-dad">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "มีชวิตอยู่" >มีชีวิตอยู่</option>
         <option value = "เสียชีวิต" >เสียชีวิต</option>
       </select>
     </div> 
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad">
-    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad"><br>
+    วัน/เดือน/ปีเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad">
+    อายุ:<input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad">ปี
+    ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad">
+    เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad"><br>
     <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
-    <div class="select">
+    สถานะ:<div class="select">
       <select name ="status-married-dad">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "โสด" >โสด</option>
@@ -318,13 +199,13 @@
         <option value = "หย่าร้าง" >หย่าร้าง</option>
       </select>
     </div>
-    <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad">
-    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad">
+    รายได้:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-dad">บาท
+    อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-dad">
+    สถานประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-dad">
     <hr>
 
     <h2><b><font face="Arial">ประวัติครอบครัว-มารดา</font></b></h2>
-    <div class="select">
+    คำนำหน้า:<div class="select">
       <select name ="title-momthai">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "นาย" >นาย</option>
@@ -332,23 +213,23 @@
         <option value = "นาง" >นาง</option>
       </select>
      </div>  
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ระดับการศึกษา" name="study-mom"><br>
+    ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom">
+    ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom">
+    นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom">
+    การศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ระดับการศึกษา" name="study-mom"><br>
     <h2><b><font face="Arial">สถานะ</font></b></h2>
-    <div class="select">
+    สถานะ:<div class="select">
       <select name ="statuslife-mom">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "มีชีวิตอยู่" >มีชีวิตอยู่</option>
         <option value = "เสียชีวิต" >เสียชีวิต</option>
       </select>
     </div> 
-    <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-mom">
-    <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom">
-    <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom"><br>
-    <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
+    ที่อยู่:<input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom">
+    เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-mom">
+    วัน/เดือน/ปีเกิด:<input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom">
+    อายุ:<input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom">ปี<br>
+    สถานะ:<h2><b><font face="Arial">สถานะสมรส</font></b></h2>
     <div class="select">
       <select name ="status-married-mom">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
@@ -357,13 +238,13 @@
         <option value = "หย่าร้าง" >หย่าร้าง</option>
       </select>
     </div>
-    <input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom">
-    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom">
+    รายได้:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้" name="Income-mom">บาท
+    อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-mom">
+    สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-mom">
     <hr>
     <div class="wraper2">
     <h2><b><font face="Arial">พี่น้องร่วมบิดา มารดาเรียงตามลำดับดังนี้</font></b></h2>
-    <div class="select">
+    คำนำหน้า:<div class="select">
       <select name ="title-siblingthai">
         <option value = "กรุณาเลือก" >กรุณาเลือก</option>
         <option value = "นาย" >นาย</option>
@@ -371,19 +252,19 @@
         <option value = "นาง" >นาง</option>
       </select>
      </div> 
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
-    <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
-    <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
+    ชื่อ:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling">
+    ชื่อกลาง:<input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling">
+    นามสกุล:<input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling"><br>
+    การศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling">
+    อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling">
+    สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling">
     <button  id = "temp2" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้ทุน </i> </button>
   </div>
     <hr>
 
     <h2><b><font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font></b></h2>
     
-      <input class="resizedTextbox" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต" name="moneyPerMonth">
+    รายได้ต่อเดือน:<input class="resizedTextbox" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต" name="moneyPerMonth">บาท
       
       <p>ได้รับค่าใช้จ่ายจาก</p>
       <div class="select">
@@ -396,13 +277,13 @@
         </select>
       </div>
       <br>
-      <input class="resizedTextbox2" class="input" type="text" placeholder="ในกรณีที่ได้รับค่าใช้จ่ายผู้อุปการะ ผู้อุปการะนั้นเกี่ยวข้องเป็น" name="status-patron">
-      <input class="resizedTextbox" class="input" type="number" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน" name ="NumOfChild-patron">
-      <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron">
-      <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ" name="workplace-patron">
-      <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron"><br>
+      ผู้อุปการะเกี่ยวข้องเป็น:<input class="resizedTextbox2" class="input" type="text" placeholder="ในกรณีที่ได้รับค่าใช้จ่ายผู้อุปการะ ผู้อุปการะนั้นเกี่ยวข้องเป็น" name="status-patron">
+      จำนวนบุตรของผู้อุปการะ:<input class="resizedTextbox" class="input" type="number" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน" name ="NumOfChild-patron">คน
+      อาชีพ:<input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron">
+      สถานที่ประกอบการ:<input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ" name="workplace-patron">
+      เบอร์โทรศัพท์:<input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron"><br>
       <p>ทุนกู้ยืมปัจจุบันของนิสิต</p>
-      <div class="select" >
+      ประเภททุน:<div class="select" >
         <select name ="studenloan">
           <option value = "กรุณาเลือก" >กรุณาเลือก</option>
           <option value = "กรอ" >กรอ</option>
@@ -413,23 +294,23 @@
       <br>
       <br><p><b><font face="Arial">ผู้สมัครเคยทำงานพิเศษระหว่างหยุดเรียน/ขณะเรียน</font></b></p>
       <label><b><font face="Arial">เคยทำงานพิเศษไหม</font></b></label>
-      <div class="select" >
+      งานพิเศษ:<div class="select" >
         <select name ="pastime">
           <option value = "กรุณาเลือก" >กรุณาเลือก</option>
           <option value = "เคย" >เคย</option>
           <option value = "ไม่เคย" >ไม่เคย</option>
         </select>
       </div>      
-      <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime">   
-      <input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income">
+      ประเภทงาน:<input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime">   
+      ถ้าเคย ได้รับเงินเฉลี่ยต่อเดือน:<input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income">บาท
       <br><br>
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
 
       <div class="wraper">
         <div>
-          <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
-          <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
+          ทุนที่เคยได้รับ:<input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{edit.sp_received_scholar}}">
+          ปีการศึกษา:<input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{edit.sp_year_received_scholar}}">
+          มูลค่า:<input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{edit.sp_money_received_scholar}}">
           <button  id = "temp" class="button is-info is-rounded" > <i class="fas fa-plus">  เพิ่มรายชื่อผู้มอบทุน </i> </button>
        </div>
      </div>
