@@ -19,7 +19,7 @@ from django.core.paginator import Paginator , EmptyPage ,InvalidPage
 import json as js
 from django.contrib.auth.decorators import user_passes_test
 
-
+from django.http import JsonResponse
 
 
 
@@ -209,7 +209,8 @@ def CreateScholar (request):                #หน้าสร้างปร�
             data.save()
             messages.success(request, "เพิ่มในข่าวหน้าประชาสัมพัมธ์เรียบร้อยแล้ว")
         messages.success(request, "สร้างทุนเรียบร้อยแล้ว")
-        return redirect('home')
+        return redirect("home")
+        #return JsonResponse({"result":"สร้างเรียบร้อยแล้วพ่อหนุ่ม"})
     #form = Contents()
 
     return render(request,'Create_Admin/CreateScholar.html')
@@ -1022,8 +1023,8 @@ def editHistoryNisit(request):
 
     return render(request,'Form_Nisit/edit_historyNisit.html',{'edit':edit,'json':json,'json_bro':json_bro,'pic':data2})  
 
-# @login_required (login_url='index')
-# @user_passes_test(lambda u: u.is_staff == False)   
+@login_required (login_url='index')
+@user_passes_test(lambda u: u.is_staff == False)   
 def statusNisit(request):
     time = datetime.now()
     user_obj = User.objects.filter(id=request.user.id)
@@ -1036,7 +1037,7 @@ def statusNisit(request):
         if status == "1":
             Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = info_id).update(sa_status = 33)
             return redirect('/payment/'+str(info_id))
-        if status == "0":
+        elif status == "0":
             Scholar_app.objects.filter(sa_userid = user_obj,sa_si_id = info_id).update(sa_status = 32)
     if states.exists() == True:
         states.select_related('sa_si_id','sa_userid')
@@ -1064,7 +1065,7 @@ def checkInfo(request,info_id):
     user_obj = user_obj[0]
     info_obj = Scholar_info.objects.filter(id=info_id)
     info_obj = info_obj[0]
-    check = lambda x : None if ( x == "None" or x == "กรุณาเลือก" )  else x
+    check = lambda x : None if ( x == "None" or x == "กรุณาเลือก" or x == "" )  else x
     try:
         if Scholar_app.objects.filter(sa_userid=user_obj ,sa_si_id = info_id).exists()==False:
             if request.method == 'POST':
@@ -1301,7 +1302,7 @@ def checkInfo(request,info_id):
             return render(request,'apply_info/checkInfo2.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':info_id,'pic':data2,'file_obj':file_obj})
     except : 
         messages.error(request, 'ท่านกรอกข้อมูลไม่ครบ')
-        messages.error(request, 'เว็บไซต์กำลังนำพาท่านไปยัง หน้า "แก้ไขประวัติส่วนตัว"')
+        messages.error(request, 'เว็บไซต์กำลังนำพาท่านไปยัง หน้าแก้ไขประวัติส่วนตัว')
         return redirect('editHistoryNisit')
 
 @login_required (login_url='index')            
@@ -1462,28 +1463,35 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
 
 
     json = Scholar_weight_score.objects.filter(sws_si_id=home_id)
-    check11 = True
-    if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
-        check11 = False
-    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
-        check11 = False
 
+    check11 = True
+    check31 = True
     check21 = True
     if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
+        check11 = False
         check21 = False
+        check31 = False
+    elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
+        check11 = False
+        check31 = False
+    # check21 = True
+    # if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
+    #     check21 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).exists() == True:
         check21 = False
+        check31 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).exists() == True:
         check21 = False
+        check31 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).exists() == True:
         check21 = False
+        check31 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).exists() == True:
         check21 = False
-   
-    
-    check31 = False
-    if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=21).exists() == True:
-        check31 = True
+        check31 = False
+    # check31 = True
+    # if Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
+    #     check31 = False
 
     memberGet = Scholar_info.objects.filter(id=home_id)
     memberGet = memberGet[0]
@@ -1491,10 +1499,10 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     # print(memberGet)
     memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count() + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
     memberGot = memberGot + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).count()
-    memberGot = memberGot - Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).count()
-    # print(memberGot)
+    #print(memberGot)
     memberG = memberGet - memberGot
-    if memberG == 0:
+
+    if memberGet - Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count() == 0:
       enddate = datetime.now() + timedelta(days=2)
       data = Scholar_info.objects.filter(id=home_id).update(si_endtime=enddate)
 
@@ -1576,6 +1584,10 @@ def interviewStudentTest(request,info_id,user_id):
         return redirect('/interviewStudent/'+str(info_id))      
     else:
         if request.method == 'POST':
+            if request.user.id  in myidindatabase:
+                messages.success(request, 'ท่านเคยให้คะแนนสัมภาษณ์บุคคลนี้แล้ว')
+            return redirect('/interviewStudent/'+str(info_id))  
+
             name_lst = request.POST.getlist('name[]')
             weight_lst = request.POST.getlist('weight[]')
             score_wieght = []
@@ -1682,17 +1694,17 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
         if button == "ยืนยัน":
             status = 21
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                sa_status = status)
+                sa_status = 21)
             return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
         elif button == "ไม่ผ่าน":
             status = 20
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                sa_status = status)
+                sa_status = 20)
             return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
 
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
-@login_required (login_url='index')            
+@login_required (login_url='index')               
 def delApp(request,home_id,user_id):  
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -1787,6 +1799,8 @@ def limitaccount(request):
     else:           
         return redirect('profileHistoryNisit')
 
+
+@login_required (login_url='index')
 def payment(request,info_id):
     scholars = Scholar_info.objects.filter(id=info_id)
     scholarss = scholars[0]
@@ -1844,12 +1858,15 @@ def payment(request,info_id):
     
     return render(request,'payment/payment.html',{'file_upload':file_upload,'info_id':info_id})
 
-
+@login_required (login_url='index')           
+@user_passes_test(lambda u: u.is_superuser)     
 def removeScholar(request,info_id):
     data = Scholar_info.objects.filter(id=info_id).delete()
     messages.success(request, 'ลบทุนเรียบร้อยแล้ว')  
     return redirect('home')
 
+@login_required (login_url='index')           
+@user_passes_test(lambda u: u.is_superuser)     
 def removeInformation(request,news_id):
     data = Scholar_news.objects.filter(id=news_id).delete()
     messages.success(request,'ลบข่าวสารเรียบร้อยแล้ว')
@@ -1862,6 +1879,8 @@ def pdf_genScholar(request,info_id):
     return render(request,'appilcationList_addmin/printlist.html',{'datas':datas,'name':name})
 
 
+@login_required (login_url='index')           
+@user_passes_test(lambda u: u.is_superuser)     
 def checkInfoAdmin(request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]
@@ -1880,6 +1899,8 @@ def checkInfoAdmin(request,home_id,user_id):
     data2 = data2[0]
     return render(request,'appilcationList_addmin/checkInfoAdmin.html',{'checkin':checkin,'info_id':home_id,'pic':data2,'file':file_obj,'json':json,'json_bro':json_bro})
 
+@login_required (login_url='index')           
+@user_passes_test(lambda u: u.is_superuser)     
 def payment_admin (request,home_id,user_id):
     user_obj = User.objects.filter(id=user_id)
     user_obj = user_obj[0]

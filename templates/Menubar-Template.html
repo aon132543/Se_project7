@@ -1,9 +1,5 @@
 {% load static %}
 {% load socialaccount %}
-
-
-
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -94,21 +90,7 @@
 
 
 
-        <!--<li class="item" id="profile">
-            <a href="#profile" class="menu-btn">
-              <i class="fas fa-user-circle"></i
-              ><span
-                >ประวัติ <i class="fas fa-chevron-down drop-down"></i
-              ></span>
-            </a>
-            <div class="sub-menu">
-              <a href="#"><i class="fas fa-image"></i><span>แก้ไข</span></a>
-              <a href="#"
-                ><i class="fas fa-address-card"></i><span>พรีวิว</span></a
-              >
-            </div>
-          </li>-->
-
+        <!--แอดมิ้น-->
         {%if user.is_superuser %}
         <li class="item">
           <a href="/home" class="menu-btn">
@@ -145,12 +127,14 @@
             <i class="far fa-address-card"></i><span>จัดการรายชื่อกรรมการ</span>
           </a>
         </li>
+        <!--กรรมกั้น-->
         {%elif user.is_staff%}
         <li class="item">
           <a href="/interview" class="menu-btn">
             <i class="fas fa-desktop"></i><span>สัมภาษณ์ทุน</span>
           </a>
         </li>
+        <!--นิซิต-->
         {%else%}
 
         <li class="item">

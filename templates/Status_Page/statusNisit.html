@@ -18,7 +18,7 @@
               {%if data.0.fm_file%}
               ผ่านการคัดเลือก
               
-                <a href = "{{file.fm_file.url}}"><button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button></a>
+                <a href = "{{data.0.fm_file.url}}"><button class="button is-danger"><p> ดาวน์โหลดเอกสาร </p></button></a>
               {%else%}
               ผ่านการคัดเลือก รอเจ้าหน้าที่แจ้งเอกสารสอบสัมภาษณ์
               {% endif %}
@@ -34,7 +34,7 @@
 
               <form action ="/statusNisit" method="POST" >
                 {% csrf_token %}
-                <input type="submit" value="สละสิทธิ์รับทุน" class="button is-danger>
+                <input type="submit" value="สละสิทธิ์รับทุน" class="button is-danger">
                 <input type="hidden" id="custId" name="custId" value="0">
                 <input type="hidden" id="infoId" name="infoId" value="{{state.sa_si_id.id}}">
               </form>

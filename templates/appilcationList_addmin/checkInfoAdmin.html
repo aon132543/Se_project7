@@ -147,8 +147,8 @@
         
     <div class="boxback">       
 
-      <div class="box" align = "center">
-        <h6 class="title is-6 has-text-centered">รูปประจำตัว </h6>
+      <div class="box">
+        <h6 class="title is-6 has-text-centered" >รูปประจำตัว </h6>
         <div class="avatar-wrapper">
           
           <img class="profile-pic" src="{{pic.sp_path_to_avatar.url}}" />
@@ -170,39 +170,36 @@
       คำนำหน้า: <input class="resizedTextbox" class="input" type="text"  placeholder="คำนำหน้า"name="title-thai" value="{{checkin.sa_title_th}}" readonly>
     
       
-      ชื่อ: <input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th" value="{{checkin.sa_firstname_th}}" readonly>
+      ชื่อ: <input class="resizedTextbox" class="input" type="text"  placeholder="ชื่อ"name="firstname-th" value="{{checkin.sa_firstname_th}}" readonly><br>
       ชื่อกลาง: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลาง" name="middlename-th"  value="{{checkin.sa_middlename_th}}" readonly>
       นามสกุล: <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-th"  value="{{checkin.sa_lastname_th}}" readonly>
-      <br>
       รหัสนิสิต: <input class="resizedTextbox" class="input" type="text" placeholder="รหัสนิสิต" name ="std"  value="{{checkin.sa_std_code}}" readonly><br>
       <br>
       Prefix: <input class="resizedTextbox" class="input" type="text"  placeholder="title"name="title-eng" value="{{checkin.sa_title_en}}" readonly>
     
     Firstname: <input class="resizedTextbox" class="input" type="text" placeholder="firstname" name="firstname-eng" value="{{checkin.sa_firstname_en}}" readonly>
-    Middlename: <input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng" value="{{checkin.sa_middlename_en}}" readonly>
-    Surname: <input class="resizedTextbox" class="input" type="text" placeholder="lastname" name = "lastname-eng" value="{{checkin.sa_lastname_en}}" readonly>
+    Middlename: <input class="resizedTextbox" class="input" type="text" placeholder="middlename" name="middlename-eng" value="{{checkin.sa_middlename_en}}" readonly><br>
+    Surname: <input class="resizedTextbox" class="input" type="text" placeholder="lastname" name = "lastname-eng" value="{{checkin.sa_lastname_en}}" readonly><br>
     <br>
-    วัน/เดือน/ปีเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name = "birthday" value="{{checkin.sa_date_of_birth|date:'Y-m-d'}}" readonly><br>
-    <br>
-    สาขา: <input class="resizedTextbox" class="input" type="text" placeholder="สาขา" name = "major" value="{{checkin.sa_major}}" readonly>
-    เกรด: <input class="resizedTextbox" class="input" type="text" placeholder="เกรด" name = "grade" value="{{checkin.sa_grade}}" readonly>
-    ที่อยู่: <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name = "address" value="{{checkin.sa_std_address}}" readonly>
-    
+    วัน/เดือน/ปีเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเกิด" name = "birthday" value="{{checkin.sa_date_of_birth|date:'Y-m-d'}}" readonly>
+    สาขา: <input class="resizedTextbox3" class="input" type="text" placeholder="สาขา" name = "major" value="{{checkin.sa_major}}" readonly>
+    เกรด: <input class="resizedTextbox3" class="input" type="text" placeholder="เกรด" name = "grade" value="{{checkin.sa_grade}}" readonly>
+    ที่อยู่: <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name = "address" value="{{checkin.sa_std_address}}" readonly><br>
     เบอร์โทรศัพท์: <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name = "phone" value="{{checkin.sa_std_tel_no}}" readonly>
     <hr>
 
     <h2><b><font face="Arial">ประวัติครอบครัว - บิดา</font></b></h2>
     คำนำหน้า: <input class="resizedTextbox" class="input" type="text"  placeholder="คำนำหน้าพ่อ"name="title-dadthai" value="{{checkin.sa_father_title}}" readonly>
 
-    ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad" value="{{checkin.sa_father_firstname}}" readonly>
+    ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อบิดา" name="firstname-dad" value="{{checkin.sa_father_firstname}}" readonly><br>
     ชื่อกลาง: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางบิดา" name="middlename-dad" value="{{checkin.sa_father_middlename}}" readonly>
     นามสกุล: <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-dad" value="{{checkin.sa_father_lastname}}" readonly><br> 
     
     <h2><b><font face="Arial">สถานะ</font></b></h2>
     สถานะ: <input class="resizedTextbox" class="input" type="text"  placeholder="สถานะบิดา"name="statuslife-dad" value="{{checkin.sa_father_statuslife}}" readonly>
-    วันเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad" value="{{checkin.sa_father_date_of_birth|date:'Y-m-d'}}" readonly>
+    วันเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-dad" value="{{checkin.sa_father_date_of_birth|date:'Y-m-d'}}" readonly><br>
     อายุ: <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-dad" value="{{checkin.sa_father_age}}" readonly>ปี
-    ที่อยู่: <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad" value="{{checkin.sa_father_address}}" readonly>
+    ที่อยู่: <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-dad" value="{{checkin.sa_father_address}}" readonly><br>
     <br>
     เบอร์โทรศัพท์: <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทร" name="Tel-dad" value="{{checkin.sa_father_tel_no}}" readonly><br>
     <h2><b><font face="Arial">สถานะสมรส</font></b></h2>
@@ -214,13 +211,13 @@
 
     <h2><b><font face="Arial">ประวัติครอบครัว-มารดา</font></b></h2>
     คำนำหน้า: <input class="resizedTextbox" class="input" type="text" placeholder="คำนำหน้าแม่" name="title-momthai" value="{{checkin.sa_mother_title}}" readonly>
-    ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom" value="{{checkin.sa_mother_firstname}}" readonly>
+    ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อมารดา" name="firstname-mom" value="{{checkin.sa_mother_firstname}}" readonly><br>
     ชื่อกลาง: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางมารดา" name="middlename-mom" value="{{checkin.sa_mother_middlename}}" readonly>
     นามสกุล: <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-mom" value="{{checkin.sa_mother_lastname}}" readonly><br> 
 
     <h2><b><font face="Arial">สถานะ</font></b></h2>
     สถานะ: <input class="resizedTextbox" class="input" type="text"  placeholder="สถานะมารดา"name="statuslife-mom" value="{{checkin.sa_mother_statuslife}}" readonly>
-    วันเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom" value="{{checkin.sa_mother_date_of_birth|date:'Y-m-d'}}" readonly>
+    วันเกิด: <input class="resizedTextbox" class="input" type="date" placeholder="วันเดือนปีเกิด" name="birthday-mom" value="{{checkin.sa_mother_date_of_birth|date:'Y-m-d'}}" readonly><br>
     อายุ: <input class="resizedTextbox" class="input" type="number" placeholder="อายุ" name="age-mom" value="{{checkin.sa_mother_age}}" readonly>ปี
     ที่อยู่: <input class="resizedTextbox" class="input" type="text" placeholder="ที่อยู่" name="address-mom" value="{{checkin.sa_mother_address}}" readonly>
     <br>
@@ -241,10 +238,9 @@
       {% for json_obj in json_bro %}
       <div class="wraper2">
       คำนำหน้า: <input class="resizedTextbox" class="input" type="text" placeholder="คำนำหน้าพี่น้อง" name="title-siblingthai" value="{{json_obj.title_sibling}}"  readonly/>
-      ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling" value="{{json_obj.title_sibling}}"  readonly>
+      ชื่อ: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อ" name="firstname-sibling" value="{{json_obj.title_sibling}}"  readonly><br>
       ชื่อกลาง: <input class="resizedTextbox" class="input" type="text" placeholder="ชื่อกลางพี่น้อง" name="middlename-sibling" value="{{json_obj.middle_sibling}}" readonly/>
       นามสกุล: <input class="resizedTextbox" class="input" type="text" placeholder="นามสกุล" name="lastname-sibling" value="{{json_obj.lastname_sibling}}" readonly><br>
-      <br>
       การศึกษา: <input class="resizedTextbox" class="input" type="text" placeholder="การศึกษา" name="education-sibling" value="{{json_obj.education_sibling}}" readonly>
       อาชีพ: <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพ" name="career-sibling" value="{{json_obj.career_sibling}}" readonly>
       สถานที่ประกอบการ: <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ประกอบการ" name="workplace-sibling" value="{{json_obj.workplace_sibling}}" readonly>
@@ -257,17 +253,17 @@
 
     <h2><b><font face="Arial">รายละเอียดรายได้ของผู้สมัครทุน</font></b></h2>
     
-      รายได้นิสิต: <input class="resizedTextbox" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต" name="moneyPerMonth" value="{{checkin.sa_income}}" readonly>บาท
-      ได้รับค่าใช้จ่ายจาก: <input class="resizedTextbox" class="input" type="text" placeholder="ได้รับค่าใช้จ่ายจาก" name="patron" value="{{checkin.sa_income_source}}" readonly>
+      รายได้นิสิต: <input class="resizedTextbox2" class="input" type="number" placeholder="รายได้ต่อเดือนของนิสิต" name="moneyPerMonth" value="{{checkin.sa_income}}" readonly>บาท
+      ได้รับค่าใช้จ่ายจาก: <input class="resizedTextbox2" class="input" type="text" placeholder="ได้รับค่าใช้จ่ายจาก" name="patron" value="{{checkin.sa_income_source}}" readonly>
       <br>
       ผู้อุปการะ: <input class="resizedTextbox2" class="input" type="text" placeholder="ในกรณีที่ได้รับค่าใช้จ่ายผู้อุปการะ ผู้อุปการะนั้นเกี่ยวข้องเป็น" name="status-patron" value="{{checkin.sa_patron_relation}}" readonly> 
-      บุตรของผู้อุปการะ: <input class="resizedTextbox" class="input" type="text" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน" name ="NumOfChild-patron" value="{{checkin.sa_child_in_the_patron}}" readonly>คน
-      อาชีพ: <input class="resizedTextbox" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron" value="{{checkin.sa_patron_career}}" readonly>
+      บุตรของผู้อุปการะ: <input class="resizedTextbox2" class="input" type="text" placeholder="ผู้อุปการะมีบุตรในอุปการะจํานวน" name ="NumOfChild-patron" value="{{checkin.sa_child_in_the_patron}}" readonly>คน
+      อาชีพ: <input class="resizedTextbox2" class="input" type="text" placeholder="อาชีพผู้อุปการะ" name="career-patron" value="{{checkin.sa_patron_career}}" readonly>
       <br>
-      สถานที่ทำงาน: <input class="resizedTextbox" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ" name="workplace-patron" value="{{checkin.sa_patron_workplace}}" readonly>
-      เบอร์โทรศัพท์: <input class="resizedTextbox" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron" value="{{checkin.sa_patron_tel_no}}" readonly><br>
+      สถานที่ทำงาน: <input class="resizedTextbox2" class="input" type="text" placeholder="สถานที่ทำงานของผู้อุปการะ" name="workplace-patron" value="{{checkin.sa_patron_workplace}}" readonly>
+      เบอร์โทรศัพท์: <input class="resizedTextbox2" class="input" type="text" placeholder="เบอร์โทรผู้อุปการะ" name="Tel-patron" value="{{checkin.sa_patron_tel_no}}" readonly><br>
       <b><h>ทุนกู้ยืมปัจจุบันของนิสิต</h></b>
-      ประเภททุนที่ได้รับ: <input class="resizedTextbox" class="input" type="text" placeholder="ทุนกู้ยืมปัจจุบันของนิสิต" name="studenloan" value="{{checkin.sa_loan}}" readonly>
+      ประเภททุนที่ได้รับ: <input class="resizedTextbox2" class="input" type="text" placeholder="ทุนกู้ยืมปัจจุบันของนิสิต" name="studenloan" value="{{checkin.sa_loan}}" readonly>
       <br>
       <br><p><b><font face="Arial">ผู้สมัครเคยทำงานพิเศษระหว่างหยุดเรียน/ขณะเรียน</font></b></p>
       <label><b><font face="Arial">เคยทำงานพิเศษไหม</font></b></label>
@@ -277,17 +273,17 @@
       
       ประเภทงานที่เคยทำ: <input class="resizedTextbox2" class="input" type="text" placeholder="ประเภทของงานที่เคยทำและที่ทำอยู่ปัจจุบัน" name="Type-pastime" value="{{checkin.sa_parttime_type}}" readonly>   
       <br>
-      ถ้าเคย ได้รับค่าจ้างเป็นเงิน: <input class="resizedTextbox" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income" value="{{checkin.sa_parttime_income}}" readonly>
+      ถ้าเคย ได้รับค่าจ้างเป็นเงิน: <input class="resizedTextbox2" class="input" type="number" placeholder="ถ้าเคย ได้รับค่าจ้างเฉลี่ยต่อเดือน" name="career-income" value="{{checkin.sa_parttime_income}}" readonly>
       <br><br>
 
-
+      <hr>
       <h2><b><font face="Arial">รายละเอียดทุนที่ผู้สมัครทุนเคยได้รับ</font></b></h2>
       
        <div class="wraper">
         {% for json_obj in json %}
 
           ประเภททุน: <input class="resizedTextbox" class="input" type="text" placeholder="ทุนการศึกษาที่ได้รับมาแล้ว" name="received-scholar" value="{{json_obj.name}}" readonly>
-          ปีการศึกษา: <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}" readonly>
+          ปีการศึกษา: <input class="resizedTextbox" class="input" type="text" placeholder="ปีการศึกษาที่ได้รับ" name="received-year-scholar" value="{{json_obj.year}}" readonly><br>
           มูลค่า: <input class="resizedTextbox" class="input" type="number" placeholder="มูลค่า" name="prize" value="{{json_obj.prize}}" readonly>บาท
           
 

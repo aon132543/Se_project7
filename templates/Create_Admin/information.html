@@ -53,7 +53,7 @@
 <div class="center">
   <h2>สร้างประชาสัมพันธ์</h2>
 </div>
-  <form action="information" method="POST" enctype="multipart/form-data">
+  <form id = myFormId action="information" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <!--ชื่อข่าวประชาสัมพันธ์-->
     <div class="field is-horizontal">
@@ -147,6 +147,16 @@
           </div>
       </div>
     </div>
-    <input type="submit" value="ยืนยัน" class="button is-success is-fullwidth">
+    <button type="submit" id ="myButtonID" class="button is-success is-fullwidth">Send</button>
 </form>
+<script type="text/javascript">
+   
+  $('#myFormId').submit(function(){
+      $("#myButtonID", this)
+        .html("Please Wait...")
+        .attr('disabled', 'disabled');
+      return true;
+  });
+     
+  </script>
 {% endblock %}

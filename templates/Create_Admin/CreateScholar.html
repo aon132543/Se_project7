@@ -2,8 +2,12 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
-<script src='https://cdn.tiny.cloud/1/h3zt1lw1emdet6rxm1vos4jkjli5161zjiq3rn6q0qemmc98/tinymce/5/tinymce.min.js' referrerpolicy="origin">
+<script src='https://cdn.tiny.cloud/1/h3zt1lw1emdet6rxm1vos4jkjli5161zjiq3rn6q0qemmc98/tinymce/5/tinymce.min.js' referrerpolicy="origin"></script> 
+<script src="{% static 'js/load.js' %}"></script>  
+
 </script>
+
+
 <script>
   tinymce.init({
     selector: '#mytextarea',
@@ -52,6 +56,18 @@ $(document).ready(function(){
 
 </script>
 
+<script>
+    function validateSize(input) {
+  const fileSize = input.files[0].size / 1024 / 1024; // in MiB
+  if (fileSize > 2) {
+    alert('File size exceeds 2 MiB');
+    // $(file).val(''); //for clearing with Jquery
+  } else {
+    // Proceed further
+  }
+}
+</script>
+
 
 
 <script>
@@ -84,7 +100,7 @@ $(document).ready(function(){
     <h2>สร้างประกาศรับทุน</h2>
 </div>
 
-<form action ="CreateScholar" method="POST" enctype="multipart/form-data" >
+<form action ="CreateScholar" id="myFormId" method="POST" enctype="multipart/form-data" >
     {% csrf_token %}
 
     <!--ชื่อทุน-->
@@ -135,7 +151,7 @@ $(document).ready(function(){
     <!--จำนวนเงิน/คน-->
     <div class="field is-horizontal">
         <div class="field-label is-normal">
-            <label class="label">จำนวนเงิน/คน</label>
+            <label class="label">จำนวนเงินต่อคน(บาท)</label>
         </div>
         <div class="field-body">
             <div class="field">
@@ -148,7 +164,7 @@ $(document).ready(function(){
     <!--จำนวนคนที่จะได้รับ (AUTO)-->
     <div class="field is-horizontal">
         <div class="field-label is-normal">
-            <label class="label">จำนวนคนที่จะได้รับ (AUTO)</label>
+            <label class="label">จำนวนคนที่จะได้รับ (คน)</label>
         </div>
         <div class="field-body">
             <div class="field">
@@ -326,8 +342,18 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-    <button class="button is-success is-fullwidth">Send</button>
+    <br>
+    <button type="submit" id ="myButtonID" class="button is-success is-fullwidth">Send</button>
 </form>
 
-
+<script type="text/javascript">
+   
+    $('#myFormId').submit(function(){
+        $("#myButtonID", this)
+          .html("Please Wait...")
+          .attr('disabled', 'disabled');
+        return true;
+    });
+       
+    </script>
 {% endblock %}
