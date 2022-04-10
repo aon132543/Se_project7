@@ -28,11 +28,11 @@
         <div class="description">
           
           <h2>{{new.sn_header}}</h2>
-          {{new.sn_description}}<br>
+          {{new.sn_description | safe}}<br>
           หมดอายุ :  {{new.sn_expire_date}}
         </div>
         <br>
-        <a href="{{new.sn_path_to_pdf.url|default_if_none:'#'}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  Download เอกสารทางการ </i> </button></a>
+        <a href="{{new.sn_path_to_pdf.url|default_if_none:'#'}}"> <button class="button is-primary is-medium is-fullwidth"><i class="fas fa-file-pdf">  <p>Download เอกสารทางการ </p>  </i> </button></a>
       
       {%endfor%}
       </div>

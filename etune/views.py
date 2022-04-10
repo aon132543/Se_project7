@@ -26,7 +26,6 @@ from django.http import JsonResponse
 
 
 
-
 # from allauth.socialaccount.adaptor import DefaultSocialAccountAdapter
 
 # import json as js
@@ -1437,6 +1436,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
     listApps = Scholar_app.objects.filter(sa_si_id=home_id)
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
+    # dateex41 = listApps.sa_statusExDate
     dateToday = date.today()
     
     if request.method == "POST":
@@ -1750,7 +1750,7 @@ def changeStatus(request,home_id,user_id,status):
     elif checkin.sa_status == 21:
         if status == 1:
             if(memberG==0):
-                messages.success(request, 'ไม่สามารถทำรายการได้\nเนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
+                messages.success(request, 'ไม่สามารถทำรายการได้ <br>เนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
             else:
                 enddate = datetime.now() + timedelta(days=7)
@@ -1767,10 +1767,18 @@ def changeStatus(request,home_id,user_id,status):
                 sa_status = 31)
             return redirect('/secondAppilcationAdmin/'+str(home_id))
     elif checkin.sa_status == 33:
+        print("11111111111111111111111")
         if status == 1:
-            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                sa_status = 41)
-            return redirect('/secondAppilcationAdmin/'+str(home_id))
+            print("2222222222222")
+            if checkin.sa_statusExDate <= date.today():
+                print("333333333333333333")
+                data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                    sa_status = 41)
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
+            else:
+                #messages.success(request, 'ไม่สามารถเปิดเอกสารได้\nเนื่องจากยังไม่หมดเวลาส่งเอกสารของนิสิต')
+                messages.success(request, "ไม่สามารถเปลี่ยนสถานะได้ เนื่องจากยังไม่หมดเวลาส่งเอกสารของนิสิต")
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
 
     return redirect('/secondAppilcationAdmin/'+str(home_id))
 
@@ -1782,7 +1790,9 @@ def limitaccount(request):
     a = request.user.email
     a = a.split("@")
     a = a[1]
-    
+    if request.user.is_staff == True:
+        return redirect('interview')
+
     if request.user.is_staff == False:
             obj2 = add_commit.objects.filter(ac_email=request.user.email).exists() 
             if obj2 == True:
@@ -1797,8 +1807,7 @@ def limitaccount(request):
                         i.save()
                         messages.success(request, 'สวัสดีคุณ'+ str(obj2.ac_firstname)+ 'เข้าสู่ระบบ โดยเป็นคณะกรรมการ')
                         return redirect('home')
-    if request.user.is_staff == True:
-        return redirect('interview')
+
     if a != "ku.th":
         messages.error(request, 'กรุณา Login ด้วย @ku.th เท่านั้น')
         u = User.objects.get(username = request.user.username)
@@ -1848,9 +1857,10 @@ def payment(request,info_id):
                 today = date.today()
                 data = Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=scholars[0]).update(
                     sa_status = 33 , sa_statusExDate = today)
-                print(Scholar_app.objects.filter(sa_userid=user_obj))
+                print("เข้าที่นี้ : check == 34")
 
             messages.success(request, 'อัพโหลดเอกสารเรียบร้อย')
+            
             return redirect('statusNisit')
     else:
         messages.success(request, 'ท่านสละสิทธิ์ไปแล้ว หรือ หมดเวลาการอัพโหลดไฟล์')
@@ -1920,6 +1930,7 @@ def payment_admin (request,home_id,user_id):
         file_obj = file_obj[0]
         return render(request,'payment/payment_admin.html',{'file_upload':file_obj,'home_id':home_id,'user_id':user_id})
     else:
+        
         messages.success(request,'นิสิตยังไม่ได้อัพโหลดไฟล์เอกสาร')
         return redirect("/secondAppilcationAdmin/"+str(home_id))
 
@@ -1930,6 +1941,7 @@ def editPayment(request,info_id,user_id):
     today = datetime.now()+timedelta(days=3)
     Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=info_obj).update(
         sa_status = 34 , sa_statusExDate = today)
+    print("เข้าที่นี้ : editPayment")
     return redirect("/changeStatus/"+str(info_id) +"/"+str(user_id)+"/1")
 
 

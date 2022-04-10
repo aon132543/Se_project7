@@ -87,12 +87,14 @@
     padding: 2px;
     
   }
+
   .upload{
     margin-top: 20px;
   }
   hr {
     border-top: 5px solid rgb(82, 1, 1);
   }
+  
   }
   @media only screen and (max-width: 1000px) {
   *  {
@@ -102,6 +104,8 @@
   body {
     background-color: rgb(82, 1, 1);
   }
+
+  
 
   .box {
     background-color: rgb(238, 238, 236);
@@ -134,7 +138,7 @@
     color:white;
   }
   .resizedTextbox {
-    width: 250px;
+    width: 200px;
     height: 40px;
     background-color: white;
     border-radius: 5px;
@@ -212,7 +216,7 @@
     body {
       background-color: rgb(82, 1, 1);
     }
-  
+   
     .box {
       background-color: rgb(238, 238, 236);
     }
@@ -395,7 +399,7 @@
         body {
           background-color: rgb(82, 1, 1);
         }
-      
+        
         .box {
           background-color: rgb(238, 238, 236);
         }
@@ -406,6 +410,7 @@
         .select{
           margin-top: 5px;
           margin-left: 5px;
+          margin-right: 500px;
         }
         ::placeholder {
           color: rgb(158, 79, 50);
@@ -427,20 +432,20 @@
           color:white;
         }
         .resizedTextbox {
-          width: 250px;
+          width: 180px;
           height: 40px;
-          background-color: white;
+          background-color: rgb(255, 255, 255);
           border-radius: 5px;
           border-color: rgb(221, 220, 220);
           font-size:16px;
           margin-top: 2px;
           margin-bottom: 2px;
           margin-left:5px;
-          margin-right: 5px;
-          padding: 2px 2px;
+          margin-right: 500px;
+          padding: 10px 2px;
         }
         .resizedTextbox3 {
-          width: 250px;
+          width: 200px;
           height: 40px;
           background-color: white;
           border-radius: 5px;
@@ -462,8 +467,8 @@
           font-size:16px;
           margin-top: 2px;
           margin-bottom: 2px;
-          margin-left: 2px;
-          margin-right: 2px;
+          margin-left:5px;
+          margin-right: 500px;
           padding: 2px;
         }
         .resizedTextbox3 {
@@ -473,7 +478,10 @@
           border-radius: 5px;
           border-color: rgb(221, 220,220);
           font-size:16px;
-          margin: 5px;
+          margin-top: 2px;
+          margin-bottom: 2px;
+          margin-left:5px;
+          margin-right: 500px;
           padding: 2px;
           
         }
@@ -484,7 +492,10 @@
           border-radius: 5px;
           border-color: rgb(221, 220,220);
           font-size:16px;
-          margin: 5px;
+          margin-top: 2px;
+          margin-bottom: 2px;
+          margin-left:5px;
+          margin-right: 500px;
           padding: 2px;
           
         }

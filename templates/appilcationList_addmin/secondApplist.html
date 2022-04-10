@@ -3,17 +3,6 @@
 {% block content %}
 {% csrf_token %}
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{%if messages %}
-{%for m in messages %}
-<script>
-  Swal.fire({
-    "title": "ผิดพลาด!",
-    "text": "{{m}}",
-    "icon": "error"
-  })
-</script>
-{% endfor %}
-{% endif %}
 
 <script>
 
@@ -438,4 +427,16 @@
       });
     });
   </script>-->
+  {%if messages %}
+{%for m in messages %}
+<script>
+  Swal.fire({
+    "title": "ผิดพลาด!",
+    "text": "{{m}}",
+    "icon": "error"
+  })
+</script>
+{% endfor %}
+{% endif %}
+
 {% endblock %}

@@ -240,7 +240,12 @@ body {
 
 .wrapper .main-container .card {
   margin-bottom: 5px;
-  
+  margin-left: 5px;
+}
+
+.wrapper.collapse .main-container .card {
+  margin-bottom: 5px;
+  margin-left: 50px;
 }
 
 .contact-box {
@@ -585,6 +590,7 @@ tr:nth-child(even) {
   .wrapper .sidebar .sidebar-menu {
     overflow: hidden;
     padding-bottom: 75px;
+    width:100%;
     cursor: pointer;
   }
   
@@ -1116,11 +1122,11 @@ tr:nth-child(even) {
   }
   
   .wrapper .sidebar {
-    z-index: 1;
+    z-index: 10;
     background: #852b3a;
     position: fixed;
     top: 50px;
-    width: 250px;
+    width: 80%;
     height: 100%;
     transition: 0.3s;
     transition-property: width;
