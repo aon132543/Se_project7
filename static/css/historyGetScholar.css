@@ -1000,6 +1000,7 @@ td button {
   margin-bottom:5px;
   margin-left: 10px;
   font-size: 14px;
+  cursor : context-menu;
 }
 
 tr:nth-child(even) {

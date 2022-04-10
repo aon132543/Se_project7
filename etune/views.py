@@ -269,37 +269,37 @@ def editScholar(request,order_id):
             si_semester = 2
             
         )
-        fileurl_img = None
-        if request.FILES.get('img') != None :
-            img =  request.FILES.get('img')
-            fs = FileSystemStorage(location='static/images/uploads')
-            files = fs.save(img.name,img)
-            fileurl_img = fs.path(files)
-            Scholar_info.objects.filter(id=order_id).update(si_photo_bg= fileurl_img)
-        fileurl_file = None  
         
-        if request.FILES.get('file_t'):
-            pdf= request.FILES.get('file_t')
-            fs2 = FileSystemStorage()
-            files = fs2.save(pdf.name,pdf)
-            fileurl_file = fs2.path(files)
-            Scholar_info.objects.filter(id=order_id).update(si_path_to_pdf= fileurl_file)
-        
-        
+
+        if len(request.FILES)!=0:
+                if request.FILES.get('img',False):
+                    data2 = Scholar_info.objects.get(id=order_id)
+                    data2.si_photo_bg = request.FILES.get('img')
+                    data2.save()
+
+                if request.FILES.get('file_t',False):
+                    data2 = Scholar_info.objects.get(id=order_id)
+                    data2.si_path_to_pdf = request.FILES.get('file_t')
+                    data2.save()  
+
+
         if bool_name_news :
             data = Scholar_news.objects.filter(sn_header=name_scholar_obj).update(
             sn_header = name_scholar_text,
             sn_description = detail,
             sn_expire_date = date_e,
             )
-            if request.FILES.get('img'):
-                data = Scholar_news.objects.filter(sn_header=name_scholar_obj).update(
-                sn_photo_bg = fileurl_img,
-            )
-            if request.FILES.get('file_t'):
-                 data = Scholar_news.objects.filter(sn_header=name_scholar_obj).update(
-                sn_path_to_pdf = fileurl_file
-            )
+
+            if request.FILES.get('img',False):
+                data = Scholar_news.objects.get(sn_header=name_scholar_obj)
+                data.sn_photo_bg = request.FILES.get('img')
+                data.save()
+
+            if request.FILES.get('file_t',False):
+                data = Scholar_news.objects.filter(sn_header=name_scholar_obj).update
+                data.sn_path_to_pdf = request.FILES.get('file_t')
+                data.save()
+            
                 
                 
             messages.success(request, "แก้ไขข่าวหน้าประชาสัมพัมธ์เรียบร้อยแล้ว")
@@ -334,7 +334,6 @@ def InformationHome(request):
     return render(request,'informationNews_Admin/informationhome.html',{'info':newsperPage})
 
 @login_required (login_url='index')
-@user_passes_test(lambda u: u.is_staff == False)
 def viewInfomation(request,order_id):       #หน้าดูข่าวสารของ admin
     news = Scholar_news.objects.filter(id=order_id)
     if news[0].sn_status == 1:
@@ -1583,10 +1582,7 @@ def interviewStudentTest(request,info_id,user_id):
         messages.success(request, 'ท่านเคยให้คะแนนสัมภาษณ์บุคคลนี้แล้ว')
         return redirect('/interviewStudent/'+str(info_id))      
     else:
-        if request.method == 'POST':
-            if request.user.id  in myidindatabase:
-                messages.success(request, 'ท่านเคยให้คะแนนสัมภาษณ์บุคคลนี้แล้ว')
-            return redirect('/interviewStudent/'+str(info_id))  
+        if request.method == 'POST':  
 
             name_lst = request.POST.getlist('name[]')
             weight_lst = request.POST.getlist('weight[]')
@@ -1600,19 +1596,24 @@ def interviewStudentTest(request,info_id,user_id):
             for key,value in json.items():
                 score_wieght.append(value)
             #--------นับรายชื่อกรรมการที่กรอกคะแนนมาแล้ว------
-            countCommit = len(data.sa_json_commit.items()) + 1
+            countCommit = len(data.sa_json_commit.items())
+            
+            ###สมการทั่วไป คือ ซิกม่าคะแนนรวมปัจจุบัน/จำนวนกรรมการปัจจุบัน = คะแนนเฉลี่ย
+            # กรณีที่กรรมการ 0 คนก่อนหน้า ให้ใช้คะแนนคนปัจจุบันใส่ได้เลย
+            # กรณีมีกรรมการ 2 คนขึ้นไป สมการ คือ คะแนนเฉลี่ย*จำนวนกรรมการก่อนคนปัจจุบัน = ซิกม่าคะแนนรวมก่อนคนปัจจุบัน
+                # และหาเฉลี่ยคะแนนคนปัจจุบัน คือ (ซิกม่าคะแนนรวมก่อนคนปัจจุบัน+คะแนนคนปัจจุบัน)/(จำนวนกรรมการก่อนคนปัจจุบัน+1)
 
-            if(len(database_score) !=0 ):
+            if(len(database_score) !=0 ): #เช็คว่ามีกรรมการลงคะแนนรึยัง? {10, 10}
                 res = {}  
                 for key in name_lst:
                     for value in range(len(weight_lst)):
-                        sigmaScore = database_score[value]*(countCommit-1)
+                        sigmaScore = database_score[value]*(countCommit)
                         sumSigScore = sigmaScore+float(weight_lst[value])
-                        res[key] = sumSigScore/countCommit
-                        #weight_lst.remove(weight_lst[value])
-                        list_wieght.append(sumSigScore/countCommit)
+                        res[key] = sumSigScore/(countCommit+1)
+                        weight_lst.remove(weight_lst[value])
+                        list_wieght.append(sumSigScore/(countCommit+1))
                         break  
-            else:
+            else: # ถ้าไม่มีใคร {}
                 res = {}
                 for key in name_lst:
                     for value in weight_lst:
@@ -1680,7 +1681,7 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
     checkin = checkin[0]
     json_scholar = checkin.sa_json_scholar
     json_bro = checkin.sa_bro_n_sis
-    data2  = avatar_profile.objects.filter(sa_userid=request.user.id)
+    data2  = avatar_profile.objects.filter(sa_userid=user_id)
     data2 = data2[0]
 
     file_obj = File_Models.objects.filter(fm_upload_by=user_obj).filter(fm_Scholar=home_id)
@@ -1701,6 +1702,13 @@ def checkStatus(request,home_id,user_id):   #หน้าตรวจสอบ�
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = 20)
             return redirect('/checkStatus/'+str(home_id)+'/'+str(user_id))
+    
+    protect= Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id)
+    
+    if protect[0].sa_status != 11 and protect[0].sa_status != 20:
+        print("เข้า")
+        return redirect('firstAppilcationAdmin')
+
 
     return render(request,'appilcationList_addmin/check_status.html',{'checkin':checkin,'json':json,'json_bro':json_bro,'info_id':home_id,'pic':data2,'file_obj':file_obj,'json_scholar':json_scholar})
 
@@ -1742,7 +1750,7 @@ def changeStatus(request,home_id,user_id,status):
     elif checkin.sa_status == 21:
         if status == 1:
             if(memberG==0):
-                messages.success(request, 'สร้างประชาสัมพันธ์แล้ว')
+                messages.success(request, 'ไม่สามารถทำรายการได้\nเนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
             else:
                 enddate = datetime.now() + timedelta(days=7)

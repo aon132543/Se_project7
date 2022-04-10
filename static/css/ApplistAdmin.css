@@ -255,7 +255,7 @@ body {
   height: 75%;
   margin-left: auto;
   margin-right: auto;
-  background-color: rgb(255, 0, 0);
+  background-color: rgb(255, 255, 255);
 }
 
 .wrapper .main-container .card .title {
@@ -577,7 +577,7 @@ tr {
     height: 75%;
     margin-left: auto;
     margin-right: auto;
-    background-color: rgb(255, 0, 0);
+    background-color: rgb(255, 255, 255);
   }
 
   .wrapper .main-container .card .title {

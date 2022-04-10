@@ -382,7 +382,7 @@
  
 
           {%endfor%}
-        </div>
+        
       
 
         <hr>
@@ -504,7 +504,9 @@
         </div>
     
         <hr>
-        <div style="color:red">หมายเหตุ: กรณีที่ไม่มีข้อมูลสามารถใส่ "-" ได้ </div>
+        <h2>
+        <div style="color:red ; font-size:20px"> หมายเหตุ: กรณีที่ไม่มีข้อมูลสามารถกรอก "-"   </div>
+        </h2>
         <br>
 
         <div class="level-item has-text-centered">
@@ -515,7 +517,7 @@
             <div class="column">
               <a href="/home"><input value="ข้าม" class="button is-warning"></a>
             </div>
-       
+          
     </form>
     {%if messages %}
     {%for m in messages %}
@@ -530,7 +532,7 @@
   {% endfor %}
   {% endif %}
   
-
+    </div>
   </div>
 
   <script>
