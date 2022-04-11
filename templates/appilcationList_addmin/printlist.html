@@ -31,6 +31,7 @@
               <tr>
                 <th scope="col">ชื่อ</th>
                 <th scope="col">นามสกุล</th>
+                <th scope="col">คะแนนรวมการสอบสัมภาษณ์</th>
                 <th scope="col">หมายเหตุ</th>
               </tr>
             </thead>
@@ -40,7 +41,30 @@
                
                 <td>{{data.sa_userid.first_name}}</td>
                 <td>{{data.sa_userid.last_name}}</td>
-                <td> </td>
+                <td> {{data.sa_score}}</td>
+                <td> 
+                  {% if data.sa_status == 11 %}
+                  <p> ดำเนินการตรวจสอบเอกสาร</p>
+                  {% elif data.sa_status == 20 %}
+                  <p>ไม่ผ่านเอกสาร</p>
+                  {% elif data.sa_status == 21 %}
+                  <p>ดำเนินการสอบสัมภาษณ์<p>
+                  {% elif data.sa_status == 31 %}
+                  <p>รอนิสิตยืนยันการรับทุน</p>
+                  {% elif data.sa_status == 32 %}
+                  <p> นิสิตยืนยันการรับทุน </p>
+                  {% elif data.sa_status == 33 %}
+                  <p> นิสิตของสละสิทธิ์</p>
+                  {% elif data.sa_status == 34 %}
+                  <p>นิสิตดำเนินการแก้ไขเอกสารทางการเงิน<p>
+                  {% elif data.sa_status == 41 %}
+                  <p>ได้รับทุน</p>
+
+                  {%endif%}
+                 
+                
+                
+                </td>
               </tr>
             {%endfor%}              
             </tbody>

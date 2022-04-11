@@ -806,6 +806,8 @@ def dict1(sample_dict, key, list_of_values):
 
 
 @login_required (login_url='index')
+@user_passes_test(lambda u: u.is_staff == False)   
+@user_passes_test(lambda u: u.is_superuser == False)   
 def editHistoryNisit(request):
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
@@ -1023,6 +1025,7 @@ def editHistoryNisit(request):
 
 @login_required (login_url='index')
 @user_passes_test(lambda u: u.is_staff == False)   
+@user_passes_test(lambda u: u.is_superuser == False)      
 def statusNisit(request):
     time = datetime.now()
     user_obj = User.objects.filter(id=request.user.id)
@@ -1766,12 +1769,9 @@ def changeStatus(request,home_id,user_id,status):
             data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                 sa_status = 31)
             return redirect('/secondAppilcationAdmin/'+str(home_id))
-    elif checkin.sa_status == 33:
-        print("11111111111111111111111")
-        if status == 1:
-            print("2222222222222")
-            if checkin.sa_statusExDate <= date.today():
-                print("333333333333333333")
+    elif checkin.sa_status == 33:       
+        if status == 1:            
+            if checkin.sa_statusExDate <= date.today():                
                 data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
                     sa_status = 41)
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
@@ -1788,6 +1788,7 @@ def limitaccount(request):
         return redirect('home')
 
     a = request.user.email
+    b= a
     a = a.split("@")
     a = a[1]
     if request.user.is_staff == True:
@@ -1808,6 +1809,10 @@ def limitaccount(request):
                         messages.success(request, 'สวัสดีคุณ'+ str(obj2.ac_firstname)+ 'เข้าสู่ระบบ โดยเป็นคณะกรรมการ')
                         return redirect('home')
 
+    if b =="seg7.nisit@gmail.com" or b=="seg7.nisit.s@gmail.com" :
+        return redirect('profileHistoryNisit')
+
+        
     if a != "ku.th":
         messages.error(request, 'กรุณา Login ด้วย @ku.th เท่านั้น')
         u = User.objects.get(username = request.user.username)

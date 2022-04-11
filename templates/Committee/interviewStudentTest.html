@@ -311,7 +311,7 @@ setTimeout("preventBack()", 0);
        <div class="box">
         <h6 class="title is-6"> ไฟล์ที่แนบมา </h6>
         {% if file_obj.fm_file %}
-        <a href="{{file_obj.fm_file.url}}" class = ""><button class="button is-danger"><i class="fa-solid fa-file-pdf"></i> เปิดไฟล์ที่แนบมา </button></a>
+        <a href="{{file_obj.fm_file.url}}" class = ""  target="_blank" ><button class="button is-danger"><i class="fa-solid fa-file-pdf"></i> เปิดไฟล์ที่แนบมา </button></a>
         {%else%}
         <p>ไม่ได้แนบไฟล์</p>
         {% endif %}
