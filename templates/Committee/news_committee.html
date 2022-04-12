@@ -1,6 +1,23 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
+
+
+<form action="interview" method="POST" >
+  {% csrf_token %}
+<div class="field">
+  <label class="label">ค้นหา</label>
+  <div class="control has-icons-left has-icons-right">
+    <input class="input is-success" name = "findcommit" id="findcommit" type="text" placeholder="ชื่อทุน">
+    <span class="icon is-small is-left">
+      <i class="fa-solid fa-magnifying-glass"></i></i>
+    </span>
+  </div>
+  <p class="help is-success">ไม่จำเป็นต้องค้นหาเป็นคำ</p>
+</div>
+</form>
+
+
 {% for scholar in scholars %}
 {%if scholar.si_status != 2%}
   <article class="message is-success">

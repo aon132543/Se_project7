@@ -1,15 +1,33 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
+<form action="home" method="POST" >
+  {% csrf_token %}
+<div class="field">
+  <label class="label">ค้นหา</label>
+  <div class="control has-icons-left has-icons-right">
+    <input class="input is-success" name = "findInfo" id="findInfo" type="text" placeholder="ชื่อทุน">
+    <span class="icon is-small is-left">
+      <i class="fa-solid fa-magnifying-glass"></i></i>
+    </span>
+  </div>
+  <p class="help is-success">ไม่จำเป็นต้องค้นหาเป็นคำ</p>
+</div>
+</form>
+
 {% for scholar in scholars %}
+
 
   
   <article class="message is-success">
     <div class="message-header">
-      <p>{{scholar.si_name}}</p>
+      <p>
+        <a href="/viewHome/{{scholar.id}}/{{request.user.id}}">{{scholar.si_name}}
+      </p>
       <i class="far fa-newspaper"></i>
     </div>
     <div class="message-body">
+      <a href="/viewHome/{{scholar.id}}/{{request.user.id}}">
       <div class="hover01 column">
         <div>
           {%if scholar.si_photo_bg%}

@@ -29,6 +29,25 @@
 
   {%if messages %}
   {%for m in messages %}
+
+  
+  {% if m.tags == "error" %}
+  <script>
+    console.log("HELLOWORLD")
+    Swal.fire({
+      "title": "ไม่สำเร็จ",
+      "text": "{{m}} ",
+      "icon": "error"
+    })
+  </script>
+  
+  
+  
+  
+  {% else %}
+       
+
+
   <script>
     Swal.fire({
       "title": "สำเร็จ",
@@ -36,6 +55,9 @@
       "icon": "success"
     })
   </script>
+  {% endif %}
+
+
   {% endfor %}
   {% endif %}
 

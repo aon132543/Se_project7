@@ -75,7 +75,9 @@ def log_user_out(request):
 def home(request):                  #หน้าหลังจาก login ของทุกคน
     user_obj = User.objects.filter(id=request.user.id)
     user_obj = user_obj[0]
-
+    findInfo = ""
+    if request.method == 'POST': 
+        findInfo = request.POST['findInfo']
    
    
     data= Scholar_info.objects.all()
@@ -91,6 +93,8 @@ def home(request):                  #หน้าหลังจาก login ข
         Scholar_info.objects.filter(id=app.sa_si_id.id).update(si_status = 2) 
 
     news = Scholar_info.objects.exclude(si_status = 2)
+    if findInfo != "":
+        news = news.filter(si_name__contains = findInfo)
     paginator = Paginator(news,4)
     
 
@@ -145,7 +149,11 @@ def CreateScholar (request):                #หน้าสร้างปร�
         detail = request.POST['mytextarea']
         amount = request.POST['amount']
         amount_per_person = request.POST['amount_per_person']
+        if int(amount_per_person) >= int(amount):
+            messages.error(request, "จำนวนเงินต่อคนมากกว่าจำนวนเงินทั้งหมดไม่ได้")
+            return redirect("CreateScholar")
         total = math.floor(int(amount)/int(amount_per_person))
+        
         date_e = request.POST['date_news']
         option = request.POST['option']
         namelst = request.POST.getlist('text[]')
@@ -153,8 +161,8 @@ def CreateScholar (request):                #หน้าสร้างปร�
         news = request.POST.get('news',None)  
         year = request.POST['year']
         year = int(year)
-        if year<2500:
-            year = year +543
+        if year>2400:
+            year = year - 543
             year = str(year)
 
         file_to = None
@@ -221,6 +229,11 @@ def editScholar(request,order_id):
         detail = request.POST['mytextarea']
         amount = request.POST['amount']
         amount_per_person = request.POST['amount_per_person']
+        if int(amount_per_person) >= int(amount):
+            print("HELLOWORLD")
+            messages.error(request, "จำนวนเงินต่อคนมากกว่าจำนวนเงินทั้งหมดไม่ได้")
+            return redirect("/editScholar/"+str(order_id))
+
         total = math.floor(int(amount)/int(amount_per_person))
         date_e = request.POST['date_news']
         option = request.POST['option']
@@ -229,8 +242,8 @@ def editScholar(request,order_id):
         news = request.POST.get('news',None)  
         year = request.POST['year']
         year = int(year)
-        if year<2500:
-            year = year +543
+        if year>2500:
+            year = year - 543
             year = str(year)
         keys =[]
         
@@ -317,7 +330,12 @@ def editScholar(request,order_id):
 
 def InformationHome(request):  
     news = Scholar_news.objects.filter(sn_status=0)
-
+    findNews = ""
+    if request.method == "POST":
+        findNews = request.POST['findnews']
+    if findNews != "":
+        news = news.filter(sn_header__contains = findNews)
+    
     paginator = Paginator(news,4)  
 
     try:
@@ -1311,6 +1329,11 @@ def checkInfo(request,info_id):
 def interview(request):
     user_obj = User.objects.get(id=request.user.id)
     scholars = add_scholar_Commit.objects.filter(id_commit = user_obj)
+    findNews = ""
+    if request.method == "POST":
+        findNews = request.POST['findcommit']
+        print(findNews)
+
     scholars_list_id=[]
     for i in scholars :
         scholars_list_id.append(i.Scholar_name.id)
@@ -1320,8 +1343,14 @@ def interview(request):
         scholar_obj =Scholar_info.objects.filter(id=i)
 
         if scholar_obj[0].si_status ==1:
-            scholars_list_obj.append(scholar_obj)
-
+            if findNews != "":
+                info = Scholar_info.objects.filter(si_name__contains = findNews)
+                if scholar_obj[0] in info:
+                    scholars_list_obj.append(scholar_obj)
+                    print(scholar_obj)
+            else:
+                scholars_list_obj.append(scholar_obj)
+    
     paginator = Paginator(scholars_list_obj,4)  
 
     try:
@@ -1345,6 +1374,7 @@ def historyGetScholar(request):
     for info in infoAll:
         if info.si_year not in year:
             year.append(info.si_year)
+    year.sort()
     scholarName = "กรุณาเลือก"   #ชื่อทุน
     yearGet = "กรุณาเลือก"  #ปีของทุน
     scholarType = "กรุณาเลือก"
@@ -1410,6 +1440,11 @@ def historyGetScholar(request):
 @user_passes_test(lambda u: u.is_superuser)
 def firstAppilcationAdmin(request): #หน้าแรกของรายชื่อนิสิตแต่ละทุน
     news = Scholar_info.objects.all()
+    findNews = ""
+    if request.method == "POST":
+        findNews = request.POST['findstudent']
+    if findNews != "":
+        news = news.filter(si_name__contains = findNews)
     paginator = Paginator(news,4)
     today = date.today()
 
@@ -1474,7 +1509,7 @@ def secondAppilcationAdmin(request,home_id):    #หน้า 2 ของรา�
         check21 = False
         check31 = False
     elif Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=11).exists() == True:
-        check11 = False
+        # check11 = False
         check31 = False
     # check21 = True
     # if Scholar_app.objects.filter(sa_si_id=home_id).exists() == False:
@@ -1730,7 +1765,7 @@ def changeStatus(request,home_id,user_id,status):
 
     memberGet = Scholar_info.objects.filter(id=home_id)
     memberGet = memberGet[0]
-    memberGet = memberGet.si_individual_amount
+    memberGet = memberGet.si_max_scholar
     memberGot = Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=31).count()+Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=41).count()
     memberGot = memberGot + Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=33).count()
     memberGot = memberGot - Scholar_app.objects.filter(sa_si_id=home_id).filter(sa_status=32).count()
@@ -1753,7 +1788,7 @@ def changeStatus(request,home_id,user_id,status):
     elif checkin.sa_status == 21:
         if status == 1:
             if(memberG==0):
-                messages.success(request, 'ไม่สามารถทำรายการได้ <br>เนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
+                messages.success(request, 'ไม่สามารถทำรายการได้ เนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
                 return redirect('/secondAppilcationAdmin/'+str(home_id))
             else:
                 enddate = datetime.now() + timedelta(days=7)
@@ -1766,9 +1801,14 @@ def changeStatus(request,home_id,user_id,status):
             return redirect('/secondAppilcationAdmin/'+str(home_id))
     elif checkin.sa_status == 30:
         if status == 1:
-            data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
-                sa_status = 31)
-            return redirect('/secondAppilcationAdmin/'+str(home_id))
+            if(memberG==0):
+                messages.success(request, 'ไม่สามารถทำรายการได้ เนื่องจากมีผู้รับทุนครบเรียบร้อยแล้ว')
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
+            else:
+                enddate = datetime.now() + timedelta(days=7)
+                data = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id=home_id).update(
+                    sa_status = 31 ,sa_statusExDate = enddate)
+                return redirect('/secondAppilcationAdmin/'+str(home_id))
     elif checkin.sa_status == 33:       
         if status == 1:            
             if checkin.sa_statusExDate <= date.today():                
@@ -1835,7 +1875,6 @@ def payment(request,info_id):
     
     check = Scholar_app.objects.filter(sa_userid=user_obj).filter(sa_si_id =scholars[0])
     check = check[0].sa_status
-
     if check == 33 or check == 34:
         if request.method == "POST":
     
@@ -1946,7 +1985,6 @@ def editPayment(request,info_id,user_id):
     today = datetime.now()+timedelta(days=3)
     Scholar_app.objects.filter(sa_userid=user_obj,sa_si_id=info_obj).update(
         sa_status = 34 , sa_statusExDate = today)
-    print("เข้าที่นี้ : editPayment")
     return redirect("/changeStatus/"+str(info_id) +"/"+str(user_id)+"/1")
 
 

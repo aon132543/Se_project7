@@ -1,7 +1,19 @@
 {% extends 'Menubar-Template.html' %} 
 {% load static %}
 {% block content %}
-
+<form action="InformationHome" method="POST" >
+  {% csrf_token %}
+<div class="field">
+  <label class="label">ค้นหา</label>
+  <div class="control has-icons-left has-icons-right">
+    <input class="input is-success" name = "findnews" id="findnews" type="text" placeholder="ชื่อข่าวประชาสัมพันธ์">
+    <span class="icon is-small is-left">
+      <i class="fa-solid fa-magnifying-glass"></i></i>
+    </span>
+  </div>
+  <p class="help is-success">ไม่จำเป็นต้องค้นหาเป็นคำ</p>
+</div>
+</form>
 
         <!-- <h2>{{new.sn_header}} <br>
           {{new.sn_description}}<br>

@@ -54,7 +54,7 @@ class Scholar_info (models.Model):           #Database สำหรับข่�
     si_status = models.IntegerField(default=0) #แสดงสถานะการดำเนินงานทุนนิสิต
     si_endtime = models.DateField(null=True,blank=True) #วันหมดการแสดงของแอดมิน
     class Meta:
-        ordering = ['-si_create_time']
+        ordering = ['si_expire_time']
 
 
     def __str__(self):

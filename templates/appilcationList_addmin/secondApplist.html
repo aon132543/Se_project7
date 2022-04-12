@@ -222,12 +222,17 @@
           {% if check %}
             
             <a href="#{{listApp.id}}" class="menu-btn" >
-              <span>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}<i class="fas fa-chevron-down drop-down"></i></span>
+              <span>{{listApp.sa_title_th}}{{listApp.sa_firstname_th}}  {{listApp.sa_lastname_th}}
+                {% if listApp.sa_status != 11 %}
+                <i class="fas fa-chevron-down drop-down"></i>
+                {% endif %}
+              </span>
             </a>
-
+            {% if listApp.sa_status != 11 %}
             <a href="/checkInfoAdmin/{{listApp.sa_si_id.id}}/{{listApp.sa_userid.id}}">
               <i class="fas fa-id-badge"></i>
             </a>
+            {% endif %}
 
             {% if listApp.sa_status == 33 or listApp.sa_status == 34 or listApp.sa_status == 41 %}
               {% if listApp.sa_statusExDate <= dateToday %}

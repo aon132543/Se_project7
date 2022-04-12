@@ -41,7 +41,7 @@
                
                 <td>{{data.sa_userid.first_name}}</td>
                 <td>{{data.sa_userid.last_name}}</td>
-                <td> {{data.sa_score}}</td>
+                <td> {{data.sa_score|floatformat:2}}</td>
                 <td> 
                   {% if data.sa_status == 11 %}
                   <p> ดำเนินการตรวจสอบเอกสาร</p>
@@ -49,6 +49,8 @@
                   <p>ไม่ผ่านเอกสาร</p>
                   {% elif data.sa_status == 21 %}
                   <p>ดำเนินการสอบสัมภาษณ์<p>
+                  {% elif data.sa_status == 30 %}
+                  <p>ไม่ผ่านการสอบสัมภาษณ์<p>
                   {% elif data.sa_status == 31 %}
                   <p>รอนิสิตยืนยันการรับทุน</p>
                   {% elif data.sa_status == 32 %}

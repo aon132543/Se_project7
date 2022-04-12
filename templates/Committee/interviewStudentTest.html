@@ -451,8 +451,8 @@ function noti(val)
 
 function getVal(id,max) {
   let val = document.getElementById(id).value;
-  val = parseInt(val)
-  max = parseInt(max)
+  val = parseFloat(val)
+  max = parseFloat(max)
   if(val < 0)
   {
     document.getElementById(id).value = 0;
