@@ -32,7 +32,7 @@ This is a software engineer subject project that has been assigned. To create a 
 6230300800 Phumin SINGPHAN email: phumin.si@ku.th\
 6230300982 Sirapop NUANGPOOKKA email: sirapop.nu@live.ku.th\
 6230301067 Onpreeya SRISAI email: onpreeya.sr@ku.th\
-6230301156 Thitaree NIROTSILRAPACHAI email:thitaree.n@ku.th\
+6230301156 Thitaree NIROTSILRAPACHAI email:thitaree.n@ku.th
 
 ## Thank you teacher advisor
 ##### ajan kanjana eiamsaard 
