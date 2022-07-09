@@ -37,6 +37,11 @@ This is a software engineer subject project that has been assigned. To create a 
 ## Thank you teacher advisor
 ##### ajan kanjana eiamsaard 
 
+## Documentation
+[เอกสารประกอบซอฟแวร์.pdf](https://github.com/aon132543/Se_project7/files/9076556/_G7.pdf)
+
+
+
 ![alt text](https://www.datocms-assets.com/45470/1631795624-logo-django.png)
 
 ![alt text](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Python_logo_and_wordmark.svg/2560px-Python_logo_and_wordmark.svg.png)
