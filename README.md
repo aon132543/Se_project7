@@ -38,7 +38,7 @@ This is a software engineer subject project that has been assigned. To create a 
 ##### ajan kanjana eiamsaard 
 
 ## Documentation
-[เอกสารประกอบซอฟแวร์.pdf](https://github.com/aon132543/Se_project7/files/9076556/_G7.pdf)
+[Documentation.pdf](https://github.com/aon132543/Se_project7/files/9076556/_G7.pdf)
 
 
 
